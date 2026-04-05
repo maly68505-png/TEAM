@@ -1,0 +1,2340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Hub — نظام إدارة الفريق</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07080f;
+  --surface: #0e0f1a;
+  --card: #13141f;
+  --card2: #181926;
+  --border: #1e2035;
+  --border2: #252640;
+  --accent: #4f8ef7;
+  --accent-dim: rgba(79,142,247,0.12);
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.12);
+  --orange: #fb923c;
+  --orange-dim: rgba(251,146,60,0.12);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.12);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --yellow: #fbbf24;
+  --text: #e2e4f0;
+  --muted: #5a5c7a;
+  --muted2: #3a3c55;
+  --role-leader: #4f8ef7;
+  --role-production: #a78bfa;
+  --role-social: #34d399;
+  --role-viewer: #fb923c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== GRID BG ===== */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(79,142,247,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,142,247,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== LOGIN SCREEN ===== */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 44px 40px;
+  width: 100%; max-width: 420px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+.login-logo {
+  font-size: 32px; margin-bottom: 6px;
+}
+
+.login-box h2 {
+  font-size: 22px; font-weight: 900;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #fff, var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.login-box p { font-size: 13px; color: var(--muted); margin-bottom: 30px; }
+
+.login-roles {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 24px;
+}
+
+.role-btn {
+  background: var(--surface);
+  border: 2px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.role-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+.role-btn.selected { border-color: var(--accent); background: var(--accent-dim); }
+
+.role-btn .role-icon { font-size: 24px; margin-bottom: 6px; }
+.role-btn .role-name { font-size: 13px; font-weight: 700; }
+.role-btn .role-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.login-btn {
+  width: 100%; padding: 14px;
+  background: var(--accent);
+  border: none; border-radius: 12px;
+  color: #fff; font-family: 'Cairo', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 6px 20px rgba(79,142,247,0.3);
+}
+.login-btn:hover { background: #6aa3f9; transform: translateY(-1px); }
+
+/* ===== MAIN APP ===== */
+#app { display: none; position: relative; z-index: 1; min-height: 100vh; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed; top: 0; right: 0;
+  width: 220px; height: 100vh;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 50;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-name {
+  font-size: 16px; font-weight: 900;
+  background: linear-gradient(135deg, #fff, var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.brand-sub { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; letter-spacing: 1px; }
+
+.sidebar-user {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+
+.user-info .user-name { font-size: 13px; font-weight: 700; }
+.user-info .user-role { font-size: 10px; font-family: 'JetBrains Mono'; }
+
+.sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+
+.nav-section { font-size: 9px; color: var(--muted2); letter-spacing: 2px; text-transform: uppercase; font-family: 'JetBrains Mono'; padding: 8px 8px 4px; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 10px; border-radius: 8px;
+  cursor: pointer; transition: all 0.15s;
+  font-size: 13px; font-weight: 600;
+  color: var(--muted); margin-bottom: 2px;
+  border: none; background: none; width: 100%; text-align: right;
+}
+
+.nav-item:hover { background: var(--card); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item .nav-icon { font-size: 16px; }
+.nav-item .nav-badge {
+  margin-right: auto;
+  background: var(--accent); color: #fff;
+  font-size: 9px; border-radius: 10px;
+  padding: 1px 6px; font-family: 'JetBrains Mono';
+}
+
+.sidebar-bottom {
+  padding: 14px 10px;
+  border-top: 1px solid var(--border);
+}
+
+.logout-btn {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 9px 10px; border-radius: 8px;
+  background: none; border: none;
+  color: var(--muted); font-family: 'Cairo'; font-size: 12px;
+  cursor: pointer; transition: all 0.15s;
+}
+.logout-btn:hover { background: var(--red-dim); color: var(--red); }
+
+/* ===== MAIN CONTENT ===== */
+.main { margin-right: 220px; min-height: 100vh; }
+
+.topbar {
+  position: sticky; top: 0;
+  background: rgba(7,8,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 40;
+}
+
+.topbar-title { font-size: 17px; font-weight: 900; }
+.topbar-title span { color: var(--accent); }
+
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px;
+  font-family: 'Cairo'; font-size: 13px; font-weight: 700;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(79,142,247,0.3); }
+.btn-primary:hover { background: #6aa3f9; transform: translateY(-1px); }
+.btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn-danger { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+
+.content { padding: 28px; }
+
+/* ===== PANELS ===== */
+.panel { display: none; animation: fadeUp 0.35s ease; }
+.panel.active { display: block; }
+
+/* ===== DASHBOARD ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px; margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 18px;
+  transition: all 0.2s;
+  cursor: default;
+}
+.stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.stat-icon { font-size: 22px; }
+.stat-trend {
+  font-size: 10px; font-family: 'JetBrains Mono';
+  padding: 2px 7px; border-radius: 4px; font-weight: 600;
+}
+
+.stat-num { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--muted); }
+
+.dashboard-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+.dash-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+}
+
+.dash-card-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 16px;
+  font-family: 'JetBrains Mono'; font-size: 11px;
+}
+
+.activity-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; }
+
+.activity-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  margin-top: 5px; flex-shrink: 0;
+}
+
+.activity-text { font-size: 13px; line-height: 1.5; }
+.activity-time { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; }
+
+/* ===== TASK BOARD ===== */
+.board-controls {
+  display: flex; gap: 10px; align-items: center;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.filter-select {
+  background: var(--card); border: 1px solid var(--border2);
+  color: var(--text); font-family: 'Cairo'; font-size: 13px;
+  padding: 8px 12px; border-radius: 8px; cursor: pointer;
+}
+
+.board-cols {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  gap: 14px; overflow-x: auto; padding-bottom: 10px;
+}
+
+.board-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px;
+  min-height: 200px;
+}
+
+.col-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.col-title {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; font-family: 'JetBrains Mono';
+}
+
+.col-dot { width: 8px; height: 8px; border-radius: 50%; }
+.col-count {
+  background: var(--card2); color: var(--muted);
+  font-size: 11px; border-radius: 6px;
+  padding: 1px 7px; font-family: 'JetBrains Mono';
+}
+
+.task-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 10px; cursor: pointer;
+  transition: all 0.18s;
+  position: relative; overflow: hidden;
+}
+
+.task-card::before {
+  content: ''; position: absolute;
+  top: 0; right: 0; width: 3px; height: 100%;
+}
+
+.task-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+
+.task-type-badge {
+  font-size: 10px; font-family: 'JetBrains Mono';
+  padding: 2px 7px; border-radius: 4px; font-weight: 600;
+  display: inline-block; margin-bottom: 8px;
+}
+
+.task-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+.task-desc { font-size: 11px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+
+.task-footer { display: flex; align-items: center; justify-content: space-between; }
+.task-assignee { font-size: 10px; color: var(--muted); }
+.task-deadline {
+  font-size: 10px; font-family: 'JetBrains Mono';
+  color: var(--muted);
+}
+.task-deadline.urgent { color: var(--red); }
+
+.task-file-indicator {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px; color: var(--green);
+  margin-top: 6px;
+}
+
+/* ===== ARCHIVE ===== */
+.archive-filters {
+  display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 7px 16px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--muted); font-family: 'Cairo'; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.filter-tab.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.filter-tab:hover:not(.active) { border-color: var(--border2); color: var(--text); }
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.archive-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  transition: all 0.2s; cursor: pointer;
+}
+
+.archive-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+.archive-thumb {
+  height: 140px; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 48px; position: relative;
+}
+
+.archive-thumb-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6));
+  display: flex; align-items: flex-end; padding: 10px;
+}
+
+.archive-badge {
+  font-size: 10px; font-family: 'JetBrains Mono';
+  padding: 2px 8px; border-radius: 4px; font-weight: 600;
+}
+
+.archive-body { padding: 14px; }
+.archive-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.archive-meta { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+
+.archive-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.archive-tag {
+  font-size: 10px; padding: 2px 7px; border-radius: 4px;
+  background: var(--card2); color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* ===== NEW TASK MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200; display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 18px; padding: 30px;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  animation: fadeUp 0.3s ease;
+}
+
+.modal-title { font-size: 20px; font-weight: 900; margin-bottom: 24px; }
+
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-family: 'JetBrains Mono'; margin-bottom: 6px; display: block; }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border2); border-radius: 10px;
+  color: var(--text); font-family: 'Cairo'; font-size: 14px;
+  padding: 11px 14px; transition: border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.form-textarea { min-height: 90px; resize: vertical; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.file-upload-area {
+  border: 2px dashed var(--border2); border-radius: 12px;
+  padding: 24px; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--surface);
+}
+.file-upload-area:hover { border-color: var(--accent); background: var(--accent-dim); }
+.file-upload-area .upload-icon { font-size: 32px; margin-bottom: 8px; }
+.file-upload-area p { font-size: 13px; color: var(--muted); }
+.file-upload-area span { font-size: 11px; color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+/* ===== ACCESS REQUEST MODAL ===== */
+.access-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+
+.access-info { flex: 1; }
+.access-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.access-detail { font-size: 12px; color: var(--muted); }
+.access-actions { display: flex; gap: 8px; }
+
+/* ===== TEAM SECTION ===== */
+.team-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.team-member-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px; text-align: center;
+  transition: all 0.2s;
+}
+.team-member-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+
+.member-avatar {
+  width: 54px; height: 54px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; margin: 0 auto 12px;
+}
+
+.member-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.member-role-tag {
+  font-size: 10px; font-family: 'JetBrains Mono';
+  padding: 3px 10px; border-radius: 6px; font-weight: 600;
+  display: inline-block; margin-bottom: 12px;
+}
+
+.member-stats { display: flex; justify-content: center; gap: 16px; }
+.member-stat { text-align: center; }
+.member-stat-num { font-size: 16px; font-weight: 900; }
+.member-stat-label { font-size: 10px; color: var(--muted); }
+
+/* ===== NOTION GUIDE ===== */
+.guide-steps { display: flex; flex-direction: column; gap: 14px; }
+
+.guide-step {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px;
+  display: flex; gap: 18px; align-items: flex-start;
+}
+
+.guide-step-num {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-dim); border: 1px solid rgba(79,142,247,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: var(--accent);
+  font-family: 'JetBrains Mono'; flex-shrink: 0;
+}
+
+.guide-step-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.guide-step-body p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+
+.guide-step-body ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.guide-step-body ul li {
+  font-size: 12px; color: var(--muted);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.guide-step-body ul li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+
+.code-snippet {
+  background: #0a0b12; border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px;
+  font-family: 'JetBrains Mono'; font-size: 11px;
+  color: #7070a0; line-height: 1.8; overflow-x: auto;
+  margin-top: 8px;
+}
+.code-snippet .kw { color: var(--accent); }
+.code-snippet .val { color: var(--green); }
+
+/* ===== NOTIFICATIONS ===== */
+.notif {
+  position: fixed; bottom: 24px; left: 24px;
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 14px 18px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  z-index: 999; transform: translateY(20px); opacity: 0;
+  transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
+}
+.notif.show { transform: translateY(0); opacity: 1; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  height: 4px; background: var(--border);
+  border-radius: 4px; overflow: hidden; margin-top: 8px;
+}
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-right: 0; }
+  .board-cols { grid-template-columns: repeat(3, minmax(200px, 1fr)); }
+}
+
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.section-title { font-size: 18px; font-weight: 900; }
+.section-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.empty-state {
+  text-align: center; padding: 50px 20px;
+  color: var(--muted);
+}
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+/* ===== COMMENTS MODAL ===== */
+.task-detail-modal {
+  width: 100%; max-width: 680px;
+  max-height: 92vh; overflow-y: auto;
+}
+
+.task-detail-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-detail-title { font-size: 20px; font-weight: 900; line-height: 1.3; }
+.task-detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+.meta-chip {
+  font-size: 11px; padding: 3px 10px; border-radius: 6px;
+  font-family: 'JetBrains Mono'; font-weight: 600;
+  border: 1px solid var(--border2); background: var(--surface);
+  color: var(--muted);
+}
+
+.close-btn {
+  background: var(--surface); border: 1px solid var(--border2);
+  color: var(--muted); width: 32px; height: 32px;
+  border-radius: 8px; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.15s;
+}
+.close-btn:hover { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+
+.comments-section { margin-top: 4px; }
+
+.comments-title {
+  font-size: 11px; font-family: 'JetBrains Mono';
+  color: var(--muted); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.comments-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.comment-item {
+  display: flex; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  animation: fadeUp 0.25s ease;
+}
+.comment-item:last-of-type { border-bottom: none; }
+
+.comment-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; font-weight: 700;
+}
+
+.comment-body { flex: 1; }
+
+.comment-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 5px;
+}
+
+.comment-author { font-size: 13px; font-weight: 700; }
+.comment-role-tag {
+  font-size: 9px; font-family: 'JetBrains Mono';
+  padding: 2px 7px; border-radius: 4px; font-weight: 600;
+}
+.comment-time { font-size: 10px; color: var(--muted); margin-right: auto; font-family: 'JetBrains Mono'; }
+
+.comment-text {
+  font-size: 13px; color: var(--text);
+  line-height: 1.6; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.comment-actions-row {
+  display: flex; gap: 8px; margin-top: 6px;
+}
+
+.comment-action-btn {
+  font-size: 11px; color: var(--muted);
+  background: none; border: none; cursor: pointer;
+  font-family: 'Cairo'; transition: color 0.15s;
+  display: flex; align-items: center; gap: 4px;
+}
+.comment-action-btn:hover { color: var(--accent); }
+
+.comment-input-area {
+  display: flex; gap: 10px; align-items: flex-end;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.comment-input-wrap { flex: 1; }
+
+.comment-textarea {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border2); border-radius: 10px;
+  color: var(--text); font-family: 'Cairo'; font-size: 13px;
+  padding: 10px 14px; resize: none; min-height: 60px;
+  transition: border-color 0.2s; line-height: 1.5;
+}
+.comment-textarea:focus { outline: none; border-color: var(--accent); }
+
+.comment-submit-btn {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--accent); border: none;
+  color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(79,142,247,0.3);
+}
+.comment-submit-btn:hover { background: #6aa3f9; transform: translateY(-1px); }
+
+.empty-comments {
+  text-align: center; padding: 30px;
+  color: var(--muted); font-size: 13px;
+}
+.empty-comments .ec-icon { font-size: 32px; margin-bottom: 8px; }
+
+/* ===== LEADER SECTION ===== */
+.leader-section {
+  background: linear-gradient(135deg, rgba(79,142,247,0.06), rgba(167,139,250,0.06));
+  border: 1px solid rgba(79,142,247,0.25);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.leader-section::before {
+  content: '👑';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.leader-section-title {
+  font-size: 11px; font-family: 'JetBrains Mono';
+  color: var(--accent); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.leader-section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(79,142,247,0.2);
+}
+
+.assign-row {
+  display: flex; gap: 10px; align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.assign-row .form-group { flex: 1; margin-bottom: 0; }
+
+.assign-btn {
+  padding: 10px 18px; border-radius: 8px;
+  background: var(--accent); color: #fff;
+  border: none; font-family: 'Cairo'; font-size: 13px;
+  font-weight: 700; cursor: pointer; transition: all 0.2s;
+  white-space: nowrap; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(79,142,247,0.3);
+}
+.assign-btn:hover { background: #6aa3f9; transform: translateY(-1px); }
+
+.note-row {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.note-textarea {
+  width: 100%; background: rgba(7,8,15,0.5);
+  border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;
+  color: var(--text); font-family: 'Cairo'; font-size: 13px;
+  padding: 10px 14px; resize: none; min-height: 72px;
+  transition: border-color 0.2s; line-height: 1.5;
+}
+.note-textarea:focus { outline: none; border-color: var(--accent); }
+.note-textarea::placeholder { color: var(--muted); }
+
+.note-submit-btn {
+  align-self: flex-end;
+  padding: 8px 20px; border-radius: 8px;
+  background: var(--purple-dim); color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.3);
+  font-family: 'Cairo'; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.note-submit-btn:hover { background: rgba(167,139,250,0.2); }
+
+.pinned-notes { margin-top: 14px; }
+.pinned-notes-title {
+  font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono';
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+}
+
+.pinned-note-item {
+  background: rgba(167,139,250,0.08);
+  border: 1px solid rgba(167,139,250,0.15);
+  border-radius: 8px; padding: 10px 12px;
+  margin-bottom: 6px; font-size: 13px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.pinned-note-item .note-pin { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.pinned-note-item .note-body { flex: 1; }
+.pinned-note-item .note-text { color: var(--text); line-height: 1.5; }
+.pinned-note-item .note-time { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; margin-top: 3px; }
+.pinned-note-item .note-del {
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 12px; flex-shrink: 0;
+  transition: color 0.15s; padding: 0;
+}
+.pinned-note-item .note-del:hover { color: var(--red); }
+
+.current-assignee-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(79,142,247,0.12); border: 1px solid rgba(79,142,247,0.25);
+  border-radius: 8px; padding: 6px 12px;
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  margin-bottom: 10px;
+}
+</style>
+.file-section {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+
+.file-section-title {
+  font-size: 11px; font-family: 'JetBrains Mono';
+  color: var(--muted); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+
+.uploaded-file-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  margin-bottom: 8px; transition: all 0.2s;
+}
+.uploaded-file-item:hover { border-color: var(--accent); }
+
+.file-icon-big { font-size: 26px; flex-shrink: 0; }
+
+.file-info { flex: 1; min-width: 0; }
+.file-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-meta { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono'; margin-top: 2px; }
+
+.file-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.btn-download {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 8px;
+  background: var(--green-dim); color: var(--green);
+  border: 1px solid rgba(52,211,153,0.25);
+  font-family: 'Cairo'; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-download:hover { background: rgba(52,211,153,0.2); transform: translateY(-1px); }
+
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 10px; padding: 20px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; position: relative;
+  overflow: hidden;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.upload-zone input[type=file] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.upload-zone .uz-icon { font-size: 28px; margin-bottom: 6px; }
+.upload-zone .uz-text { font-size: 13px; color: var(--muted); }
+.upload-zone .uz-sub { font-size: 11px; color: var(--muted2); margin-top: 3px; }
+
+.upload-progress {
+  height: 6px; background: var(--border);
+  border-radius: 6px; overflow: hidden;
+  margin-top: 10px; display: none;
+}
+.upload-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 6px; width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ===== BELL NOTIFICATION PANEL ===== */
+.notif-panel {
+  position: fixed; top: 58px; left: 20px;
+  width: 320px; background: var(--card);
+  border: 1px solid var(--border2); border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 300; display: none;
+  animation: fadeUp 0.25s ease;
+  overflow: hidden;
+}
+.notif-panel.open { display: block; }
+
+.notif-panel-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.notif-panel-title { font-size: 14px; font-weight: 700; }
+.notif-clear-btn {
+  font-size: 11px; color: var(--muted);
+  background: none; border: none; cursor: pointer;
+  font-family: 'Cairo'; transition: color 0.15s;
+}
+.notif-clear-btn:hover { color: var(--red); }
+
+.notif-list { max-height: 320px; overflow-y: auto; }
+
+.notif-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 18px; border-bottom: 1px solid var(--border);
+  transition: background 0.15s; cursor: default;
+}
+.notif-item:hover { background: var(--surface); }
+.notif-item.unread { background: var(--accent-dim); }
+.notif-item:last-child { border-bottom: none; }
+
+.notif-item-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.notif-item-body { flex: 1; }
+.notif-item-text { font-size: 13px; line-height: 1.5; }
+.notif-item-time { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; margin-top: 3px; }
+.notif-unread-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; margin-top: 6px;
+}
+
+.notif-empty { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; }
+
+.bell-badge {
+  position: absolute; top: -4px; left: -4px;
+  background: var(--red); color: #fff;
+  font-size: 9px; border-radius: 10px;
+  padding: 1px 5px; font-family: 'JetBrains Mono';
+  font-weight: 700; display: none;
+}
+
+.bell-wrap { position: relative; display: inline-flex; }
+</style>
+
+.task-detail-info {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 20px;
+}
+
+.detail-info-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px;
+}
+.detail-info-label { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; letter-spacing: 1px; margin-bottom: 4px; }
+.detail-info-val { font-size: 13px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🎬</div>
+    <h2>Team Hub</h2>
+    <p>اختار دورك عشان تدخل النظام</p>
+    <div class="login-roles">
+      <div class="role-btn" onclick="selectRole('leader')" id="role-leader">
+        <div class="role-icon">👑</div>
+        <div class="role-name">Team Leader</div>
+        <div class="role-desc">كل الصلاحيات</div>
+      </div>
+      <div class="role-btn" onclick="selectRole('production')" id="role-production">
+        <div class="role-icon">🎬</div>
+        <div class="role-name">Production</div>
+        <div class="role-desc">رفع ملفات + مهام</div>
+      </div>
+      <div class="role-btn" onclick="selectRole('social')" id="role-social">
+        <div class="role-icon">📱</div>
+        <div class="role-name">Social Media</div>
+        <div class="role-desc">نشر + تقارير</div>
+      </div>
+      <div class="role-btn" onclick="selectRole('viewer')" id="role-viewer">
+        <div class="role-icon">👁️</div>
+        <div class="role-name">مسؤول / عميل</div>
+        <div class="role-desc">عرض فقط</div>
+      </div>
+    </div>
+    <button class="login-btn" onclick="doLogin()">دخول النظام →</button>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-name">🎬 Team Hub</div>
+      <div class="brand-sub">PRODUCTION SYSTEM v1.0</div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar"></div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-name"></div>
+        <div class="user-role" id="sidebar-role" style="font-size:10px"></div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">الرئيسية</div>
+      <button class="nav-item active" onclick="showPanel('dashboard')">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+
+      <div class="nav-section">العمل</div>
+      <button class="nav-item" onclick="showPanel('tasks')" id="nav-tasks">
+        <span class="nav-icon">✅</span> Task Board
+        <span class="nav-badge" id="tasks-badge">7</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('archive')" id="nav-archive">
+        <span class="nav-icon">🗄️</span> الأرشيف
+      </button>
+
+      <div class="nav-section" id="nav-section-mgmt">إدارة</div>
+      <button class="nav-item" onclick="showPanel('team')" id="nav-team">
+        <span class="nav-icon">👥</span> الفريق
+      </button>
+      <button class="nav-item" onclick="showPanel('access')" id="nav-access">
+        <span class="nav-icon">🔐</span> صلاحيات الوصول
+        <span class="nav-badge" style="background:var(--orange)">2</span>
+      </button>
+
+      <div class="nav-section">أخرى</div>
+      <button class="nav-item" onclick="showPanel('guide')" id="nav-guide">
+        <span class="nav-icon">📋</span> دليل Notion
+      </button>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title"></div>
+      <div class="topbar-actions">
+        <div class="bell-wrap">
+          <button class="btn btn-ghost" onclick="toggleNotifPanel()">🔔</button>
+          <span class="bell-badge" id="bell-badge">0</span>
+        </div>
+        <button class="btn btn-primary" onclick="openNewTask()" id="btn-new-task">+ مهمة جديدة</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== DASHBOARD ===== -->
+      <div class="panel active" id="panel-dashboard">
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon">✅</div>
+              <div class="stat-trend" style="background:var(--green-dim);color:var(--green)">+3 اليوم</div>
+            </div>
+            <div class="stat-num" style="color:var(--green)">12</div>
+            <div class="stat-label">مهام مكتملة هذا الشهر</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:75%;background:var(--green)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-trend" style="background:var(--accent-dim);color:var(--accent)">نشطة</div>
+            </div>
+            <div class="stat-num" style="color:var(--accent)">7</div>
+            <div class="stat-label">مهام قيد التنفيذ</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%;background:var(--accent)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon">🗄️</div>
+              <div class="stat-trend" style="background:var(--purple-dim);color:var(--purple)">محفوظ</div>
+            </div>
+            <div class="stat-num" style="color:var(--purple)">38</div>
+            <div class="stat-label">ملف في الأرشيف</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--purple)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon">⚠️</div>
+              <div class="stat-trend" style="background:var(--red-dim);color:var(--red)">تنبيه</div>
+            </div>
+            <div class="stat-num" style="color:var(--red)">2</div>
+            <div class="stat-label">مهام متأخرة</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:20%;background:var(--red)"></div></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <div class="dash-card-title">// آخر النشاطات</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--green)"></div>
+              <div>
+                <div class="activity-text">أحمد رفع فيديو "حملة رمضان - فاينل"</div>
+                <div class="activity-time">منذ 12 دقيقة</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--accent)"></div>
+              <div>
+                <div class="activity-text">سارة غيرت status مهمة "تصميم كفر يوتيوب"</div>
+                <div class="activity-time">منذ 45 دقيقة</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--orange)"></div>
+              <div>
+                <div class="activity-text">طلب وصول جديد من: محمد كريم (عميل)</div>
+                <div class="activity-time">منذ ساعتين</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--purple)"></div>
+              <div>
+                <div class="activity-text">تم أرشفة مشروع "فيديو منتج X" تلقائياً</div>
+                <div class="activity-time">أمس 9:30م</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--red)"></div>
+              <div>
+                <div class="activity-text">تنبيه: مهمة "ريلز الأسبوع" تأخرت يومين</div>
+                <div class="activity-time">أمس 8:00م</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <div class="dash-card-title">// توزيع المهام بالنوع</div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                  <span>🎬 فيديو إنتاج</span><span style="color:var(--purple);font-family:'JetBrains Mono'">8 مهام</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:65%;background:var(--purple)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                  <span>🎨 جرافيك</span><span style="color:var(--orange);font-family:'JetBrains Mono'">5 مهام</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--orange)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                  <span>✍️ محتوى</span><span style="color:var(--green);font-family:'JetBrains Mono'">4 مهام</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:32%;background:var(--green)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                  <span>📱 سوشيال ميديا</span><span style="color:var(--accent);font-family:'JetBrains Mono'">6 مهام</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:48%;background:var(--accent)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                  <span>🤖 AI Content</span><span style="color:#00d4ff;font-family:'JetBrains Mono'">3 مهام</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:24%;background:#00d4ff"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TASKS ===== -->
+      <div class="panel" id="panel-tasks">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Task Board</div>
+            <div class="section-sub">تتبع كل المهام من البداية للنشر</div>
+          </div>
+        </div>
+
+        <div class="board-controls">
+          <select class="filter-select" onchange="filterTasks(this.value)">
+            <option value="all">كل المهام</option>
+            <option value="video">🎬 فيديو</option>
+            <option value="graphic">🎨 جرافيك</option>
+            <option value="content">✍️ محتوى</option>
+            <option value="social">📱 سوشيال</option>
+            <option value="ai">🤖 AI</option>
+          </select>
+          <select class="filter-select">
+            <option>كل الأعضاء</option>
+            <option>أحمد (إنتاج)</option>
+            <option>سارة (سوشيال)</option>
+            <option>محمود (جرافيك)</option>
+          </select>
+        </div>
+
+        <div class="board-cols" id="board-cols"></div>
+      </div>
+
+      <!-- ===== ARCHIVE ===== -->
+      <div class="panel" id="panel-archive">
+        <div class="section-header">
+          <div>
+            <div class="section-title">🗄️ الأرشيف</div>
+            <div class="section-sub">كل الملفات والمشاريع المكتملة محفوظة هنا</div>
+          </div>
+          <button class="btn btn-ghost" onclick="showNotif('📥 جارٍ تحميل الأرشيف...')">⬇️ تصدير</button>
+        </div>
+
+        <div class="archive-filters">
+          <div class="filter-tab active" onclick="filterArchive(this,'all')">الكل (38)</div>
+          <div class="filter-tab" onclick="filterArchive(this,'video')">🎬 فيديو (18)</div>
+          <div class="filter-tab" onclick="filterArchive(this,'graphic')">🎨 جرافيك (12)</div>
+          <div class="filter-tab" onclick="filterArchive(this,'content')">✍️ محتوى (8)</div>
+        </div>
+
+        <div class="archive-grid" id="archive-grid"></div>
+      </div>
+
+      <!-- ===== TEAM ===== -->
+      <div class="panel" id="panel-team">
+        <div class="section-header">
+          <div>
+            <div class="section-title">👥 الفريق</div>
+            <div class="section-sub">إدارة أعضاء الفريق وأدوارهم</div>
+          </div>
+          <button class="btn btn-primary" onclick="showNotif('✉️ تم إرسال دعوة للعضو الجديد!')">+ إضافة عضو</button>
+        </div>
+        <div class="team-grid" id="team-grid"></div>
+      </div>
+
+      <!-- ===== ACCESS ===== -->
+      <div class="panel" id="panel-access">
+        <div class="section-header">
+          <div>
+            <div class="section-title">🔐 صلاحيات الوصول</div>
+            <div class="section-sub">طلبات المسؤولين والعملاء لعرض البيانات</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;color:var(--muted);margin-bottom:14px;font-family:'JetBrains Mono';font-size:11px;letter-spacing:1px;text-transform:uppercase">// طلبات معلقة</div>
+          
+          <div class="access-card">
+            <div style="font-size:28px">👔</div>
+            <div class="access-info">
+              <div class="access-name">محمد كريم</div>
+              <div class="access-detail">عميل — يطلب عرض مشروع "حملة رمضان 2025" فقط</div>
+              <div style="font-size:11px;color:var(--orange);margin-top:4px;font-family:'JetBrains Mono'">منذ ساعتين</div>
+            </div>
+            <div class="access-actions">
+              <button class="btn btn-primary" onclick="approveAccess(this,'محمد كريم')">✓ موافقة</button>
+              <button class="btn btn-danger" onclick="this.closest('.access-card').remove(); showNotif('❌ تم رفض الطلب')">✕ رفض</button>
+            </div>
+          </div>
+
+          <div class="access-card">
+            <div style="font-size:28px">🏢</div>
+            <div class="access-info">
+              <div class="access-name">نورا المدير</div>
+              <div class="access-detail">مسؤول — يطلب عرض كل التقارير والأرشيف</div>
+              <div style="font-size:11px;color:var(--orange);margin-top:4px;font-family:'JetBrains Mono'">منذ 5 ساعات</div>
+            </div>
+            <div class="access-actions">
+              <button class="btn btn-primary" onclick="approveAccess(this,'نورا المدير')">✓ موافقة</button>
+              <button class="btn btn-danger" onclick="this.closest('.access-card').remove(); showNotif('❌ تم رفض الطلب')">✕ رفض</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:14px;font-family:'JetBrains Mono';letter-spacing:1px;text-transform:uppercase">// وصول نشط</div>
+          
+          <div class="access-card">
+            <div style="font-size:28px">✅</div>
+            <div class="access-info">
+              <div class="access-name">أ. خالد — الإدارة العليا</div>
+              <div class="access-detail">وصول كامل للأرشيف والتقارير — منذ يناير 2025</div>
+            </div>
+            <button class="btn btn-ghost" onclick="showNotif('🔒 تم إلغاء الوصول')">إلغاء الوصول</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div style="background:var(--accent-dim);border:1px solid rgba(79,142,247,0.2);border-radius:12px;padding:18px;font-size:13px;color:#7aabff;line-height:1.7">
+          <strong style="display:block;margin-bottom:6px;font-size:11px;font-family:'JetBrains Mono';letter-spacing:1px">// نظام الصلاحيات</strong>
+          👑 <strong>Team Leader</strong> — كل الصلاحيات، الموافقة على المهام، إدارة الوصول<br>
+          🎬 <strong>Production</strong> — رفع ملفات، تحديث status، عرض مهامهم فقط<br>
+          📱 <strong>Social Media</strong> — تحميل الملفات النهائية، تسجيل النشر<br>
+          👁️ <strong>مسؤول/عميل</strong> — عرض فقط بعد موافقة الـ Team Leader
+        </div>
+      </div>
+
+      <!-- ===== GUIDE ===== -->
+      <div class="panel" id="panel-guide">
+        <div class="section-header">
+          <div>
+            <div class="section-title">📋 دليل Notion + Google Drive</div>
+            <div class="section-sub">خطوات إعداد النظام الكامل للفريق</div>
+          </div>
+        </div>
+
+        <div class="guide-steps">
+          <div class="guide-step">
+            <div class="guide-step-num">01</div>
+            <div class="guide-step-body">
+              <h3>إنشاء Google Drive Folder هيكل</h3>
+              <p>اعمل هيكل موحد على Google Drive — ده مكان رفع الملفات الثقيلة</p>
+              <div class="code-snippet">
+📁 <span class="kw">Team Hub — Drive</span><br>
+├── 📁 <span class="val">01_Projects</span><br>
+│   ├── 📁 حملة_رمضان_2025<br>
+│   │   ├── 📁 Raw_Files<br>
+│   │   ├── 📁 Drafts<br>
+│   │   └── 📁 Final ✅<br>
+│   └── 📁 مشروع_X<br>
+├── 📁 <span class="val">02_Archive</span>  <span class="kw">← أرشيف تلقائي</span><br>
+├── 📁 <span class="val">03_Assets</span>   <span class="kw">← لوجوهات وموسيقى</span><br>
+└── 📁 <span class="val">04_Reports</span>  <span class="kw">← تقارير سوشيال</span>
+              </div>
+              <ul>
+                <li>شارك الـ folder مع الفريق بصلاحيات محددة</li>
+                <li>إنتاج → Editor في Projects فقط</li>
+                <li>سوشيال → Viewer على Final folders</li>
+                <li>مسؤولين → Viewer على Archive بعد موافقتك</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">02</div>
+            <div class="guide-step-body">
+              <h3>إعداد Notion Task Database</h3>
+              <p>أنشئ Database بالـ properties دي — ده قلب النظام</p>
+              <div class="code-snippet">
+<span class="kw">Task Name</span>    → Title<br>
+<span class="kw">Status</span>       → <span class="val">Backlog | In Progress | Review | Production | Done</span><br>
+<span class="kw">Type</span>         → <span class="val">Video | Graphic | Content | Social | AI</span><br>
+<span class="kw">Assignee</span>     → Person<br>
+<span class="kw">Deadline</span>     → Date<br>
+<span class="kw">Priority</span>     → <span class="val">🔴 Urgent | 🟡 High | 🟢 Normal</span><br>
+<span class="kw">Drive Link</span>   → URL  <span class="val">← رابط الـ folder على Drive</span><br>
+<span class="kw">Platform</span>     → <span class="val">Instagram | TikTok | YouTube</span><br>
+<span class="kw">Archive Date</span> → Date <span class="val">← يتملي تلقائي لما Status = Done</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">03</div>
+            <div class="guide-step-body">
+              <h3>ربط Workflow الإنتاج والسوشيال</h3>
+              <p>الخطوات اللي بيتبعها الفريقين مع بعض</p>
+              <ul>
+                <li>الإنتاج بيرفع الفيديو في Drive على <strong>Drafts</strong> folder</li>
+                <li>بيحدث الـ Status في Notion لـ "In Review" + بيضيف Drive Link</li>
+                <li>أنت بتراجع وتعمل Approve → Status يتحول لـ "Production"</li>
+                <li>الإنتاج بينقل الملف لـ <strong>Final</strong> folder</li>
+                <li>السوشيال بيشوف الـ task "Production" ويحمل من Final</li>
+                <li>بعد النشر: Status → Done وبيتنقل تلقائي للـ Archive</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">04</div>
+            <div class="guide-step-body">
+              <h3>نظام الأرشيف التلقائي</h3>
+              <p>خلي كل حاجة تتأرشف أوتوماتيك بدون أي جهد</p>
+              <ul>
+                <li>في Notion: اعمل Filtered View اسمه "Archive" يظهر Tasks اللي Status = Done</li>
+                <li>في Drive: استخدم Google Drive Automations أو Zapier عشان ينقل الـ Final files للـ Archive folder تلقائياً</li>
+                <li>كل ملف في الأرشيف يحتفظ بالـ task details والـ Drive link</li>
+                <li>المسؤولين والعملاء يقدروا يوصلوا للأرشيف بعد موافقتك فقط</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">05</div>
+            <div class="guide-step-body">
+              <h3>إدارة وصول المسؤولين والعملاء</h3>
+              <p>إزاي تدي أي حد وصول مؤقت أو دائم للبيانات</p>
+              <ul>
+                <li><strong>Notion:</strong> شارك صفحة معينة كـ "View Only" — مش الـ workspace كله</li>
+                <li><strong>Drive:</strong> شارك الـ folder المخصوص بـ Viewer permission فقط</li>
+                <li>اعمل Guest Account في Notion للعملاء — ما يشوفوش إلا اللي تختاره</li>
+                <li>كل 30 يوم: راجع الـ shared accesses وشيل اللي انتهى</li>
+                <li>في Notion يمكنك عمل Password-protected page للعملاء الكبار</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ===== NOTIFICATION PANEL ===== -->
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-panel-header">
+    <div class="notif-panel-title">🔔 الإشعارات</div>
+    <button class="notif-clear-btn" onclick="clearAllNotifs()">مسح الكل</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">لا توجد إشعارات</div>
+  </div>
+</div>
+
+<!-- ===== TASK DETAIL + COMMENTS MODAL ===== -->
+<div class="modal-overlay" id="modal-task-detail">
+  <div class="modal task-detail-modal">
+    <div class="task-detail-header">
+      <div>
+        <div class="task-detail-title" id="detail-title">—</div>
+        <div class="task-detail-meta" id="detail-meta"></div>
+      </div>
+      <button class="close-btn" onclick="closeTaskDetail()">✕</button>
+    </div>
+    <div class="task-detail-info" id="detail-info"></div>
+
+    <!-- Leader Only Section -->
+    <div class="leader-section" id="leader-section" style="display:none">
+      <div class="leader-section-title">👑 صلاحيات Team Leader</div>
+
+      <!-- رسالة للمشاهدين -->
+      <div id="leader-readonly-msg" style="display:none;align-items:center;gap:8px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--orange)">
+        🔒 هذا القسم للعرض فقط — التعديل متاح للـ Team Leader
+      </div>
+
+      <!-- توزيع المهمة -->
+      <div style="margin-bottom:14px">
+        <div class="form-label" style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:block">توزيع المهمة على</div>
+        <div class="current-assignee-badge" id="current-assignee-badge">👤 —</div>
+        <div id="assign-row-wrap">
+          <div class="assign-row">
+            <div class="form-group">
+              <select class="form-select" id="assign-select" style="font-size:13px;padding:9px 12px">
+                <option value="">اختار عضو الفريق...</option>
+                <option value="أحمد محمد">🎬 أحمد محمد — إنتاج</option>
+                <option value="محمود علي">🎨 محمود علي — جرافيك</option>
+                <option value="فاطمة حسن">✍️ فاطمة حسن — محتوى</option>
+                <option value="سارة أحمد">📱 سارة أحمد — سوشيال</option>
+                <option value="ليلى محمود">🤖 ليلى محمود — AI</option>
+              </select>
+            </div>
+            <button class="assign-btn" onclick="assignTask()">توزيع ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ملاحظات رسمية -->
+      <div id="note-input-wrap">
+        <div class="note-row">
+          <div class="form-label" style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">📌 ملاحظة رسمية (مثبتة)</div>
+          <textarea class="note-textarea" id="leader-note-input" placeholder="اكتب ملاحظة رسمية للفريق..."></textarea>
+          <button class="note-submit-btn" onclick="addLeaderNote()">📌 تثبيت الملاحظة</button>
+        </div>
+      </div>
+
+      <!-- الملاحظات المثبتة -->
+      <div class="pinned-notes" id="pinned-notes" style="display:none">
+        <div class="pinned-notes-title">// ملاحظات مثبتة</div>
+        <div id="pinned-notes-list"></div>
+      </div>
+    </div>
+
+    <!-- File Section -->
+    <div class="file-section" id="file-section">
+      <div class="file-section-title">// الملفات المرفوعة</div>
+      <div id="task-files-list"></div>
+      <!-- Upload zone — production & leader only -->
+      <div id="upload-zone-wrap">
+        <div class="upload-zone" id="upload-zone"
+          ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <input type="file" id="file-input" accept="video/*,image/*,.pdf,.zip" onchange="handleFileSelect(event)">
+          <div class="uz-icon">☁️</div>
+          <div class="uz-text">اسحب الفيديو هنا أو اضغط للرفع</div>
+          <div class="uz-sub">MP4, MOV, AVI — الحجم الأقصى 2GB</div>
+        </div>
+        <div class="upload-progress" id="upload-progress">
+          <div class="upload-progress-fill" id="upload-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <div class="comments-title">// التعليقات والملاحظات <span id="comments-count" style="color:var(--accent)"></span></div>
+      <div id="comments-list"></div>
+      <div class="comment-input-area">
+        <div class="comment-avatar" id="comment-my-avatar" style="font-size:16px"></div>
+        <div class="comment-input-wrap">
+          <textarea class="comment-textarea" id="comment-input" placeholder="اكتب تعليقك أو ملاحظتك هنا..." rows="2" onkeydown="handleCommentKey(event)"></textarea>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono'">Ctrl+Enter للإرسال السريع</div>
+        </div>
+        <button class="comment-submit-btn" onclick="submitComment()">↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NEW TASK MODAL ===== -->
+<div class="modal-overlay" id="modal-new-task">
+  <div class="modal">
+    <div class="modal-title">➕ مهمة جديدة</div>
+    <div class="form-group">
+      <label class="form-label">اسم المهمة</label>
+      <input class="form-input" placeholder="مثال: مونتاج فيديو حملة يونيو" id="task-name-input">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">النوع</label>
+        <select class="form-select" id="task-type-input">
+          <option value="video">🎬 فيديو</option>
+          <option value="graphic">🎨 جرافيك</option>
+          <option value="content">✍️ محتوى</option>
+          <option value="social">📱 سوشيال</option>
+          <option value="ai">🤖 AI Content</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الأولوية</label>
+        <select class="form-select" id="task-priority-input">
+          <option value="normal">🟢 عادي</option>
+          <option value="high">🟡 مهم</option>
+          <option value="urgent">🔴 عاجل</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">المسؤول</label>
+        <select class="form-select" id="task-assignee-input">
+          <option>أحمد — إنتاج</option>
+          <option>محمود — جرافيك</option>
+          <option>فاطمة — محتوى</option>
+          <option>سارة — سوشيال</option>
+          <option>ليلى — AI</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الديدلاين</label>
+        <input class="form-input" type="date" id="task-deadline-input">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">وصف / بريف</label>
+      <textarea class="form-textarea" placeholder="اكتب تفاصيل المهمة أو البريف هنا..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">رابط Drive Folder</label>
+      <input class="form-input" placeholder="https://drive.google.com/..." id="task-drive-input">
+    </div>
+    <div class="form-group">
+      <label class="form-label">رفع ملفات مرجعية</label>
+      <div class="file-upload-area" onclick="showNotif('📁 سيتم ربط هذا بـ Google Drive في النسخة الكاملة')">
+        <div class="upload-icon">☁️</div>
+        <p>اسحب الملفات هنا أو اضغط للرفع</p>
+        <span>فيديو، صور، PDF — الحجم الأقصى 2GB</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="addTask()">إنشاء المهمة ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ===== DATA =====
+let currentRole = null;
+let currentUser = {};
+let currentUserName = '';
+
+const userNames = {
+  leader: 'Team Leader',
+  production: 'أحمد — إنتاج',
+  social: 'سارة — سوشيال',
+  viewer: 'مسؤول / عميل'
+};
+
+const roles = {
+  leader:     { name: 'Team Leader', icon: '👑', color: '#4f8ef7', bg: 'rgba(79,142,247,0.15)' },
+  production: { name: 'فريق الإنتاج', icon: '🎬', color: '#a78bfa', bg: 'rgba(167,139,250,0.15)' },
+  social:     { name: 'سوشيال ميديا', icon: '📱', color: '#34d399', bg: 'rgba(52,211,153,0.15)' },
+  viewer:     { name: 'مسؤول / عميل', icon: '👁️', color: '#fb923c', bg: 'rgba(251,146,60,0.15)' }
+};
+
+const typeConfig = {
+  video:   { label: '🎬 فيديو',   color: '#a78bfa', bg: 'rgba(167,139,250,0.15)' },
+  graphic: { label: '🎨 جرافيك', color: '#fb923c', bg: 'rgba(251,146,60,0.15)' },
+  content: { label: '✍️ محتوى', color: '#34d399', bg: 'rgba(52,211,153,0.15)' },
+  social:  { label: '📱 سوشيال', color: '#4f8ef7', bg: 'rgba(79,142,247,0.15)' },
+  ai:      { label: '🤖 AI',      color: '#00d4ff', bg: 'rgba(0,212,255,0.12)' }
+};
+
+const columns = [
+  { id: 'backlog',    label: 'Backlog',      color: '#5a5c7a' },
+  { id: 'progress',  label: 'In Progress',  color: '#4f8ef7' },
+  { id: 'review',    label: 'In Review',    color: '#fbbf24' },
+  { id: 'approved',  label: 'Approved ✓',  color: '#34d399' },
+  { id: 'published', label: 'Published 🚀', color: '#a78bfa' },
+];
+
+let tasks = [
+  { id:1, title:'مونتاج فيديو حملة يونيو', type:'video', status:'progress', assignee:'أحمد', deadline:'2025-06-15', priority:'urgent', hasFile:true, desc:'فيديو 60 ثانية للحملة الصيفية',
+    files:[{ name:'حملة_يونيو_draft_v1.mp4', size:'284 MB', type:'video', uploadedBy:'أحمد — إنتاج', time:'أمس 4:10م' }],
+    comments:[
+      { id:1, author:'Team Leader', role:'leader', icon:'👑', color:'#4f8ef7', bg:'rgba(79,142,247,0.15)', text:'خلي بالك إن الفيديو لازم يكون أقل من 60 ثانية بالظبط للإعلان', time:'أمس 3:20م' },
+      { id:2, author:'أحمد', role:'production', icon:'🎬', color:'#a78bfa', bg:'rgba(167,139,250,0.15)', text:'تمام، هخلصه بكره الصبح وأرفعه على Drive', time:'أمس 4:05م' },
+    ]},
+  { id:2, title:'تصميم كفر يوتيوب', type:'graphic', status:'review', assignee:'محمود', deadline:'2025-06-12', priority:'high', hasFile:false, desc:'كفر للحلقة الجديدة', files:[],
+    comments:[{ id:1, author:'محمود', role:'production', icon:'🎨', color:'#fb923c', bg:'rgba(251,146,60,0.15)', text:'رفعت أول draft — ممكن تشوفه وتقولي رأيك في الألوان؟', time:'اليوم 10:00ص' }]},
+  { id:3, title:'كتابة سكريبت ريلز', type:'content', status:'backlog', assignee:'فاطمة', deadline:'2025-06-18', priority:'normal', hasFile:false, desc:'سكريبت 30 ثانية', files:[], comments:[] },
+  { id:4, title:'جدولة بوستات الأسبوع', type:'social', status:'progress', assignee:'سارة', deadline:'2025-06-10', priority:'high', hasFile:true, desc:'10 بوستات إنستا + تيك توك',
+    files:[{ name:'بوستات_الأسبوع_final.zip', size:'45 MB', type:'zip', uploadedBy:'سارة — سوشيال', time:'اليوم 9:00ص' }],
+    comments:[
+      { id:1, author:'سارة', role:'social', icon:'📱', color:'#34d399', bg:'rgba(52,211,153,0.15)', text:'جاهزة البوستات كلها — بس محتاجة موافقة على التوقيتات', time:'اليوم 9:30ص' },
+      { id:2, author:'Team Leader', role:'leader', icon:'👑', color:'#4f8ef7', bg:'rgba(79,142,247,0.15)', text:'موافق على التوقيتات، بس البوست الأربعاء حوليه للخميس', time:'اليوم 11:00ص' },
+    ]},
+  { id:5, title:'AI صور المنتج', type:'ai', status:'approved', assignee:'ليلى', deadline:'2025-06-11', priority:'normal', hasFile:true, desc:'20 صورة بـ Midjourney',
+    files:[{ name:'AI_product_images.zip', size:'120 MB', type:'zip', uploadedBy:'ليلى — AI', time:'أمس 6:00م' }], comments:[] },
+  { id:6, title:'ريلز رمضان - فاينل', type:'video', status:'published', assignee:'أحمد', deadline:'2025-06-01', priority:'normal', hasFile:true, desc:'نشر على إنستا وتيك توك',
+    files:[{ name:'ريلز_رمضان_FINAL.mp4', size:'198 MB', type:'video', uploadedBy:'أحمد — إنتاج', time:'1 يونيو 7:30م' }],
+    comments:[{ id:1, author:'سارة', role:'social', icon:'📱', color:'#34d399', bg:'rgba(52,211,153,0.15)', text:'تم النشر ✅ — الفيديو وصل 15k view في أول 6 ساعات!', time:'1 يونيو 8:00م' }]},
+  { id:7, title:'موشن جرافيك إعلان', type:'graphic', status:'backlog', assignee:'محمود', deadline:'2025-06-20', priority:'urgent', hasFile:false, desc:'15 ثانية للإعلان', files:[], comments:[] },
+];
+
+let archiveItems = [
+  { id:1, title:'فيديو إطلاق المنتج X', type:'video', date:'مايو 2025', platform:'YouTube', thumb:'🎬', bg:'rgba(167,139,250,0.15)' },
+  { id:2, title:'حملة رمضان 2025', type:'video', date:'مارس 2025', platform:'Instagram & TikTok', thumb:'🌙', bg:'rgba(251,146,60,0.1)' },
+  { id:3, title:'هوية بصرية ربيع 2025', type:'graphic', date:'أبريل 2025', platform:'All Platforms', thumb:'🎨', bg:'rgba(79,142,247,0.1)' },
+  { id:4, title:'محتوى Q1 2025', type:'content', date:'مارس 2025', platform:'Blog + Social', thumb:'✍️', bg:'rgba(52,211,153,0.1)' },
+  { id:5, title:'ريلز الشتاء', type:'video', date:'يناير 2025', platform:'TikTok', thumb:'❄️', bg:'rgba(0,212,255,0.08)' },
+  { id:6, title:'تصاميم عيد الفطر', type:'graphic', date:'أبريل 2025', platform:'Instagram', thumb:'🌙', bg:'rgba(251,146,60,0.1)' },
+];
+
+const teamMembers = [
+  { name:'أحمد محمد', role:'production', tasks:8, done:5, icon:'🎬' },
+  { name:'محمود علي', role:'production', tasks:6, done:3, icon:'🎨' },
+  { name:'فاطمة حسن', role:'production', tasks:4, done:4, icon:'✍️' },
+  { name:'سارة أحمد', role:'social', tasks:6, done:5, icon:'📱' },
+  { name:'ليلى محمود', role:'production', tasks:3, done:2, icon:'🤖' },
+];
+
+function selectRole(r) {
+  currentRole = r;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('role-'+r).classList.add('selected');
+}
+
+function doLogin() {
+  if (!currentRole) { showNotif('⚠️ اختار دورك أول!'); return; }
+
+  const r = roles[currentRole];
+  currentUser = r;
+  currentUserName = userNames[currentRole] || r.name;
+
+  document.getElementById('sidebar-avatar').textContent = r.icon;
+  document.getElementById('sidebar-avatar').style.background = r.bg;
+  document.getElementById('sidebar-avatar').style.color = r.color;
+  document.getElementById('sidebar-name').textContent = currentUserName;
+  document.getElementById('sidebar-role').textContent = currentRole.toUpperCase();
+  document.getElementById('sidebar-role').style.color = r.color;
+
+  // Role-based UI
+  if (currentRole === 'viewer') {
+    document.getElementById('nav-access').style.display = 'none';
+    document.getElementById('btn-new-task').style.display = 'none';
+    showNotif('👁️ أهلاً! تقدر تشوف المهام وتكتب تعليقات');
+  } else if (currentRole === 'production') {
+    document.getElementById('nav-access').style.display = 'none';
+    showNotif('🎬 أهلاً بيك! تقدر ترفع ملفاتك وتحدث مهامك وتعلق');
+  } else if (currentRole === 'social') {
+    document.getElementById('nav-access').style.display = 'none';
+    document.getElementById('btn-new-task').style.display = 'none';
+    showNotif('📱 أهلاً! تقدر تشوف المهام وتكتب تعليقات على أي مهمة');
+  } else {
+    showNotif('👑 أهلاً Team Leader! كل الصلاحيات متاحة');
+  }
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  renderBoard();
+  renderArchive();
+  renderTeam();
+}
+
+function doLogout() {
+  currentRole = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+}
+
+// ===== NAVIGATION =====
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const navBtn = document.getElementById('nav-'+name);
+  if(navBtn) navBtn.classList.add('active');
+
+  const titles = { dashboard:'', tasks:'✅ Task Board', archive:'🗄️ الأرشيف', team:'👥 الفريق', access:'🔐 صلاحيات الوصول', guide:'📋 دليل Notion' };
+  document.getElementById('topbar-title').innerHTML = titles[name] !== undefined ? titles[name] : name;
+}
+
+// ===== BOARD =====
+function renderBoard(filter='all') {
+  const container = document.getElementById('board-cols');
+  container.innerHTML = '';
+  columns.forEach(col => {
+    const colTasks = tasks.filter(t => t.status === col.id && (filter==='all' || t.type===filter));
+    const colEl = document.createElement('div');
+    colEl.className = 'board-col';
+    colEl.innerHTML = `
+      <div class="col-header">
+        <div class="col-title">
+          <div class="col-dot" style="background:${col.color}"></div>
+          ${col.label}
+        </div>
+        <div class="col-count">${colTasks.length}</div>
+      </div>
+      ${colTasks.map(t => taskCard(t)).join('')}
+      ${colTasks.length===0 ? '<div style="text-align:center;padding:20px;color:var(--muted2);font-size:12px">لا توجد مهام</div>' : ''}
+    `;
+    container.appendChild(colEl);
+  });
+}
+
+function taskCard(t) {
+  const tc = typeConfig[t.type] || typeConfig.video;
+  const isUrgent = t.priority === 'urgent';
+  const commentCount = (t.comments||[]).length;
+  return `
+    <div class="task-card" onclick="openTaskDetail(${t.id})" style="border-right: 3px solid ${tc.color}">
+      <div class="task-type-badge" style="background:${tc.bg};color:${tc.color}">${tc.label}</div>
+      <div class="task-title">${t.title}</div>
+      <div class="task-desc">${t.desc}</div>
+      <div class="task-footer">
+        <div class="task-assignee">👤 ${t.assignee}</div>
+        <div class="task-deadline ${isUrgent?'urgent':''}">📅 ${t.deadline}</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
+        ${t.hasFile ? '<div class="task-file-indicator">📁 ملف على Drive</div>' : ''}
+        ${commentCount>0 ? `<div style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:3px">💬 ${commentCount} تعليق</div>` : '<div style="font-size:10px;color:var(--muted2)">💬 لا توجد تعليقات</div>'}
+      </div>
+    </div>`;
+}
+
+function filterTasks(val) { renderBoard(val); }
+
+// ===== NEW TASK =====
+function openNewTask() {
+  if(currentRole==='viewer'||currentRole==='social') { showNotif('🔒 صلاحيتك لا تسمح بإنشاء مهام'); return; }
+  document.getElementById('modal-new-task').classList.add('open');
+  document.getElementById('task-deadline-input').valueAsDate = new Date();
+}
+
+function closeModal() {
+  document.getElementById('modal-new-task').classList.remove('open');
+}
+
+function addTask() {
+  const name = document.getElementById('task-name-input').value.trim();
+  if(!name) { showNotif('⚠️ اكتب اسم المهمة!'); return; }
+  const type = document.getElementById('task-type-input').value;
+  const assignee = document.getElementById('task-assignee-input').value.split('—')[0].trim();
+  const deadline = document.getElementById('task-deadline-input').value;
+  const drive = document.getElementById('task-drive-input').value;
+  tasks.unshift({
+    id: Date.now(), title: name, type, status:'backlog',
+    assignee, deadline: deadline||'—', priority:'normal',
+    hasFile: !!drive, desc: 'مهمة جديدة'
+  });
+  document.getElementById('tasks-badge').textContent = tasks.filter(t=>t.status!=='published').length;
+  closeModal();
+  renderBoard();
+  showPanel('tasks');
+  showNotif('✅ تم إنشاء المهمة بنجاح!');
+  document.getElementById('task-name-input').value = '';
+}
+
+// ===== ARCHIVE =====
+function renderArchive(filter='all') {
+  const grid = document.getElementById('archive-grid');
+  const filtered = filter==='all' ? archiveItems : archiveItems.filter(a=>a.type===filter);
+  grid.innerHTML = filtered.map(a => `
+    <div class="archive-card" onclick="showNotif('📂 فتح: ${a.title}')">
+      <div class="archive-thumb" style="background:${a.bg}">
+        <span style="position:relative;z-index:1">${a.thumb}</span>
+        <div class="archive-thumb-overlay">
+          <span class="archive-badge" style="background:${a.bg};color:#fff">${a.type==='video'?'🎬 VIDEO':a.type==='graphic'?'🎨 GRAPHIC':'✍️ CONTENT'}</span>
+        </div>
+      </div>
+      <div class="archive-body">
+        <div class="archive-title">${a.title}</div>
+        <div class="archive-meta">📅 ${a.date} · 📱 ${a.platform}</div>
+        <div class="archive-tags">
+          <span class="archive-tag">✅ منشور</span>
+          <span class="archive-tag">📁 Drive</span>
+          <span class="archive-tag">محفوظ</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterArchive(el, type) {
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderArchive(type);
+}
+
+// ===== TEAM =====
+function renderTeam() {
+  const grid = document.getElementById('team-grid');
+  grid.innerHTML = teamMembers.map(m => {
+    const r = roles[m.role] || roles.production;
+    return `
+    <div class="team-member-card">
+      <div class="member-avatar" style="background:${r.bg};color:${r.color}">${m.icon}</div>
+      <div class="member-name">${m.name}</div>
+      <div class="member-role-tag" style="background:${r.bg};color:${r.color}">${r.name}</div>
+      <div class="member-stats">
+        <div class="member-stat">
+          <div class="member-stat-num" style="color:var(--accent)">${m.tasks}</div>
+          <div class="member-stat-label">مهمة</div>
+        </div>
+        <div class="member-stat">
+          <div class="member-stat-num" style="color:var(--green)">${m.done}</div>
+          <div class="member-stat-label">مكتملة</div>
+        </div>
+        <div class="member-stat">
+          <div class="member-stat-num" style="color:var(--orange)">${m.tasks-m.done}</div>
+          <div class="member-stat-label">جارية</div>
+        </div>
+      </div>
+    </div>`}).join('');
+}
+
+// ===== ACCESS =====
+function approveAccess(btn, name) {
+  btn.closest('.access-card').remove();
+  showNotif(`✅ تم منح ${name} وصول عرض فقط`);
+}
+
+// ===== NOTIFICATIONS =====
+let notifTimer;
+function showNotif(msg) {
+  const n = document.getElementById('notif');
+  n.innerHTML = msg;
+  n.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => n.classList.remove('show'), 3000);
+}
+
+// Close modal on overlay click
+document.getElementById('modal-new-task').addEventListener('click', function(e) {
+  if(e.target===this) closeModal();
+});
+document.getElementById('modal-task-detail').addEventListener('click', function(e) {
+  if(e.target===this) closeTaskDetail();
+});
+
+// ===== TASK DETAIL + COMMENTS =====
+let activeTaskId = null;
+
+function openTaskDetail(taskId) {
+  activeTaskId = taskId;
+  const t = tasks.find(x => x.id === taskId);
+  if(!t) return;
+
+  const tc = typeConfig[t.type] || typeConfig.video;
+  const r = roles[currentRole];
+
+  // Title & meta
+  document.getElementById('detail-title').textContent = t.title;
+  document.getElementById('detail-meta').innerHTML = `
+    <span class="meta-chip" style="background:${tc.bg};color:${tc.color};border-color:${tc.color}40">${tc.label}</span>
+    <span class="meta-chip" style="color:${t.priority==='urgent'?'var(--red)':t.priority==='high'?'var(--yellow)':'var(--green)'}">${t.priority==='urgent'?'🔴 عاجل':t.priority==='high'?'🟡 مهم':'🟢 عادي'}</span>
+    <span class="meta-chip">${columns.find(c=>c.id===t.status)?.label || t.status}</span>
+  `;
+
+  // Info grid
+  document.getElementById('detail-info').innerHTML = `
+    <div class="detail-info-item">
+      <div class="detail-info-label">ASSIGNEE</div>
+      <div class="detail-info-val">👤 ${t.assignee}</div>
+    </div>
+    <div class="detail-info-item">
+      <div class="detail-info-label">DEADLINE</div>
+      <div class="detail-info-val" style="color:${t.priority==='urgent'?'var(--red)':'inherit'}">📅 ${t.deadline}</div>
+    </div>
+    <div class="detail-info-item" style="grid-column:1/-1">
+      <div class="detail-info-label">DESCRIPTION</div>
+      <div class="detail-info-val" style="font-weight:400;font-size:13px;color:var(--muted)">${t.desc}</div>
+    </div>
+    ${t.hasFile ? `<div class="detail-info-item" style="grid-column:1/-1">
+      <div class="detail-info-label">DRIVE LINK</div>
+      <div class="detail-info-val" style="color:var(--accent);font-size:12px">📁 ملف مرفق على Google Drive</div>
+    </div>` : ''}
+  `;
+
+  // Leader section — يظهر للكل، بس التعديل للـ Leader فقط
+  const leaderSection = document.getElementById('leader-section');
+  leaderSection.style.display = 'block';
+  document.getElementById('current-assignee-badge').textContent = `👤 ${t.assignee}`;
+
+  const isLeader = currentRole === 'leader';
+
+  // إظهار أو إخفاء أدوات التعديل
+  document.getElementById('assign-row-wrap').style.display   = isLeader ? 'block' : 'none';
+  document.getElementById('note-input-wrap').style.display   = isLeader ? 'block' : 'none';
+  document.getElementById('leader-readonly-msg').style.display = isLeader ? 'none' : 'flex';
+
+  if(isLeader) {
+    document.getElementById('assign-select').value = '';
+    document.getElementById('leader-note-input').value = '';
+  }
+  renderPinnedNotes(t);
+
+  // Set avatar for comment input
+  document.getElementById('comment-my-avatar').textContent = r.icon;
+  document.getElementById('comment-my-avatar').style.background = r.bg;
+  document.getElementById('comment-my-avatar').style.color = r.color;
+
+  renderTaskFiles(t);
+  renderComments(t);
+  document.getElementById('modal-task-detail').classList.add('open');
+  setTimeout(() => document.getElementById('comment-input').focus(), 300);
+}
+
+// ===== LEADER FUNCTIONS =====
+function assignTask() {
+  const select = document.getElementById('assign-select');
+  const newAssignee = select.value;
+  if(!newAssignee) { showNotif('⚠️ اختار عضو الفريق أول!'); return; }
+
+  const t = tasks.find(x => x.id === activeTaskId);
+  if(!t) return;
+
+  const oldAssignee = t.assignee;
+  t.assignee = newAssignee.split(' —')[0]; // اسم بدون الدور
+
+  // تحديث الـ badge
+  document.getElementById('current-assignee-badge').textContent = `👤 ${t.assignee}`;
+
+  // تحديث الـ info grid
+  document.querySelector('#detail-info .detail-info-val').textContent = `👤 ${t.assignee}`;
+
+  // إشعار
+  addNotification('📋', `Team Leader وزّع مهمة "${t.title}" على ${t.assignee}`, t.id);
+
+  // تعليق تلقائي
+  const r = roles[currentRole];
+  const now = new Date(), h = now.getHours(), m = String(now.getMinutes()).padStart(2,'0');
+  const timeStr = `اليوم ${h}:${m}${h>=12?'م':'ص'}`;
+  t.comments = t.comments || [];
+  t.comments.push({
+    id: Date.now(), author: currentUserName, role: currentRole,
+    icon: r.icon, color: r.color, bg: r.bg,
+    text: `📋 تم توزيع المهمة على ${t.assignee} (كانت على ${oldAssignee})`,
+    time: timeStr
+  });
+
+  renderComments(t);
+  renderBoard();
+  select.value = '';
+  showNotif(`✅ تم توزيع المهمة على ${t.assignee}`);
+}
+
+function addLeaderNote() {
+  const input = document.getElementById('leader-note-input');
+  const text = input.value.trim();
+  if(!text) { showNotif('⚠️ اكتب الملاحظة أول!'); return; }
+
+  const t = tasks.find(x => x.id === activeTaskId);
+  if(!t) return;
+
+  const now = new Date(), h = now.getHours(), m = String(now.getMinutes()).padStart(2,'0');
+  const timeStr = `اليوم ${h}:${m}${h>=12?'م':'ص'}`;
+
+  if(!t.pinnedNotes) t.pinnedNotes = [];
+  t.pinnedNotes.push({ id: Date.now(), text, time: timeStr });
+
+  input.value = '';
+  renderPinnedNotes(t);
+
+  // إشعار للفريق
+  addNotification('📌', `Team Leader أضاف ملاحظة على "${t.title}"`, t.id);
+  showNotif('📌 تم تثبيت الملاحظة وإشعار الفريق!');
+}
+
+function deleteNote(taskId, noteId) {
+  const t = tasks.find(x => x.id === taskId);
+  if(!t) return;
+  t.pinnedNotes = t.pinnedNotes.filter(n => n.id !== noteId);
+  renderPinnedNotes(t);
+  showNotif('🗑 تم حذف الملاحظة');
+}
+
+function renderPinnedNotes(t) {
+  const notes = t.pinnedNotes || [];
+  const wrap = document.getElementById('pinned-notes');
+  const list = document.getElementById('pinned-notes-list');
+
+  if(!notes.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  list.innerHTML = notes.map(n => `
+    <div class="pinned-note-item">
+      <div class="note-pin">📌</div>
+      <div class="note-body">
+        <div class="note-text">${n.text}</div>
+        <div class="note-time">${n.time}</div>
+      </div>
+      <button class="note-del" onclick="deleteNote(${t.id}, ${n.id})">✕</button>
+    </div>`).join('');
+}
+
+function renderComments(t) {
+  const list = document.getElementById('comments-list');
+  const comments = t.comments || [];
+  const pinned = t.pinnedNotes || [];
+  document.getElementById('comments-count').textContent = comments.length > 0 ? `(${comments.length})` : '';
+
+  // الملاحظات المثبتة تظهر للكل في أعلى التعليقات
+  const pinnedHTML = pinned.length ? `
+    <div style="margin-bottom:12px">
+      ${pinned.map(n=>`
+        <div class="pinned-note-item">
+          <div class="note-pin">📌</div>
+          <div class="note-body">
+            <div class="note-text" style="color:var(--accent)">${n.text}</div>
+            <div class="note-time">Team Leader · ${n.time}</div>
+          </div>
+          ${currentRole==='leader'?`<button class="note-del" onclick="deleteNote(${t.id},${n.id})">✕</button>`:''}
+        </div>`).join('')}
+    </div>` : '';
+
+  if(!comments.length) {
+    list.innerHTML = pinnedHTML + `<div class="empty-comments"><div class="ec-icon">💬</div><p>لا توجد تعليقات بعد — كن أول من يعلق!</p></div>`;
+    return;
+  }
+
+  list.innerHTML = pinnedHTML + comments.map(c => `
+    <div class="comment-item" id="comment-${c.id}">
+      <div class="comment-avatar" style="background:${c.bg};color:${c.color}">${c.icon}</div>
+      <div class="comment-body">
+        <div class="comment-header">
+          <span class="comment-author">${c.author}</span>
+          <span class="comment-role-tag" style="background:${c.bg};color:${c.color}">${roleLabel(c.role)}</span>
+          <span class="comment-time">${c.time}</span>
+        </div>
+        <div class="comment-text">${c.text}</div>
+        <div class="comment-actions-row">
+          <button class="comment-action-btn" onclick="replyTo('${c.author}')">↩ رد</button>
+          ${c.role === currentRole || currentRole === 'leader' ? `<button class="comment-action-btn" onclick="deleteComment(${activeTaskId},${c.id})" style="color:var(--muted)">🗑 حذف</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function roleLabel(role) {
+  const map = { leader:'Team Leader', production:'إنتاج', social:'سوشيال', viewer:'مسؤول' };
+  return map[role] || role;
+}
+
+function submitComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if(!text) { showNotif('⚠️ اكتب تعليقك أول!'); return; }
+
+  const t = tasks.find(x => x.id === activeTaskId);
+  if(!t) return;
+
+  const r = roles[currentRole];
+  const now = new Date();
+  const h = now.getHours();
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const timeStr = `اليوم ${h}:${m}${h>=12?'م':'ص'}`;
+
+  const newComment = {
+    id: Date.now(),
+    author: currentUserName,
+    role: currentRole,
+    icon: r.icon,
+    color: r.color,
+    bg: r.bg,
+    text: text,
+    time: timeStr
+  };
+
+  if(!t.comments) t.comments = [];
+  t.comments.push(newComment);
+  input.value = '';
+  renderComments(t);
+  renderBoard();
+
+  // Scroll to bottom
+  const list = document.getElementById('comments-list');
+  list.scrollTop = list.scrollHeight;
+  showNotif('💬 تم إرسال تعليقك!');
+}
+
+function deleteComment(taskId, commentId) {
+  const t = tasks.find(x => x.id === taskId);
+  if(!t) return;
+  t.comments = t.comments.filter(c => c.id !== commentId);
+  renderComments(t);
+  renderBoard();
+  showNotif('🗑 تم حذف التعليق');
+}
+
+function replyTo(name) {
+  const input = document.getElementById('comment-input');
+  input.value = `@${name} `;
+  input.focus();
+}
+
+function handleCommentKey(e) {
+  if(e.ctrlKey && e.key === 'Enter') { e.preventDefault(); submitComment(); }
+}
+
+function closeTaskDetail() {
+  document.getElementById('modal-task-detail').classList.remove('open');
+  document.getElementById('comment-input').value = '';
+  activeTaskId = null;
+}
+
+// ===== NOTIFICATION SYSTEM =====
+let notifications = [
+  { id:1, icon:'📁', text:'أحمد رفع فيديو "حملة يونيو draft_v1" — جاهز للتحميل', time:'أمس 4:10م', unread:true, taskId:1 },
+  { id:2, icon:'✅', text:'تمت الموافقة على مهمة "AI صور المنتج" — جاهزة للنشر', time:'أمس 6:30م', unread:true, taskId:5 },
+];
+
+function toggleNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')) {
+    renderNotifPanel();
+    setTimeout(() => { notifications.forEach(n => n.unread=false); updateBellBadge(); }, 2000);
+  }
+}
+
+function renderNotifPanel() {
+  const list = document.getElementById('notif-list');
+  if(!notifications.length) { list.innerHTML='<div class="notif-empty">لا توجد إشعارات 🎉</div>'; return; }
+  list.innerHTML = notifications.slice().reverse().map(n=>`
+    <div class="notif-item ${n.unread?'unread':''}" onclick="notifClick(${n.taskId})">
+      <div class="notif-item-icon">${n.icon}</div>
+      <div class="notif-item-body">
+        <div class="notif-item-text">${n.text}</div>
+        <div class="notif-item-time">${n.time}</div>
+      </div>
+      ${n.unread?'<div class="notif-unread-dot"></div>':''}
+    </div>`).join('');
+}
+
+function notifClick(taskId) {
+  document.getElementById('notif-panel').classList.remove('open');
+  if(taskId) openTaskDetail(taskId);
+}
+
+function clearAllNotifs() {
+  notifications=[];
+  renderNotifPanel();
+  updateBellBadge();
+}
+
+function updateBellBadge() {
+  const count = notifications.filter(n=>n.unread).length;
+  const badge = document.getElementById('bell-badge');
+  badge.textContent = count;
+  badge.style.display = count>0 ? 'block' : 'none';
+}
+
+function addNotification(icon, text, taskId) {
+  const now = new Date();
+  const h=now.getHours(), m=String(now.getMinutes()).padStart(2,'0');
+  notifications.push({ id:Date.now(), icon, text, time:`اليوم ${h}:${m}${h>=12?'م':'ص'}`, unread:true, taskId });
+  updateBellBadge();
+  showNotif(`${icon} ${text}`);
+}
+
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('notif-panel');
+  if(panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.bell-wrap'))
+    panel.classList.remove('open');
+});
+
+// ===== FILE UPLOAD / DOWNLOAD =====
+function renderTaskFiles(t) {
+  const filesList = document.getElementById('task-files-list');
+  const uploadWrap = document.getElementById('upload-zone-wrap');
+  const files = t.files || [];
+
+  uploadWrap.style.display = (currentRole==='production'||currentRole==='leader') ? 'block' : 'none';
+
+  if(!files.length) {
+    filesList.innerHTML = `<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px 0;margin-bottom:8px">لا توجد ملفات مرفوعة بعد</div>`;
+  } else {
+    filesList.innerHTML = files.map((f,i)=>{
+      const ic = f.type==='video'?'🎬':f.type==='zip'?'📦':f.type==='pdf'?'📄':'🖼️';
+      return `<div class="uploaded-file-item">
+        <div class="file-icon-big">${ic}</div>
+        <div class="file-info">
+          <div class="file-name">${f.name}</div>
+          <div class="file-meta">${f.size} · ${f.uploadedBy} · ${f.time}</div>
+        </div>
+        <div class="file-actions">
+          <button class="btn-download" onclick="downloadFile(${t.id},${i})">⬇️ تحميل</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function downloadFile(taskId, fileIdx) {
+  const t = tasks.find(x=>x.id===taskId);
+  if(!t||!t.files[fileIdx]) return;
+  const f = t.files[fileIdx];
+  showNotif(`⬇️ جارٍ تحميل "${f.name}"...`);
+  setTimeout(()=>showNotif(`✅ تم تحميل "${f.name}" بنجاح!`), 2000);
+}
+
+function handleFileSelect(e) { if(e.target.files[0]) processUpload(e.target.files[0]); }
+function handleDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('dragover'); }
+function handleDragLeave() { document.getElementById('upload-zone').classList.remove('dragover'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  if(e.dataTransfer.files[0]) processUpload(e.dataTransfer.files[0]);
+}
+
+function processUpload(file) {
+  if(!activeTaskId) return;
+  const t = tasks.find(x=>x.id===activeTaskId);
+  if(!t) return;
+
+  const progressWrap = document.getElementById('upload-progress');
+  const progressFill = document.getElementById('upload-progress-fill');
+  progressWrap.style.display='block';
+  progressFill.style.width='0%';
+  showNotif(`📤 جارٍ رفع "${file.name}"...`);
+
+  let prog=0;
+  const iv = setInterval(()=>{
+    prog += Math.random()*15+5;
+    if(prog>=100) {
+      prog=100;
+      clearInterval(iv);
+      progressFill.style.width='100%';
+      setTimeout(()=>{
+        progressWrap.style.display='none';
+        progressFill.style.width='0%';
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        const ftype = ['mp4','mov','avi','mkv'].includes(ext)?'video':['zip','rar'].includes(ext)?'zip':['pdf'].includes(ext)?'pdf':'image';
+        const sizeMB = file.size>1048576?(file.size/1048576).toFixed(0)+' MB':(file.size/1024).toFixed(0)+' KB';
+        const now=new Date(), h=now.getHours(), m=String(now.getMinutes()).padStart(2,'0');
+        const timeStr=`اليوم ${h}:${m}${h>=12?'م':'ص'}`;
+
+        if(!t.files) t.files=[];
+        t.files.push({ name:file.name, size:sizeMB, type:ftype, uploadedBy:currentUserName, time:timeStr });
+        t.hasFile=true;
+
+        renderTaskFiles(t);
+        renderBoard();
+
+        // إشعار لفريق السوشيال
+        addNotification('📁', `${currentUserName} رفع "${file.name}" على "${t.title}" — جاهز للتحميل`, t.id);
+
+        // تعليق تلقائي
+        const r=roles[currentRole];
+        t.comments=t.comments||[];
+        t.comments.push({ id:Date.now(), author:currentUserName, role:currentRole, icon:r.icon, color:r.color, bg:r.bg,
+          text:`📁 تم رفع الملف "${file.name}" (${sizeMB}) — جاهز للتحميل الآن`, time:timeStr });
+        renderComments(t);
+        document.getElementById('file-input').value='';
+      }, 400);
+    } else {
+      progressFill.style.width=prog+'%';
+    }
+  }, 100);
+}
+
+// Init
+updateBellBadge();
+</script>
+</body>
+</html>
