@@ -21,12 +21,15 @@ Collect, in one message, only what the user has not already given:
 |---|---|
 | Story beat (what happens, 1 sentence) | "Anchor turns from desk, studio wall dissolves into a neon city" |
 | Duration | 5 s (default). Keep single shots 4–8 s; longer = more drift |
-| Aspect | 16:9 / 9:16 / 21:9 |
+| Aspect | **16:9 default** (user's standard). Use 21:9 / 9:16 only if the user asks for that project |
 | Subject | real person footage? generated character? product? |
 | Mood / genre | noir, epic, documentary, sci-fi news |
 | Reference | any image/video/frame the user likes |
 
 Never start generating with an unclear beat. One shot = one action.
+
+Per-project inputs change every time (idea, subject, real footage or not). Never assume them
+from a previous project — ask at the start of each new project. Only the 16:9 default is fixed.
 
 ## Stage 1 — Shot Spec (write it before any prompt)
 
