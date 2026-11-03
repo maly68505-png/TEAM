@@ -1,151 +1,163 @@
 ---
 name: cinematic-shot
-description: Professional pipeline for producing ONE cinematic AI video shot with no physical distortion — brief → shot spec → hero still → still QC → animate (start/end frame) → motion QC → finish. Use whenever the user asks for a cinematic scene, shot, film-look clip, or any AI video that must look premium and not "cheap AI". This is the base skill every other video skill in this repo builds on.
+description: Professional pipeline for producing ONE cinematic AI video shot with no physical distortion and no plastic AI look — brief → shot spec → hero still → still QC → animate (start/end frame) → motion QC → finish. Use whenever the user asks for a cinematic scene, shot, film-look clip, or any AI video that must look premium and not "cheap AI". Base skill that every other video skill in this repo builds on; it enforces look-style-system, scene-continuity and historical-accuracy-check.
 ---
 
 # Cinematic Shot Pipeline (المشهد السينمائي الواحد)
 
 > القاعدة الذهبية: **ممنوع نولّد فيديو من نص مباشرة.** كل لقطة تبدأ بصورة "هيرو" متراجعة ومعتمدة،
-> وبعدين نحركها. ده اللي بيمنع التشوه ويقلل المحاولات من 10 لـ 2.
+> وبعدين نحركها. ده اللي بيمنع التشوه ويقلل المحاولات.
 
-Golden rule: **never text-to-video for a final shot.** Lock the look as a still first,
-QC it, then animate it. Stills are cheap and controllable; video retries are expensive.
+Reply to the user in Egyptian Arabic; write generator prompts in English.
+
+**This skill obeys the user's rule skills — read them first, they win on any conflict:**
+- `look-style-system` — look (Depth/Edge/Grade/Detail), colours only from the project colour reference,
+  no dissolves, **no plastic AI look (top priority)**, camera move copied from the user's reference video, no music.
+- `scene-continuity` — character / location / time cards, no duplicate characters, fixed light direction.
+- `historical-accuracy-check` — any real place, person, event, map, flag, uniform or date is verified first.
 
 ---
 
-## Stage 0 — Brief (ask only what is missing)
+## Stage 0 — Project intake (every new project; inputs change each time)
 
-Collect, in one message, only what the user has not already given:
+Fixed default: **16:9**, 25 or 30 fps. Everything else is asked per project — never carried over:
 
-| Field | Example |
+| Input | Needed for |
 |---|---|
-| Story beat (what happens, 1 sentence) | "Anchor turns from desk, studio wall dissolves into a neon city" |
-| Duration | 5 s (default). Keep single shots 4–8 s; longer = more drift |
-| Aspect | **16:9 default** (user's standard). Use 21:9 / 9:16 only if the user asks for that project |
-| Subject | real person footage? generated character? product? |
-| Mood / genre | noir, epic, documentary, sci-fi news |
-| Reference | any image/video/frame the user likes |
+| Story beat (1 sentence per shot) | the shot spec |
+| **Colour reference** (image/frame) | palette — no colours in prompts or grade until it arrives |
+| **Camera reference video** | camera move — never invent a move |
+| Subject: real footage / generated character / product | which path / model |
+| Any real places, people, events, eras | triggers `historical-accuracy-check` |
 
-Never start generating with an unclear beat. One shot = one action.
+Ask for what is missing in one message. One shot = one action.
 
-Per-project inputs change every time (idea, subject, real footage or not). Never assume them
-from a previous project — ask at the start of each new project. Only the 16:9 default is fixed.
+## Stage 1 — Cards + Shot Spec (contract for the shot, approve before generating)
 
-## Stage 1 — Shot Spec (write it before any prompt)
-
-Fill this block and show it to the user for approval. It is the contract for the shot.
+1. Fill / reuse the `scene-continuity` cards (character, location, time).
+2. Break down the camera reference video: move type, direction, speed & easing, start/end framing, lens feel, duration.
+3. Write the spec:
 
 ```
 SHOT ID:        S01
 BEAT:           <one action, one subject>
-FRAMING:        <ECU / CU / MCU / MS / WS / EWS>
-LENS:           <24mm wide | 35mm | 50mm | 85mm portrait | 135mm tele>
-CAMERA MOVE:    <ONE move: static | slow dolly-in | dolly-out | truck left | crane up | orbit 30° | handheld subtle>
-SPEED:          <slow | medium>   (default slow — fast moves warp)
-SUBJECT ACTION: <one verb, physically plausible, with start & end pose>
-LIGHT:          <key direction + quality + color temp, e.g. "soft key camera-left 45°, 3200K, cool rim from behind">
-ATMOSPHERE:     <haze / dust / rain / none>
-PALETTE:        <2–3 colors>
-START FRAME:    <what the very first frame shows>
-END FRAME:      <what the very last frame shows>  (optional but strongly recommended)
+CARDS:          <character card(s)> + <location card> + <time card>
+FRAMING:        <ECU / CU / MCU / MS / WS>
+LENS:           <e.g. 35mm / 50mm / 85mm, from the camera reference>
+CAMERA MOVE:    <copied from the camera reference: type, direction, speed, easing>
+SUBJECT ACTION: <one verb, physically plausible, with start pose and end pose>
+LIGHT:          <from the time card: source, direction, hard/soft>  — low-key, 55–70% of frame dark
+DEPTH:          <dark OOF foreground / sharp subject / glowing soft background + thin haze>
+PALETTE:        <extracted from the colour reference only>
+TRANSITION IN:  <match cut (shape/motion/action/position) | wipe by passing element | whip pan> — never dissolve
+TRANSITION OUT: <same options; describe the exact last frame so the next shot can match it>
+START FRAME:    <first frame>
+END FRAME:      <last frame — required when TRANSITION OUT depends on it>
+SFX:            <ambience bed + action sounds with timing — no music>
 NEGATIVES:      <what must NOT happen>
 ```
 
 ## Stage 2 — Hero still (the start frame)
 
-Generate the start frame as an image. Model routing:
-
 | Need | Model (Higgsfield id) |
 |---|---|
-| Cinematic film still, dramatic light | `cinematic_studio_2_5` (up to 4K) or `soul_cinematic` |
-| Must keep a real person's face / product exact (edit from reference) | `nano_banana_pro` or `seedream_v5_pro` with `image_references` |
+| Cinematic film still, dramatic low-key light | `cinematic_studio_2_5` (4K) or `soul_cinematic` |
+| Keep a real person's face / product exact (edit from reference) | `nano_banana_pro` or `seedream_v5_pro` with `image_references` |
 | Environment / location plate only | `soul_location` |
-| Consistent recurring character | `soul_cast` / Soul ID |
+| Recurring character identity | Soul ID / `soul_cast` + same reference image every shot |
 
-Still prompt template (order matters — subject first, camera last):
+Still prompt order (subject first, camera last):
 
 ```
-[SUBJECT + pose], [ACTION frozen at start], [WARDROBE/DETAIL],
-[ENVIRONMENT], [LIGHT: direction, quality, temperature], [ATMOSPHERE],
-shot on [LENS] , [FRAMING], [DEPTH OF FIELD], [FILM LOOK: e.g. "Kodak 5219 grain, anamorphic flare"],
-photorealistic, natural skin texture, correct anatomy
+[CHARACTER CARD prompt line, word for word], [start pose], 
+[LOCATION CARD prompt line], [TIME CARD prompt line],
+[look words from STYLE-SYSTEM.md §6], [palette from colour reference],
+real skin pores, fine hair, fibres, dust, natural imperfection, macro texture detail,
+[LENS], [FRAMING], 4K
+AVOID: CGI, 3D render, plastic, waxy skin, airbrushed, over-smoothed, glossy, doll-like, uncanny,
+chromatic aberration, oversharpening, duplicate people, garbled text
 ```
 
-Generate 2–4 variants in one call (`count`), pick the best, never "prompt-roulette" more than 2 rounds —
-if round 2 fails, the **spec** is wrong, fix the spec, not the seed.
+Generate 2–4 variants in one call (`count`). Max 2 rounds — if round 2 fails, the **spec** is wrong:
+fix the spec, not the seed.
 
 ## Stage 3 — Still QC (gate — do not animate until it passes)
 
-Check the chosen still and report PASS/FAIL per line:
-
+- [ ] **No plastic look** — real texture, nothing waxy/over-smooth/drawn (fail = regenerate, never patch)
 - [ ] Hands: 5 fingers, natural joints, nothing fused to props
-- [ ] Face: symmetric eyes, teeth normal, identity matches reference
-- [ ] Text/logos: readable or absent (no gibberish signage)
-- [ ] Perspective: horizon level, vertical lines straight, objects to scale
-- [ ] Light logic: shadows match key direction; reflections match environment
-- [ ] Contact: feet on floor, hands actually touch what they hold, no floating objects
-- [ ] Composition leaves room for the planned camera move (e.g. space ahead for dolly-in)
+- [ ] Face/identity matches the character card; **no character appears twice**
+- [ ] Text/maps/signs readable and correct, or absent (add text in the edit instead)
+- [ ] Perspective: horizon level, verticals straight, scale correct
+- [ ] Light direction matches the time card; shadows/reflections consistent
+- [ ] Contact: feet on floor, hands touch what they hold, nothing floating
+- [ ] 3 depth layers, low-key (55–70% dark), clear vignette, no chromatic aberration
+- [ ] Colours only from the colour reference
+- [ ] Period details verified (if historical)
+- [ ] Composition leaves room for the reference camera move
 
-Fix failures with an edit pass (`nano_banana_pro` / `seedream_v5_pro` instruction edit) instead of regenerating from zero.
+Fix small failures with an instruction edit (`nano_banana_pro` / `seedream_v5_pro`); plastic look = regenerate.
 
 ## Stage 4 — Animate
 
-Model routing for image-to-video:
-
 | Situation | Model | Why |
 |---|---|---|
-| Premium cinematic hero shot | `cinematic_studio_video_4_0` (omni/start frame) or `cinematic_studio_3_0` | Best camera language & color |
-| Need exact start AND end frame (transformations, reveals) | `kling_o3_flf`, `kling3_0`, `seedance_2_5`, `minimax_h3` | Supports start_image + end_image |
-| Realistic human motion / faces / emotion | `kling3_0` (mode pro), `minimax_hailuo` | Strong physics |
-| Keep identity across many references | `seedance_2_5` omni_reference, `kling_o3_image_reference` | Multi-reference |
-| Extend a clip that already works | `seedance_2_5` mode `video_extension` | Continuity |
+| Premium cinematic hero shot | `cinematic_studio_video_4_0` or `cinematic_studio_3_0` | Best camera language |
+| Exact start AND end frame (reveals, transformations, match-cut landings) | `kling_o3_flf`, `kling3_0`, `kling4_0`, `seedance_2_5`, `minimax_h3` | start_image + end_image |
+| Realistic human motion / faces / emotion | `kling3_0` (pro), `minimax_hailuo` | Strong physics |
+| Copy camera motion from the user's reference video | `seedance_2_5` / `cinematic_studio_video_4_0` omni_reference with `video_references`; `kling4_0` reference-to-video | Motion from reference |
+| Extend a clip that already works | `seedance_2_5` `video_extension` | Continuity |
 
-Motion prompt template — describe **only motion**, the still already holds the look:
+Motion prompt — **only motion**; the still already holds the look:
 
 ```
-Camera: [ONE move] [speed], [lens feel].
-Subject: [one action from start pose to end pose], [timing: "over the full duration"].
-Physics: [weight, cloth, hair, particles behaving naturally — e.g. "coat sways with momentum, dust drifts slowly"].
-Keep: identity, wardrobe, lighting and background consistent; no morphing; no extra people.
+Camera: [move from the reference: type, direction, speed, easing].
+Subject: [one action from start pose to end pose] over the full duration.
+Physics: [weight, cloth, hair, dust/haze behaving naturally].
+Keep identity, wardrobe, lighting direction and background rigid and consistent; no morphing; no extra or duplicate people.
+Sound: scene sound effects only, no music.
 ```
 
 Rules that kill distortion:
-1. **One camera move + one subject action per shot.** Two simultaneous complex motions = warping.
-2. **Slow > fast.** Speed comes later in the edit (speed ramp / frame cut), not from the model.
-3. **Use an end frame** for any transformation or reveal — it forces the model to land correctly.
-4. **Short durations** (5 s). Need 15 s? Make 3 shots and cut — that's how real films work.
-5. Do not re-describe the scene in the motion prompt; contradictions with the still cause morphing.
-6. Preflight cost with `get_cost: true` before 1080p/4K; draft at 480p/720p first when the model supports it (`seedance_2_5` `draft: true`).
+1. One camera move + one subject action per shot.
+2. Slow > fast. Speed and whip energy are made in the edit (720° blur whip), not by the model.
+3. Use an end frame whenever the transition out depends on the last frame.
+4. 4–8 s per shot; longer stories = more shots joined by match cuts / wipes.
+5. Never re-describe the scene in the motion prompt — contradiction with the still causes morphing.
+6. Audio: prefer `generate_audio` / `sound` **off** and build SFX separately; if native audio is used, reject any clip with music.
+7. Preflight with `get_cost: true`; draft at 480p/720p first where supported (`seedance_2_5` `draft: true`), finalize only the approved take.
 
 ## Stage 5 — Motion QC
 
-Watch the full clip (use `video_analysis_create` when available) and check:
+- [ ] No plastic look appearing during motion (skin smoothing, waxy shine)
+- [ ] No identity drift first → last second; no duplicate characters
+- [ ] No limb/finger morphing
+- [ ] Background rigid — walls don't breathe, lines don't bend, props don't move
+- [ ] Object permanence
+- [ ] Camera move matches the reference video
+- [ ] Motion has weight (no sliding feet)
+- [ ] Last frame matches the planned TRANSITION OUT
+- [ ] No music in the audio
 
-- [ ] No face/identity drift between first and last second
-- [ ] No limb/finger morphing during movement
-- [ ] Background stays rigid (walls don't breathe, lines don't bend)
-- [ ] Object permanence: things don't appear/vanish
-- [ ] Camera move matches spec, no unintended zoom/jitter
-- [ ] Motion has weight (no floating/sliding feet)
-
-FAIL → change ONE variable (shorter duration, slower move, add end frame, switch model) and retry once.
-Log what changed.
+FAIL → change ONE variable (shorter, slower, add end frame, other model) and retry once. Log what changed.
 
 ## Stage 6 — Finish
 
+Follow the finishing stack in `look-style-system` exactly (clean-up → `tone_lowkey.cube` → project colours →
+haze → bloom → vignette → unsharp on focus → fine grain → text). Before it:
 1. `video_deflicker` if there is shimmer.
-2. Upscale: `bytedance_video_upscale` (preset `aigc`, model_version `pro`) or `topaz_video` to 2160p.
-3. Optional HDR: `topaz_hyperion_2_5`.
-4. Grade & grain in the NLE (DaVinci/Premiere/AE): unify all shots with one LUT + subtle grain —
-   shared grain and grade is what makes AI shots read as "filmed", not "generated".
+2. Upscale: `bytedance_video_upscale` (preset `aigc`, `model_version: pro`) or `topaz_video` 2160p.
+   No denoise / skin smoothing in any upscaler setting.
+3. Master ProRes 422 HQ; social H.264/H.265 20+ Mbps.
 
-## Output to the user (every shot)
+## Report per shot
 
 ```
 S01 — <beat>
-Spec: approved ✓
-Still: <job id>  QC: 7/7
-Video: <job id> model=<id> duration=<s>  QC: 6/6
+Spec ✓ | Cards ✓ | Facts ✓/n.a.
+Still: <job id>  QC x/11
+Video: <job id> model=<id> <s>s  QC x/9
+Transition in/out: <type>
+SFX: <list>
 Finish: <upscale job id>
 Retries: <n> (what changed)
 ```
