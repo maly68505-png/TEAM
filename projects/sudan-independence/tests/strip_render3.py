@@ -8,6 +8,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 src, dst, fps, colour, t0, tdur, path = sys.argv[1:8]
+MODE = sys.argv[8] if len(sys.argv) > 8 else 'smooth'
 fps, t0, tdur = float(fps), float(t0), float(tdur)
 os.makedirs(dst, exist_ok=True)
 files = sorted(f for f in os.listdir(src) if f.endswith('.png'))
@@ -21,7 +22,11 @@ def pt(t):
     p0 = P[max(i - 1, 0)]; p1 = P[i]; p2 = P[min(i + 1, n)]; p3 = P[min(i + 2, n)]
     return 0.5 * ((2 * p1) + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u ** 3)
 def ease(x):
-    x = min(max(x, 0.0), 1.0); return x * x * (3 - 2 * x)
+    x = min(max(x, 0.0), 1.0)
+    if MODE == 'in': return x * x            # starts slow, leaves fast
+    if MODE == 'lin': return x               # already moving, constant speed
+    if MODE == 'out': return 1 - (1 - x) ** 2  # arrives fast, slows as it recedes
+    return x * x * (3 - 2 * x)
 
 LENGTH, N, BASE_W = 0.45, 140, 0.075 * H
 
