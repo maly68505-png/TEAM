@@ -91,21 +91,21 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
 .static-pair{display:none}
 
 @media (prefers-reduced-motion:no-preference){
-  .t1 .a{animation:t1a 6s infinite;transform-origin:30% 48%}
-  .t1 .b{animation:cut58 6s infinite}
-  .t2 .a{animation:t2a 5s infinite}
-  .t2 .b{animation:cut55 5s infinite}
-  .t3 .a{animation:hide45 6s infinite}
-  .t3 .panel,.t5 .panel{animation:pass 6s infinite}
-  .t4 .a{animation:t4a 9s infinite;transform-origin:52% 50%}
-  .t4 .n{animation:t4n 9s infinite}
-  .t4 .th{animation:t4t 9s infinite}
-  .t4 .b{animation:t4b 9s infinite}
-  .t5 .a{animation:hide45 6s infinite}
-  .t6 .a{animation:hide60 6s infinite}
-  .t6 .b{animation:cut60 6s infinite}
-  .t6 .wave{animation:wave 6s infinite}
-  .t6 .wave i{animation:bar .5s infinite alternate}
+  .t1 .a{animation:t1a 3.4s infinite;transform-origin:30% 48%}
+  .t1 .b{animation:cut58 3.4s infinite}
+  .t2 .a{animation:t2a 2.8s infinite}
+  .t2 .b{animation:cut55 2.8s infinite}
+  .t3 .a{animation:hide45 3.4s infinite}
+  .t3 .panel,.t5 .panel{animation:pass 3.4s infinite}
+  .t4 .a{animation:t4a 4.6s infinite;transform-origin:52% 50%}
+  .t4 .n{animation:t4n 4.6s infinite}
+  .t4 .th{animation:t4t 4.6s infinite}
+  .t4 .b{animation:t4b 4.6s infinite}
+  .t5 .a{animation:hide45 3.4s infinite}
+  .t6 .a{animation:hide60 3.4s infinite}
+  .t6 .b{animation:cut60 3.4s infinite}
+  .t6 .wave{animation:wave 3.4s infinite}
+  .t6 .wave i{animation:bar .2.8s infinite alternate}
   .t6 .wave i:nth-child(2n){animation-delay:.15s}.t6 .wave i:nth-child(3n){animation-delay:.3s}
 }
 @keyframes t1a{0%{transform:scale(1);opacity:1}57.9%{transform:scale(2.7);opacity:1}58%,100%{transform:scale(2.7);opacity:0}}
@@ -127,16 +127,40 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
   .static-pair img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px}
 }
 
+.act{padding-block:56px 8px;border-top:2px solid var(--gold);display:grid;gap:8px}
+.act h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.5vw,44px);margin:0}
+.act p{margin:0;color:var(--muted);max-width:65ch}
+.anim-sub{font-family:var(--display);font-weight:500;font-size:22px;margin:8px 0 0;color:var(--gold)}
+.tp .panel.dust{background:radial-gradient(ellipse at 50% 50%,#d8b47a 0%,#b98d52 45%,rgba(185,141,82,.0) 75%);filter:blur(4px);transform:translateX(120%);inset:-10% -30%}
+.tp .panel.page{background:linear-gradient(90deg,#c9b893,#efe4c9 30%,#f4ead2 60%,#bfae8a);box-shadow:-30px 0 40px rgba(0,0,0,.45)}
+@media (prefers-reduced-motion:no-preference){
+  .zc .a{animation:t1a 3.2s infinite;transform-origin:var(--ox,50%) var(--oy,50%)}
+  .zc .b{animation:cut58 3.2s infinite}
+  .wp .a{animation:hide45 3.2s infinite}
+  .wp .panel{animation:pass 3.2s infinite}
+  .wh .a{animation:whipA 3s infinite}
+  .wh .b{animation:whipB 3s infinite}
+  .ac .a{animation:t2a 2.6s infinite}
+  .ac .b{animation:cut55 2.6s infinite}
+  .tri .a{animation:t4a 4.4s infinite;transform-origin:var(--ox,50%) var(--oy,50%)}
+  .tri .n{animation:triN 4.4s infinite}
+  .tri .b{animation:triB 4.4s infinite}
+}
+@keyframes whipA{0%,40%{transform:translateX(0);filter:blur(0);opacity:1}57.9%{transform:translateX(-40%);filter:blur(16px);opacity:1}58%,100%{opacity:0}}
+@keyframes whipB{0%,57.9%{opacity:0}58%{opacity:1;transform:translateX(40%);filter:blur(16px)}76%,100%{opacity:1;transform:translateX(0);filter:blur(0)}}
+@keyframes triN{0%,24.9%{opacity:0;transform:scale(1.1)}25%{opacity:1;transform:scale(1.1)}59.9%{opacity:1;transform:scale(1.35)}60%,100%{opacity:0}}
+@keyframes triB{0%,59.9%{opacity:0;transform:scale(1.25)}60%{opacity:1;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}
+
 @media (max-width:720px){.frames{grid-template-columns:1fr}.tc{margin-inline-start:0}}
 @media (prefers-reduced-motion:no-preference){figure img{transition:transform .4s ease}figure:hover img{transform:scale(1.015)}}
 </style>
 
 <div class="wrap" dir="rtl" lang="ar">
 <header>
-  <div class="eyebrow">Storyboard · Act I · Scenes 01–07</div>
+  <div class="eyebrow">Storyboard · Acts I–II · Scenes 01–16</div>
   <h1>استقلال السودان <span>71</span></h1>
-  <p class="lede">طفل من الدوحة يحمل صورة جدّه ودفترًا وبذرة، ويعود إلى بيت العائلة في شمال السودان. الفصل الأول من الاتصال الأول حتى إصلاح باب البيت.</p>
-  <div class="facts"><span>المدة الكلية <b>7:00</b></span><span>المشاهد <b>29</b></span><span>هذا الفصل <b>00:00–01:30</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 → 2027</b></span></div>
+  <p class="lede">طفل من الدوحة يحمل صورة جدّه ودفترًا وبذرة، ويعود إلى بيت العائلة في شمال السودان. الفصل الأول من الاتصال الأول حتى إصلاح باب البيت، والفصل الثاني رحلة عبر سواكن وكسلا وجبل مرة وجبال النوبة ومروي والحقل والمرعى والمنجم.</p>
+  <div class="facts"><span>المدة الكلية <b>7:00</b></span><span>المشاهد <b>29</b></span><span>هذه النسخة <b>00:00–03:32</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 → 2027</b></span></div>
   <div class="thread" aria-hidden="true"></div>
 </header>
 
@@ -231,6 +255,120 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
   <div class="cut"><span class="k">WIPE → 08</span><span><b>إلى سواكن:</b> الباب يُفتح على الكاميرا ويغطي الكادر، ويظهر خلفه بحر سواكن.</span></div>
 </section>
 
+<section class="act" id="act2">
+  <div class="eyebrow">Act II · Scenes 08–16 · 01:30–03:32</div>
+  <h2>الرحلة: الناس والأماكن</h2>
+  <p>في كل محطة يضيف أحد الناس لونًا أو خرزة إلى خيط الدفتر. الخيط يتراكم أمام المشاهد من غير تعليق.</p>
+</section>
+
+<section class="scene" id="s08">
+  <div class="scene-head"><span class="num">08</span><h2>البحر وسواكن</h2><span class="tag b">LOOK B</span><span class="tc">01:30 – 01:44 · 14s</span></div>
+  <p class="vo"><small>الطفل للمرشد</small>ماذا تحبّ أن يعرف الزائر عن هذا المكان؟</p>
+  <div class="frames">
+    <figure><img src="img/08a.jpg" alt="أطلال سواكن المرجانية والبحر والطفل مع المرشد"><figcaption><b>WIDE · 24mm</b>أطلال المرجان، ومركب شراعي في الأفق، والطفل صغير مع المرشد.</figcaption></figure>
+    <figure><img src="img/08b.jpg" alt="المرشد البجاوي يحكي للطفل"><figcaption><b>TWO-SHOT · 50mm</b>المرشد البجاوي بالصديري يحكي، والطفل يسمع.</figcaption></figure>
+    <figure><img src="img/08c.jpg" alt="ماكرو: خرزة مرجان تُضاف للخيط"><figcaption><b>MACRO · 100mm</b><span style="color:var(--gold)">الخيط +1:</span> خرزة مرجان من البحر.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> واسعة للمكان، ثم وجه الطفل والمرشد</span><span><b>الصوت:</b> موج، وخطوات على الحجر، ونوارس</span></div>
+  <div class="cut"><span class="k">SHAPE MATCH → 09</span><span><b>بالشكل:</b> خرزة المرجان المدوّرة في الكادر يأتي مكانها قبة جبل التاكا.</span></div>
+</section>
+
+<section class="scene" id="s09">
+  <div class="scene-head"><span class="num">09</span><h2>كسلا وجبل التاكا</h2><span class="tag b">LOOK B</span><span class="tc">01:44 – 01:56 · 12s</span></div>
+  <p class="vo"><small>الراوي</small>ما الذي يربط الإنسان بمكانه مهما ابتعد؟</p>
+  <div class="frames">
+    <figure><img src="img/09a.jpg" alt="قباب جبل التاكا الجرانيتية في ضوء العصر"><figcaption><b>WIDE · 35mm</b>قباب الجرانيت في ضوء العصر.</figcaption></figure>
+    <figure><img src="img/09b.jpg" alt="الطفل يرسم والمرشد يشير للجبال"><figcaption><b>MEDIUM · 35mm</b>المرشد يشير، والطفل يرسم على الصخرة.</figcaption></figure>
+    <figure><img src="img/09c.jpg" alt="من فوق كتف الطفل وهو يرسم الجبال"><figcaption><b>OVER-SHOULDER · 50mm</b>الرسمة في الدفتر والجبال الحقيقية خلفها.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> واسعة للجبال، ثم تفصيل الرسم في الدفتر</span><span><b>الصوت:</b> ريح، وقلم على الورق، وحوار قصير</span></div>
+  <div class="cut"><span class="k">WIPE → 10</span><span><b>قلب الصفحة:</b> الريح تقلب صفحة الدفتر أمام العدسة، ويظهر خلفها جبل مرة.</span></div>
+</section>
+
+<section class="scene" id="s10">
+  <div class="scene-head"><span class="num">10</span><h2>جبل مرة ودارفور</h2><span class="tag b">LOOK B</span><span class="tc">01:56 – 02:10 · 14s</span></div>
+  <p class="vo"><small>الطفل</small>ما الذي تحتاج إليه الحياة هنا كي تزدهر من جديد؟</p>
+  <div class="frames">
+    <figure><img src="img/10a.jpg" alt="مدرجات جبل مرة الخضراء وشلال"><figcaption><b>WIDE · 24mm</b>المدرجات والشلال والضباب، والطفل مع أم وبنتها على الطريق.</figcaption></figure>
+    <figure><img src="img/10b.jpg" alt="الطفل يجري وراء البنت بجانب جدول"><figcaption><b>TRACKING · 35mm</b>جري بجانب الجدول. هذه الحركة يكمل عليها المشهد التالي.</figcaption></figure>
+    <figure><img src="img/10c.jpg" alt="ماكرو: خيط أخضر يُربط على الدفتر"><figcaption><b>MACRO · 100mm</b><span style="color:var(--gold)">الخيط +2:</span> خيط أخضر من جبل مرة.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> واسعة ثم تتبع على المسار</span><span><b>الصوت:</b> ماء وطيور، وضحكة البنت</span></div>
+  <div class="cut"><span class="k">WHIP → 11</span><span><b>استمرار الحركة:</b> الجري من اليسار لليمين يتحول whip pan بموشن بلير، ونقطع في قلب البلير إلى قرية جبال النوبة.</span></div>
+</section>
+
+<section class="scene" id="s11">
+  <div class="scene-head"><span class="num">11</span><h2>جبال النوبة</h2><span class="tag b">LOOK B</span><span class="tc">02:10 – 02:24 · 14s</span></div>
+  <p class="vo"><small>الطفل</small>ما الذي تحبّ أن أعرفه عن حياتكم هنا؟</p>
+  <div class="frames">
+    <figure><img src="img/11a.jpg" alt="قرية في جبال النوبة والأهالي حول الطفل"><figcaption><b>WIDE · child eye level</b>الأهالي والأطفال بلبس متنوع. الإقليم لا يُختزل في زي واحد.</figcaption></figure>
+    <figure><img src="img/11b.jpg" alt="الطفل مع أطفال النوبة يتفرجون على الدفتر"><figcaption><b>MEDIUM · 50mm</b>الدفتر يجمعهم، والجدة تبتسم.</figcaption></figure>
+    <figure><img src="img/11c.jpg" alt="ماكرو: خرزة زجاج حمراء تضاف للخيط"><figcaption><b>MACRO · 100mm</b><span style="color:var(--gold)">الخيط +3:</span> خرزة زجاج حمراء.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> مجموعة على مستوى نظر الطفل</span><span><b>الصوت:</b> أصوات أطفال، وريح على الصخر، ودقات خفيفة بعيدة</span></div>
+  <div class="cut"><span class="k">WIPE → 12</span><span><b>بالغبار:</b> هبّة ريح تحمل تراب القرية عبر العدسة، وخلف الغبار رمال مروي.</span></div>
+</section>
+
+<section class="scene" id="s12">
+  <div class="scene-head"><span class="num">12</span><h2>مروي والذاكرة</h2><span class="tag b">LOOK B</span><span class="tc">02:24 – 02:38 · 14s</span></div>
+  <p class="vo"><small>الجد</small>ماذا نستطيع أن نترك لمن سيأتون بعدنا؟</p>
+  <div class="frames">
+    <figure><img src="img/12a.jpg" alt="أهرامات مروي والجد والطفل يمشيان"><figcaption><b>WIDE · 35mm</b>حقل الأهرامات وظلال طويلة.</figcaption></figure>
+    <figure><img src="img/12b.jpg" alt="الطفل يرسم الأهرامات والجد يشير"><figcaption><b>MEDIUM · 50mm</b>الجد يشير، والطفل يرسم.</figcaption></figure>
+    <figure><img src="img/12c.jpg" alt="الطفل يرفع صورة قديمة أمام الأهرامات"><figcaption><b>OVER-SHOULDER · CGI</b><span style="color:var(--gold)">شباك 1956:</span> نفس الأهرامات بالأبيض والأسود داخل الصورة، والجد شابًا.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> واسعة للآثار، ثم رسم الطفل</span><span><b>الصوت:</b> ريح خفيفة ورمل</span></div>
+  <div class="cut sig"><span class="k">SCALE MATCH → 13</span><span><b>البصمة:</b> يضغط إبهامه المتسخ بالرصاص بجانب الرسمة، فنقطع على حقول الضفة من فوق بنفس الأقواس. الهوية والأرض في قطعة واحدة.</span></div>
+</section>
+
+<section class="scene" id="s13">
+  <div class="scene-head"><span class="num">13</span><h2>المزارعة تبدأ الموسم</h2><span class="tag b">LOOK B</span><span class="tc">02:38 – 02:56 · 18s</span></div>
+  <p class="vo"><small>الطفل للمزارعة</small>ما الذي تحتاجين إليه لتبدئي الموسم بثقة؟</p>
+  <div class="frames">
+    <figure><img src="img/13a.jpg" alt="درون: حقول على ضفة النيل بأقواس مثل البصمة"><figcaption><b>DRONE · top-down</b>جروف الضفة. أقواسها نفس خطوط البصمة.</figcaption></figure>
+    <figure><img src="img/13b.jpg" alt="بورتريه المزارعة"><figcaption><b>CLOSE · 85mm</b>المزارعة، أولى الشخصيات الأساسية.</figcaption></figure>
+    <figure><img src="img/13c.jpg" alt="يد المزارعة توجه يد الطفل في الزرع"><figcaption><b>MACRO · 100mm</b>يدها توجّه يده في الطين.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> وجه المزارعة، ثم اليدان والتربة</span><span><b>الصوت:</b> ماء في القنوات، وإجابتها بصوتها الطبيعي</span></div>
+  <div class="cut"><span class="k">ACTION MATCH → 14</span><span><b>بالحركة:</b> الأيدي تضغط البذرة، وفي اللقطة التالية الماء ينزل على نفس النقطة.</span></div>
+</section>
+
+<section class="scene" id="s14">
+  <div class="scene-head"><span class="num">14</span><h2>الطفل يرعى الشتلة</h2><span class="tag b">LOOK B</span><span class="tc">02:56 – 03:08 · 12s</span></div>
+  <p class="vo"><small>الراوي</small>وفي الحقل، عرف أن الحياة تحتاج إلى رعاية.</p>
+  <div class="frames">
+    <figure><img src="img/14a.jpg" alt="ماكرو: الطفل يسقي شتلة بإبريق فخار"><figcaption><b>MACRO · soil level</b>الإبريق الفخار والشتلة. نعود لهذه اللقطة في الختام.</figcaption></figure>
+    <figure><img src="img/14b.jpg" alt="الطفل والمزارعة بين صفوف الشتلات"><figcaption><b>MEDIUM · 35mm</b>المزارعة تشير للشتلة التالية.</figcaption></figure>
+    <figure><img src="img/14c.jpg" alt="ماكرو: ليف نخيل يضاف للخيط"><figcaption><b>MACRO · 100mm</b><span style="color:var(--gold)">الخيط +4:</span> ليف نخيل من يد المزارعة.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> قريبة على الماء والشتلة</span><span><b>الصوت:</b> ماء يُسكب، وطين يتشرّب</span></div>
+  <div class="cut"><span class="k">TEXTURE MATCH → 15</span><span><b>بالماء:</b> الماء على التراب، ثم قطع على دوائر الماء حول فم البقرة.</span></div>
+</section>
+
+<section class="scene" id="s15">
+  <div class="scene-head"><span class="num">15</span><h2>الثروة الحيوانية</h2><span class="tag b">LOOK B</span><span class="tc">03:08 – 03:20 · 12s</span></div>
+  <p class="vo"><small>الطفل للراعي</small>كيف نحفظ رزق الناس والأرض التي تجمعهم؟</p>
+  <div class="frames">
+    <figure><img src="img/15a.jpg" alt="قطيع أبقار عند حفير ماء والراعي والطفل"><figcaption><b>WIDE · 28mm</b>القطيع عند الحفير والغبار مضيء.</figcaption></figure>
+    <figure><img src="img/15b.jpg" alt="الراعي يتحدث مع الطفل"><figcaption><b>TWO-SHOT · 50mm</b>الراعي بجلابية زرقاء. مختلف بوضوح عن الجد.</figcaption></figure>
+    <figure><img src="img/15c.jpg" alt="ماكرو: بقرة تشرب ودوائر الماء"><figcaption><b>MACRO · water level</b>دوائر الماء. منها جاءت النقلة من المشهد السابق.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> واسعة للقطيع، ثم الراعي والطفل</span><span><b>الصوت:</b> خوار وأجراس وماء</span></div>
+  <div class="cut"><span class="k">WIPE → 16</span><span><b>بالغبار:</b> القطيع يتحرك فيرتفع غبار يغطي العدسة، وخلفه المنجم.</span></div>
+</section>
+
+<section class="scene" id="s16">
+  <div class="scene-head"><span class="num">16</span><h2>التعدين والموارد</h2><span class="tag b">LOOK B</span><span class="tc">03:20 – 03:32 · 12s</span></div>
+  <p class="vo"><small>الطفل</small>كيف تتحوّل ثروة الأرض إلى حياة أفضل لأهلها؟</p>
+  <div class="frames">
+    <figure><img src="img/16a.jpg" alt="الطفل والمهندس خلف سور أمان فوق منجم مفتوح"><figcaption><b>WIDE · 28mm</b>زيارة تعليمية من نقطة مشاهدة آمنة.</figcaption></figure>
+    <figure><img src="img/16b.jpg" alt="المهندس يري الطفل عينة صخرية"><figcaption><b>TWO-SHOT · 50mm</b>المهندس يشرح، والطفل بخوذة.</figcaption></figure>
+    <figure><img src="img/16c.jpg" alt="ماكرو: عينة كوارتز فيها ذرات ذهب"><figcaption><b>MACRO · 100mm</b>كوارتز وذرات ذهب.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> تفصيل العينة، ثم الموقع من بعيد</span><span><b>الصوت:</b> ريح، ومحركات بعيدة. لا عمل أطفال.</span></div>
+  <div class="cut"><span class="k">TEXTURE MATCH → 17</span><span><b>بالملمس:</b> حبيبات الكوارتز تقابلها حبيبات خشب ورشة الحرفي (الفصل الثالث).</span></div>
+</section>
+
 <section class="anim-intro" id="animatic">
   <div class="eyebrow">Animatic · Transitions</div>
   <h2>إزاي المشاهد بتتربط ببعض</h2>
@@ -271,7 +409,7 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
       <img class="l a" src="img/04c.jpg" alt=""><img class="l n" src="img/t-nile.jpg" alt=""><img class="l th" src="img/t-thread.jpg" alt=""><img class="l b" src="img/05c.jpg" alt=""><span class="chip">توقيع الفيلم</span>
     </div>
     <div class="static-pair"><img src="img/t-nile.jpg" alt="النيل"><img src="img/t-thread.jpg" alt="الخيط"></div>
-    <ul class="beats"><li><b>0.0–2.0s</b>من شباك الطيارة: الكاميرا بتدخل من الشباك.</li><li><b>2.0s</b>قطع على درون فوق النيل مباشرة، والكاميرا بتنزل.</li><li><b>3.0–5.0s</b><span><b style="color:var(--gold)">الـ MORPH الوحيد هنا:</b> النيل بيبقى خيط، والنخل بيبقى ألياف، والرملة بتبقى ورق. لقطة واحدة متصلة، والخط ثابت في نفس الزاوية.</span></li><li><b>5.0s</b>قطع على إيد الجد بتربط نفس الخيط على الدفتر.</li></ul>
+    <ul class="beats"><li><b>0.0–2.0s</b>من شباك الطيارة: الكاميرا بتدخل من الشباك.</li><li><b>2.0s</b>قطع على درون فوق النيل مباشرة، والكاميرا بتنزل.</li><li><b>2.4–2.9s</b><span><b style="color:var(--gold)">MORPH مستخبي:</b> نص ثانية بس، في ذروة سرعة الكاميرا ومع موشن بلير. النيل بيبقى خيط من غير ما العين تلحق تشوف التحول.</span></li><li><b>5.0s</b>قطع على إيد الجد بتربط نفس الخيط على الدفتر.</li></ul>
   </div>
 
   <div class="tr">
@@ -291,6 +429,64 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
     </div>
     <div class="static-pair"><img src="img/06a.jpg" alt="قبل"><img src="img/07c.jpg" alt="بعد"></div>
     <ul class="beats"><li><b>0.0–2.0s</b>صمت الفصل.</li><li><b>2.0s</b>صوت دقات خفيفة بيدخل والصورة لسه على الفصل الفاضي.</li><li><b>3.6s</b>قطع: التراب في شعاع الفصل بيبقى صدأ وتراب في شمس الحوش. الصوت هو اللي شدّنا.</li></ul>
+  </div>
+</div>
+
+<h3 class="anim-sub">الفصل الثاني</h3>
+<div class="anim-grid">
+  <div class="tr">
+    <h3>07 ← 08 <span class="k">WIPE · الباب</span></h3>
+    <div class="tp wp" role="img" aria-label="الباب يفتح على الكاميرا ويكشف سواكن"><img class="l b" src="img/08a.jpg" alt=""><img class="l a" src="img/07b.jpg" alt=""><span class="panel door"></span><span class="chip">WIPE</span></div>
+    <div class="static-pair"><img src="img/07b.jpg" alt="قبل"><img src="img/08a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.5s</b>الباب الذي أصلحوه يُفتح على العدسة ويغطي الكادر.</li><li><b>0.5s</b>خلفه مباشرة أطلال سواكن والبحر.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>08 ← 09 <span class="k">SHAPE MATCH</span></h3>
+    <div class="tp zc" style="--ox:52%;--oy:48%" role="img" aria-label="زووم على خرزة المرجان ثم قطع على قبة جبل التاكا"><img class="l a" src="img/08c.jpg" alt=""><img class="l b" src="img/09a.jpg" alt=""><span class="chip">CUT</span></div>
+    <div class="static-pair"><img src="img/08c.jpg" alt="قبل"><img src="img/09a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.8s</b>الكاميرا تندفع على خرزة المرجان.</li><li><b>0.8s</b>قطع: القبة الحجرية في نفس المكان والحجم. صغير صار كبيرًا.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>09 ← 10 <span class="k">WIPE · صفحة</span></h3>
+    <div class="tp wp" role="img" aria-label="صفحة الدفتر تنقلب أمام العدسة وتكشف جبل مرة"><img class="l b" src="img/10a.jpg" alt=""><img class="l a" src="img/09c.jpg" alt=""><span class="panel page"></span><span class="chip">WIPE</span></div>
+    <div class="static-pair"><img src="img/09c.jpg" alt="قبل"><img src="img/10a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.6s</b>الريح تقلب صفحة الدفتر فتغطي العدسة.</li><li><b>0.6s</b>الصفحة تعبر، وخلفها خضرة جبل مرة.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>10 ← 11 <span class="k">WHIP PAN</span></h3>
+    <div class="tp wh" role="img" aria-label="حركة سريعة بموشن بلير من جبل مرة إلى جبال النوبة"><img class="l a" src="img/10b.jpg" alt=""><img class="l b" src="img/11a.jpg" alt=""><span class="chip">WHIP</span></div>
+    <div class="static-pair"><img src="img/10b.jpg" alt="قبل"><img src="img/11a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.9s</b>الطفل يجري، والكاميرا تلحقه بسرعة.</li><li><b>0.9s</b>قطع في قلب البلير. الكاميرا تهدأ في قرية جبال النوبة.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>11 ← 12 <span class="k">WIPE · غبار</span></h3>
+    <div class="tp wp" role="img" aria-label="هبة غبار تعبر العدسة وتكشف أهرامات مروي"><img class="l b" src="img/12a.jpg" alt=""><img class="l a" src="img/11b.jpg" alt=""><span class="panel dust"></span><span class="chip">WIPE</span></div>
+    <div class="static-pair"><img src="img/11b.jpg" alt="قبل"><img src="img/12a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.6s</b>هبّة ريح تحمل التراب عبر العدسة.</li><li><b>0.6s</b>يهدأ الغبار على رمال مروي والأهرامات.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>12 ← 13 <span class="k gold">SCALE MATCH · البصمة</span></h3>
+    <div class="tp tri" style="--ox:50%;--oy:60%" role="img" aria-label="الطفل يرسم، ثم بصمة إبهامه، ثم حقول الضفة بنفس الأقواس"><img class="l a" src="img/12b.jpg" alt=""><img class="l n" src="img/13fp.jpg" alt=""><img class="l b" src="img/13a.jpg" alt=""><span class="chip">توقيع</span></div>
+    <div class="static-pair"><img src="img/13fp.jpg" alt="البصمة"><img src="img/13a.jpg" alt="الحقول"></div>
+    <ul class="beats"><li><b>0.0–1.0s</b>يضغط إبهامه المتسخ بالرصاص على الصفحة.</li><li><b>1.0–2.6s</b>ماكرو للبصمة.</li><li><b>2.6s</b>قطع: الدرون فوق الحقول بنفس الأقواس. لا morph، قطعة واحدة.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>13 ← 14 <span class="k">ACTION MATCH</span></h3>
+    <div class="tp ac" role="img" aria-label="الأيدي تضغط البذرة ثم قطع على الماء ينزل على الشتلة"><img class="l a" src="img/13c.jpg" alt=""><img class="l b" src="img/14a.jpg" alt=""><span class="chip">CUT</span></div>
+    <div class="static-pair"><img src="img/13c.jpg" alt="قبل"><img src="img/14a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.7s</b>الأيدي تضغط التراب لأسفل.</li><li><b>0.7s</b>نفس الحركة: الماء ينزل على الشتلة.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>14 ← 15 <span class="k">TEXTURE MATCH</span></h3>
+    <div class="tp zc" style="--ox:55%;--oy:72%" role="img" aria-label="الماء على التراب ثم قطع على دوائر الماء حول فم البقرة"><img class="l a" src="img/14a.jpg" alt=""><img class="l b" src="img/15c.jpg" alt=""><span class="chip">CUT</span></div>
+    <div class="static-pair"><img src="img/14a.jpg" alt="قبل"><img src="img/15c.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.8s</b>دفعة على الماء الذي يتشربه التراب.</li><li><b>0.8s</b>قطع على دوائر الماء حول فم البقرة، ونفس صوت الماء مستمر.</li></ul>
+  </div>
+  <div class="tr">
+    <h3>15 ← 16 <span class="k">WIPE · غبار القطيع</span></h3>
+    <div class="tp wp" role="img" aria-label="غبار القطيع يغطي العدسة ويكشف المنجم"><img class="l b" src="img/16a.jpg" alt=""><img class="l a" src="img/15a.jpg" alt=""><span class="panel dust"></span><span class="chip">WIPE</span></div>
+    <div class="static-pair"><img src="img/15a.jpg" alt="قبل"><img src="img/16a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–0.6s</b>القطيع يتحرك فيرتفع الغبار على العدسة.</li><li><b>0.6s</b>يهدأ الغبار على المنجم من نقطة المشاهدة.</li></ul>
   </div>
 </div>
 

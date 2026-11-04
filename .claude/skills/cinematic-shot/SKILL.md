@@ -117,6 +117,12 @@ Keep identity, wardrobe, lighting direction and background rigid and consistent;
 Sound: scene sound effects only, no music.
 ```
 
+Pace & morph rules (learned from client feedback — slow AI motion and visible morphs read as "AI"):
+- **Generate slow, cut fast.** Generate 3–5 s for stability, then in the edit use only the best 0.8–2 s, speed-ramp (1.5–3×), and add 180°/360° motion blur in post. Never show a full 5 s generated move at native speed.
+- **A morph must never be seen happening.** Max 0.4–0.6 s, hidden inside fast motion (whip, crash push-in, speed ramp peak), an occluder (hand, page, dust, door) or a flash/darkness. If the viewer can watch the change, it is a cheap morph — replace it with a hard scale/shape match cut.
+- **Prefer hard match cuts over morphs.** Two real-looking shots matched in shape, angle and light, cut on motion, beat any visible transformation.
+- **Energy comes from the cut.** Cut on action, on the sound accent, and on the peak of camera speed — not at rest.
+
 Rules that kill distortion:
 1. One camera move + one subject action per shot.
 2. Slow > fast. Speed and whip energy are made in the edit (720° blur whip), not by the model.
