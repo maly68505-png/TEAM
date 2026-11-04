@@ -31,6 +31,25 @@ figure img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px;displ
 figcaption{font-size:12px;color:var(--muted)}
 .notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 24px;margin:0;font-size:14px}
 .notes dt{color:var(--gold);font-size:12px} .notes dd{margin:0;color:var(--cream)}
+.player{position:relative;margin-block:28px 8px;border-radius:6px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}
+.player .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.player .frame.on{opacity:1}
+@media (prefers-reduced-motion:no-preference){.player .frame.on{animation:kb var(--d,2.2s) linear forwards}}
+@keyframes kb{from{transform:scale(1.0) translate(0,0)}to{transform:scale(1.08) translate(var(--kx,1%),var(--ky,-1%))}}
+.player .bar{position:absolute;inset-inline:0;bottom:0;padding:28px 18px 14px;background:linear-gradient(transparent,rgba(5,10,18,.85));display:grid;gap:4px}
+.player .t{font-family:var(--mono);font-size:12px;color:var(--gold)}
+.player .sub{font-size:clamp(15px,2.2vw,22px);color:#fff;text-shadow:0 1px 3px #000;max-width:60ch}
+.player .card{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:var(--night);opacity:0;gap:6px}
+.player .card.on{opacity:1}
+.player .card h3{font-family:var(--display);font-size:clamp(26px,5vw,52px);margin:0}
+.player .card span{font-family:var(--mono);color:var(--gold)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}
+.controls button{font:inherit;font-size:14px;background:#13243a;color:var(--cream);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer}
+.controls button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.progress{flex:1;min-width:120px;height:4px;background:#1b2b42;border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--gold)}
+.hint{color:var(--muted);font-size:13px;margin:0}
+@media print{.player,.controls,.hint{display:none!important}}
 footer{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:var(--muted);font-size:13px}
 @media (max-width:720px){.frames,.notes{grid-template-columns:1fr}.tc{margin-inline-start:0}}
 </style>
@@ -39,6 +58,7 @@ footer{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:v
 <p class="lede">طفل من الدوحة يحمل صورة جدّه ودفترًا وبذرة، ويعود إلى السودان. في كل مكان يزوره يضيف أحد الناس خيطًا أو خرزة إلى دفتره، وفي النهاية يزرع البذرة مع جدّه وصديقه.</p>
 <div class="facts"><span>المدة <b>7:00</b></span><span>المشاهد <b>29</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 – 2027</b></span></div>
 <div class="thread"></div></section>
+<section aria-label="عرض متحرك"><div class="player" id="player"></div><div class="controls"><button id="pp" type="button">تشغيل</button><button id="prev" type="button">المشهد السابق</button><button id="next" type="button">المشهد التالي</button><div class="progress"><i id="prog"></i></div></div><p class="hint">عرض متحرك للستوري بورد: كل مشهد بلقطاته الثلاث وتعليقه الصوتي مكتوبًا. التفاصيل الكاملة لكل مشهد أسفل الصفحة.</p></section>
 <section class="act"><div class="eyebrow">الفصل الأول</div><h2>الرحيل والعودة</h2></section><section class="scene"><div class="head"><span class="num">01</span><h2>قطر والاتصال بالجد</h2><span class="tc">00:00 – 00:18</span></div>
 <p class="vo"><small>الطفل</small>جدّي، هل أستطيع أن أرى المكان الذي تحكي عنه؟</p><div class="frames"><figure><img src="img/01a.jpg" alt=""><figcaption>واسعة</figcaption></figure><figure><img src="img/01b.jpg" alt=""><figcaption>متوسطة</figcaption></figure><figure><img src="img/01c.jpg" alt=""><figcaption>قريبة</figcaption></figure></div>
 <dl class="notes"><div><dt>الكاميرا</dt><dd>متوسطة قرب النافذة ثم اقتراب على الوجه</dd></div><div><dt>الصوت</dt><dd>صوت الجد عبر المكالمة، المدينة ليلًا</dd></div><div><dt>الانتقال</dt><dd>من وجه الجد على الشاشة إلى وجهه شابًا في الصورة القديمة</dd></div></dl></section><section class="scene"><div class="head"><span class="num">02</span><h2>صورة الذاكرة</h2><span class="tc">00:18 – 00:30</span></div>
@@ -98,5 +118,31 @@ footer{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:v
 <dl class="notes"><div><dt>الكاميرا</dt><dd>تبدأ باليدين وتتّسع للطفلين والجد</dd></div><div><dt>الصوت</dt><dd>ماء يُسكب، ريح خفيفة</dd></div><div><dt>الانتقال</dt><dd>الخيط على الشتلة ثم العلم في ساحة المدرسة</dd></div></dl></section><section class="scene"><div class="head"><span class="num">29</span><h2>الاستقلال والغد</h2><span class="tc">06:38 – 07:00</span></div>
 <p class="vo"><small>الراوي</small>وطنٌ ينبت فينا… ويكبر بما نصنعه معًا.</p><div class="frames"><figure><img src="img/29a.jpg" alt=""><figcaption>من فوق الكتف</figcaption></figure><figure><img src="img/29b.jpg" alt=""><figcaption>قريبة</figcaption></figure><figure><img src="img/29c.jpg" alt=""><figcaption>جوية</figcaption></figure></div>
 <dl class="notes"><div><dt>الكاميرا</dt><dd>ختام بوجوه الأطفال والعلم</dd></div><div><dt>الصوت</dt><dd>أصوات الناس، ثم سكون</dd></div><div><dt>الانتقال</dt><dd>شارة الذكرى 71</dd></div></dl></section>
+<script>const DATA=[{"num": "01", "title": "قطر والاتصال بالجد", "tc": "00:00 – 00:18", "vo": "جدّي، هل أستطيع أن أرى المكان الذي تحكي عنه؟", "frames": ["img/01a.jpg", "img/01b.jpg", "img/01c.jpg"], "act": ["الفصل الأول", "الرحيل والعودة"]}, {"num": "02", "title": "صورة الذاكرة", "tc": "00:18 – 00:30", "vo": "خرج يبحث عن السودان الذي عرفه جدّه.", "frames": ["img/02a.jpg", "img/02b.jpg", "img/02c.jpg"], "act": null}, {"num": "03", "title": "البذرة وسؤال البداية", "tc": "00:30 – 00:40", "vo": "من أين نبدأ؟", "frames": ["img/03a.jpg", "img/03b.jpg", "img/03c.jpg"], "act": null}, {"num": "04", "title": "السفر من قطر", "tc": "00:40 – 00:50", "vo": "حمل صورة، ودفترًا، وبذرة صغيرة.", "frames": ["img/04a.jpg", "img/04b.jpg", "img/04c.jpg"], "act": null}, {"num": "05", "title": "عند باب البيت", "tc": "00:50 – 01:05", "vo": "هل نجد كلّ شيء كما تركناه؟", "frames": ["img/05a.jpg", "img/05b.jpg", "img/05c.jpg"], "act": null}, {"num": "06", "title": "المدرسة الصامتة", "tc": "01:05 – 01:15", "vo": "انقطع أطفال عن مدارسهم وأصدقائهم.", "frames": ["img/06a.jpg", "img/06b.jpg", "img/06c.jpg"], "act": null}, {"num": "07", "title": "إصلاح باب البيت", "tc": "01:15 – 01:30", "vo": "ستحتاج أشياء كثيرة إلى أيدينا.", "frames": ["img/07a.jpg", "img/07b.jpg", "img/07c.jpg"], "act": null}, {"num": "08", "title": "البحر وسواكن", "tc": "01:30 – 01:44", "vo": "ماذا تحبّ أن يعرف الزائر عن هذا المكان؟", "frames": ["img/08a.jpg", "img/08b.jpg", "img/08c.jpg"], "act": ["الفصل الثاني", "الرحلة: الناس والأماكن"]}, {"num": "09", "title": "كسلا وجبل التاكا", "tc": "01:44 – 01:56", "vo": "ما الذي يربط الإنسان بمكانه مهما ابتعد؟", "frames": ["img/09a.jpg", "img/09b.jpg", "img/09c.jpg"], "act": null}, {"num": "10", "title": "جبل مرة ودارفور", "tc": "01:56 – 02:10", "vo": "ما الذي تحتاج إليه الحياة هنا كي تزدهر من جديد؟", "frames": ["img/10a.jpg", "img/10b.jpg", "img/10c.jpg"], "act": null}, {"num": "11", "title": "جبال النوبة", "tc": "02:10 – 02:24", "vo": "ما الذي تحبّ أن أعرفه عن حياتكم هنا؟", "frames": ["img/11a.jpg", "img/11b.jpg", "img/11c.jpg"], "act": null}, {"num": "12", "title": "مروي والذاكرة", "tc": "02:24 – 02:38", "vo": "ماذا نستطيع أن نترك لمن سيأتون بعدنا؟", "frames": ["img/12a.jpg", "img/12b.jpg", "img/12c.jpg"], "act": null}, {"num": "13", "title": "المزارعة تبدأ الموسم", "tc": "02:38 – 02:56", "vo": "ما الذي تحتاجين إليه لتبدئي الموسم بثقة؟", "frames": ["img/13a.jpg", "img/13b.jpg", "img/13c.jpg"], "act": null}, {"num": "14", "title": "الطفل يرعى الشتلة", "tc": "02:56 – 03:08", "vo": "وفي الحقل، عرف أن الحياة تحتاج إلى رعاية.", "frames": ["img/14a.jpg", "img/14b.jpg", "img/14c.jpg"], "act": null}, {"num": "15", "title": "الثروة الحيوانية", "tc": "03:08 – 03:20", "vo": "كيف نحفظ رزق الناس والأرض التي تجمعهم؟", "frames": ["img/15a.jpg", "img/15b.jpg", "img/15c.jpg"], "act": null}, {"num": "16", "title": "التعدين والموارد", "tc": "03:20 – 03:32", "vo": "كيف تتحوّل ثروة الأرض إلى حياة أفضل لأهلها؟", "frames": ["img/16a.jpg", "img/16b.jpg", "img/16c.jpg"], "act": null}, {"num": "17", "title": "صاحب الورشة يفتح بابه", "tc": "03:32 – 03:50", "vo": "ما أوّل عمل بدأت به حين عدت إلى مهنتك؟", "frames": ["img/17a.jpg", "img/17b.jpg", "img/17c.jpg"], "act": ["الفصل الثالث", "الأيدي التي تبني الغد"]}, {"num": "18", "title": "الطفل يتعلّم حرفة", "tc": "03:50 – 04:04", "vo": "هل تعلّمني شيئًا أستطيع أن أبدأ به؟", "frames": ["img/18a.jpg", "img/18b.jpg", "img/18c.jpg"], "act": null}, {"num": "19", "title": "التراث وصناعة الفخار", "tc": "04:04 – 04:16", "vo": "ما الحكاية التي تحملها هذه الصنعة؟", "frames": ["img/19a.jpg", "img/19b.jpg", "img/19c.jpg"], "act": null}, {"num": "20", "title": "رقصة تجمع الأجيال", "tc": "04:16 – 04:30", "vo": "هل تعلّمني خطوة واحدة ونؤدّيها معًا؟", "frames": ["img/20a.jpg", "img/20b.jpg", "img/20c.jpg"], "act": null}, {"num": "21", "title": "طفلان وصفحة واحدة", "tc": "04:30 – 04:48", "vo": "كلما أضاف رسمًا إلى دفتره، أضاف إنسانًا إلى قلبه.", "frames": ["img/21a.jpg", "img/21b.jpg", "img/21c.jpg"], "act": null}, {"num": "22", "title": "اللعبة المشتركة", "tc": "04:48 – 04:58", "vo": "كيف نستقبل صديقًا جديدًا؟", "frames": ["img/22a.jpg", "img/22b.jpg", "img/22c.jpg"], "act": null}, {"num": "23", "title": "المعلّمة تجهّز الفصل", "tc": "04:58 – 05:16", "vo": "ما الذي تتمنّين أن يعود إلى حياة الأطفال؟", "frames": ["img/23a.jpg", "img/23b.jpg", "img/23c.jpg"], "act": null}, {"num": "24", "title": "المدرسة تستعيد أصواتها", "tc": "05:16 – 05:32", "vo": "وفي الورشة والمدرسة، رأى الغد يُصنع أمامه.", "frames": ["img/24a.jpg", "img/24b.jpg", "img/24c.jpg"], "act": null}, {"num": "25", "title": "أحلام الأطفال", "tc": "05:32 – 05:50", "vo": "ماذا تريد أن تستطيع فعله في بلدك؟", "frames": ["img/25a.jpg", "img/25b.jpg", "img/25c.jpg"], "act": null}, {"num": "26", "title": "الأهالي والجيش", "tc": "05:50 – 06:02", "vo": "ماذا تتمنّى لأطفال السودان؟", "frames": ["img/26a.jpg", "img/26b.jpg", "img/26c.jpg"], "act": null}, {"num": "27", "title": "الصفحة الأخيرة", "tc": "06:02 – 06:14", "vo": "وحين عاد، كانت الصفحة الأخيرة تنتظره.", "frames": ["img/27a.jpg", "img/27b.jpg", "img/27c.jpg"], "act": null}, {"num": "28", "title": "الزرع الجماعي", "tc": "06:14 – 06:38", "vo": "ثم انحنى إلى الأرض، وزرع ما حمله طوال الطريق.", "frames": ["img/28a.jpg", "img/28b.jpg", "img/28c.jpg"], "act": null}, {"num": "29", "title": "الاستقلال والغد", "tc": "06:38 – 07:00", "vo": "وطنٌ ينبت فينا… ويكبر بما نصنعه معًا.", "frames": ["img/29a.jpg", "img/29b.jpg", "img/29c.jpg"], "act": null}];
+
+(function(){
+ const box=document.getElementById('player'), pp=document.getElementById('pp'), prog=document.getElementById('prog');
+ const steps=[]; DATA.forEach((sc,si)=>{ if(sc.act) steps.push({card:sc.act, scene:si}); sc.frames.forEach((f,fi)=>steps.push({img:f, scene:si, fi})); });
+ const imgs={}; steps.forEach(st=>{ if(st.img && !imgs[st.img]){ const im=new Image(); im.src=st.img; im.className='frame'; im.alt=''; box.appendChild(im); imgs[st.img]=im; } });
+ const card=document.createElement('div'); card.className='card'; box.appendChild(card);
+ const bar=document.createElement('div'); bar.className='bar'; bar.innerHTML='<div class="t"></div><div class="sub"></div>'; box.appendChild(bar);
+ let i=0, timer=null, playing=false;
+ const KB=[['1%','-1%'],['-1.5%','0%'],['0%','1.2%'],['1.2%','1%']];
+ function show(n){ i=(n+steps.length)%steps.length; const st=steps[i], sc=DATA[st.scene];
+   Object.values(imgs).forEach(im=>im.classList.remove('on')); card.classList.remove('on');
+   if(st.card){ card.innerHTML='<span>'+st.card[0]+'</span><h3>'+st.card[1]+'</h3>'; card.classList.add('on'); bar.style.opacity=0; }
+   else { const im=imgs[st.img]; const k=KB[(st.scene+st.fi)%4]; im.style.setProperty('--kx',k[0]); im.style.setProperty('--ky',k[1]);
+     im.classList.remove('on'); void im.offsetWidth; im.classList.add('on'); bar.style.opacity=1;
+     bar.querySelector('.t').innerHTML=sc.num+' · '+sc.title+' · <bdi dir="ltr">'+sc.tc+'</bdi>'; bar.querySelector('.sub').textContent=sc.vo; }
+   prog.style.width=((i+1)/steps.length*100)+'%'; }
+ function tick(){ show(i+1); timer=setTimeout(tick, steps[i].card?1800:2200); }
+ function play(){ if(playing) return; playing=true; pp.textContent='إيقاف'; timer=setTimeout(tick,2200); }
+ function pause(){ playing=false; pp.textContent='تشغيل'; clearTimeout(timer); }
+ pp.onclick=()=>playing?pause():play();
+ function jump(dir){ pause(); let cur=steps[i].scene, j=i; do{ j=(j+dir+steps.length)%steps.length; } while(steps[j].scene===cur && !steps[j].card); if(dir<0){ const s2=steps[j].scene; while(j>0 && steps[j-1].scene===s2) j--; } show(j); }
+ document.getElementById('next').onclick=()=>jump(1); document.getElementById('prev').onclick=()=>jump(-1);
+ show(0);
+})();
+</script>
 <footer>الصور تصورات بصرية للتخطيط، وليست توثيقًا للأماكن أو أرشيفًا تاريخيًا.</footer>
 </div>

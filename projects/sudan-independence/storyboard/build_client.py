@@ -1,5 +1,5 @@
 # Builds client.html: clean client-facing storyboard (29 scenes), no internal notes.
-import html, os
+import html, os, json
 D = os.path.dirname(os.path.abspath(__file__))
 
 A, B = 'A', 'B'
@@ -36,6 +36,37 @@ S = [
 ]
 SHOT_AR = {'WIDE':'واسعة','MEDIUM':'متوسطة','CLOSE':'قريبة','MACRO':'ماكرو','INSERT':'تفصيل','OVER-SHOULDER':'من فوق الكتف','POV':'من عين الطفل','TWO-SHOT':'ثنائية','TRACKING':'تتبّع','DRONE':'جوية','TOP-DOWN':'من أعلى'}
 ACTS = {1:('الفصل الأول','الرحيل والعودة'),8:('الفصل الثاني','الرحلة: الناس والأماكن'),17:('الفصل الثالث','الأيدي التي تبني الغد')}
+
+
+PLAYER_JS = r"""
+(function(){
+ const box=document.getElementById('player'), pp=document.getElementById('pp'), prog=document.getElementById('prog');
+ const steps=[]; DATA.forEach((sc,si)=>{ if(sc.act) steps.push({card:sc.act, scene:si}); sc.frames.forEach((f,fi)=>steps.push({img:f, scene:si, fi})); });
+ const imgs={}; steps.forEach(st=>{ if(st.img && !imgs[st.img]){ const im=new Image(); im.src=st.img; im.className='frame'; im.alt=''; box.appendChild(im); imgs[st.img]=im; } });
+ const card=document.createElement('div'); card.className='card'; box.appendChild(card);
+ const bar=document.createElement('div'); bar.className='bar'; bar.innerHTML='<div class="t"></div><div class="sub"></div>'; box.appendChild(bar);
+ let i=0, timer=null, playing=false;
+ const KB=[['1%','-1%'],['-1.5%','0%'],['0%','1.2%'],['1.2%','1%']];
+ function show(n){ i=(n+steps.length)%steps.length; const st=steps[i], sc=DATA[st.scene];
+   Object.values(imgs).forEach(im=>im.classList.remove('on')); card.classList.remove('on');
+   if(st.card){ card.innerHTML='<span>'+st.card[0]+'</span><h3>'+st.card[1]+'</h3>'; card.classList.add('on'); bar.style.opacity=0; }
+   else { const im=imgs[st.img]; const k=KB[(st.scene+st.fi)%4]; im.style.setProperty('--kx',k[0]); im.style.setProperty('--ky',k[1]);
+     im.classList.remove('on'); void im.offsetWidth; im.classList.add('on'); bar.style.opacity=1;
+     bar.querySelector('.t').innerHTML=sc.num+' · '+sc.title+' · <bdi dir="ltr">'+sc.tc+'</bdi>'; bar.querySelector('.sub').textContent=sc.vo; }
+   prog.style.width=((i+1)/steps.length*100)+'%'; }
+ function tick(){ show(i+1); timer=setTimeout(tick, steps[i].card?1800:2200); }
+ function play(){ if(playing) return; playing=true; pp.textContent='إيقاف'; timer=setTimeout(tick,2200); }
+ function pause(){ playing=false; pp.textContent='تشغيل'; clearTimeout(timer); }
+ pp.onclick=()=>playing?pause():play();
+ function jump(dir){ pause(); let cur=steps[i].scene, j=i; do{ j=(j+dir+steps.length)%steps.length; } while(steps[j].scene===cur && !steps[j].card); if(dir<0){ const s2=steps[j].scene; while(j>0 && steps[j-1].scene===s2) j--; } show(j); }
+ document.getElementById('next').onclick=()=>jump(1); document.getElementById('prev').onclick=()=>jump(-1);
+ show(0);
+})();
+"""
+DATA = []
+for s_ in S:
+    n=s_[0]
+    DATA.append({'num':f'{n:02d}','title':s_[1],'tc':s_[2],'vo':s_[5],'frames':[f'img/{n:02d}{x}.jpg' for x in 'abc'],'act':list(ACTS[n]) if n in ACTS else None})
 
 def scene(n,t,tc,look,who,vo,shots,cam,snd,cut):
     imgs=''.join(f'<figure><img src="img/{n:02d}{x}.jpg" alt=""><figcaption>{SHOT_AR[s]}</figcaption></figure>' for x,s in zip('abc',shots))
@@ -82,6 +113,25 @@ figure img{{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px;disp
 figcaption{{font-size:12px;color:var(--muted)}}
 .notes{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 24px;margin:0;font-size:14px}}
 .notes dt{{color:var(--gold);font-size:12px}} .notes dd{{margin:0;color:var(--cream)}}
+.player{{position:relative;margin-block:28px 8px;border-radius:6px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}}
+.player .frame{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}}
+.player .frame.on{{opacity:1}}
+@media (prefers-reduced-motion:no-preference){{.player .frame.on{{animation:kb var(--d,2.2s) linear forwards}}}}
+@keyframes kb{{from{{transform:scale(1.0) translate(0,0)}}to{{transform:scale(1.08) translate(var(--kx,1%),var(--ky,-1%))}}}}
+.player .bar{{position:absolute;inset-inline:0;bottom:0;padding:28px 18px 14px;background:linear-gradient(transparent,rgba(5,10,18,.85));display:grid;gap:4px}}
+.player .t{{font-family:var(--mono);font-size:12px;color:var(--gold)}}
+.player .sub{{font-size:clamp(15px,2.2vw,22px);color:#fff;text-shadow:0 1px 3px #000;max-width:60ch}}
+.player .card{{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:var(--night);opacity:0;gap:6px}}
+.player .card.on{{opacity:1}}
+.player .card h3{{font-family:var(--display);font-size:clamp(26px,5vw,52px);margin:0}}
+.player .card span{{font-family:var(--mono);color:var(--gold)}}
+.controls{{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}}
+.controls button{{font:inherit;font-size:14px;background:#13243a;color:var(--cream);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer}}
+.controls button:focus-visible{{outline:2px solid var(--gold);outline-offset:2px}}
+.progress{{flex:1;min-width:120px;height:4px;background:#1b2b42;border-radius:2px;overflow:hidden}}
+.progress i{{display:block;height:100%;width:0;background:var(--gold)}}
+.hint{{color:var(--muted);font-size:13px;margin:0}}
+@media print{{.player,.controls,.hint{{display:none!important}}}}
 footer{{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:var(--muted);font-size:13px}}
 @media (max-width:720px){{.frames,.notes{{grid-template-columns:1fr}}.tc{{margin-inline-start:0}}}}
 </style>
@@ -90,7 +140,10 @@ footer{{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:
 <p class="lede">طفل من الدوحة يحمل صورة جدّه ودفترًا وبذرة، ويعود إلى السودان. في كل مكان يزوره يضيف أحد الناس خيطًا أو خرزة إلى دفتره، وفي النهاية يزرع البذرة مع جدّه وصديقه.</p>
 <div class="facts"><span>المدة <b>7:00</b></span><span>المشاهد <b>29</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 – 2027</b></span></div>
 <div class="thread"></div></section>
+<section aria-label="عرض متحرك"><div class="player" id="player"></div><div class="controls"><button id="pp" type="button">تشغيل</button><button id="prev" type="button">المشهد السابق</button><button id="next" type="button">المشهد التالي</button><div class="progress"><i id="prog"></i></div></div><p class="hint">عرض متحرك للستوري بورد: كل مشهد بلقطاته الثلاث وتعليقه الصوتي مكتوبًا. التفاصيل الكاملة لكل مشهد أسفل الصفحة.</p></section>
 {''.join(body)}
+<script>const DATA={json.dumps(DATA,ensure_ascii=False)};
+{PLAYER_JS}</script>
 <footer>الصور تصورات بصرية للتخطيط، وليست توثيقًا للأماكن أو أرشيفًا تاريخيًا.</footer>
 </div>'''
 open(os.path.join(D,'client.html'),'w',encoding='utf-8').write(page)
