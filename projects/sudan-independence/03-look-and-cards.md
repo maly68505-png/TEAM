@@ -1,0 +1,94 @@
+# استقلال السودان 71: اللوك المعتمد وكروت الاستمرارية
+
+## اللوك المعتمد ✅ (اتوافق عليه 2026-11-04)
+- **Reference اللوك:** job `ca9572d9-fbc3-4d92-8773-127d5a0da363` (فوق الكتف، الطفل بيرسم التاكا)
+- **Reference اللاندسكيب:** job `2342b452-dfbb-4232-98cb-763ace280fae`
+- **سطر البرومبت (يتنسخ بالحرف في كل لقطة):**
+```
+late afternoon low sun from the left, warm amber-gold light on faces, hands and surfaces,
+cool navy-blue shadows, deep blue sky gradient with a few thin clouds, backlit dust, long shadows,
+cinematic colour grade with navy shadows and golden highlights, natural contrast, real skin pores,
+real fabric, 35mm film grain. Real photograph, not oversaturated, not HDR, not CGI, not plastic,
+no waxy skin, no glow, no text.
+```
+- **الدرس اللي اتعلمناه:** «neutral true-to-life colours, no golden filter» طلّعت صور باهتة. **اللوك المعتمد:** ظلال كحلي + نور دهبي (ألوان هوية الحملة) + شمس واطية.
+- **الموديل:** `nano_banana_pro` (Higgsfield بيشغّله على nano_banana_2). كل لقطة بيتحط معاها reference الشخصية + reference اللوك.
+
+## كارت الطفل 🔒
+- **Reference:** job `7687e126-9127-468e-a499-6dd6dcca5516` (مع الجد عند الباب)
+- **سطر البرومبت:**
+```
+a 10-year-old Sudanese boy, slim, dark brown skin, short tight curly black hair, cream short-sleeved
+cotton shirt with collar, olive-green trousers, brown leather satchel worn across the chest,
+holding a worn cream-brown notebook tied with a thread
+```
+
+## كارت الجد 🔒
+- **Reference:** نفس job `7687e126…`
+```
+an elderly Sudanese grandfather about 75, dark brown deeply wrinkled skin, short white beard,
+white jalabiya, loosely wrapped white turban
+```
+
+## كارت المرشد (كسلا) 🔒
+- **لازم يبقى مختلف بوضوح عن الجد.**
+```
+a Beja man about 40 from eastern Sudan, slim, short black beard, grey-white jalabiya with a dark
+embroidered waistcoat (sideiri), loosely wrapped off-white turban, wooden stick
+```
+
+## كارت الخيط (prop) 🔒
+- **مشهد 05:** خيط قطن رفيع باهت، لونه كريمي.
+- **بعد كل مكان:** بتتضاف فتلة أو خرزة (الجدول في `01-linking-concept.md`).
+
+## انتقال «الدفتر الحي»: كسلا (اختبار)
+| الفريم | Job |
+|---|---|
+| الرسمة (start) | `89727c27-b129-48b0-80d0-3e6368a6bad7` |
+| الجبال الحقيقية (end) | `2342b452-dfbb-4232-98cb-763ace280fae` |
+| فيديو التحول | `d2a1a276-f046-4a94-96b5-2bb0b0ed89b8` (kling_o3_flf, pro, 5s) |
+| فوق الكتف (معتمد) | `ca9572d9-fbc3-4d92-8773-127d5a0da363` |
+| الطفل والمرشد (بيتعدل) | `be5672e7-025e-4763-86fc-f69abc586e27` |
+
+## الستوري بورد: الفصل الأول (01–07) ✅
+- **الصفحة:** https://claude.ai/artifact/Ncw5KPNRWKP5YBEDr7hKtu، ونسخة محلية في `storyboard-act1/`
+- **الفريمات المعتمدة (Higgsfield jobs):**
+  01: b698069d / 1d761ca9 / dfca9ade · 02: 2620b14e / 5683616f / c87cb603 · 03: 36dd95f8 / 8d3705ca / b3bcdd83
+  04: 21601ae9 / 1ad42875 / 0ff1aad0 · 05: 08d194e2 / f438a15e / 98384f00 · 06: c55c7616 / 3335d109 / e05e2f0c
+  07: 26714eac / fcdfdc58 / 8179cf4c
+- **كارت الأم:** سودانية حوالي 38 سنة، لابسة **توب أبيض مغطّي الراس** بحافة مطرّزة رفيعة، ومعاها شنطة سفر.
+- **دروس الـ QC:**
+  - الموديل ممكن يغيّر لبس الطفل في الكلوز أب، فلازم نذكر القميص الكريمي ذو الياقة بالاسم.
+  - «بذرة بلح» بتطلع بلحة كاملة، فلازم نكتب «date pit… no flesh».
+  - تعديل الأدوات المعقدة (الفارة) بيفشل، فالأحسن نختار فعل أبسط.
+
+## الستوري بورد: الفصل الثاني (08–16) ✅
+- **نفس الصفحة**، والنسخة المحلية اتنقلت لـ `storyboard/`
+- **الفريمات المعتمدة:**
+  08: bacc5cfd / 3d2ab21f / 939cd142 · 09: 2342b452 / be5672e7 / ca9572d9 · 10: 5956729c / 7872581e / 7fb7ab1a
+  11: 1e751e18 / d92b3777 / 586ab4da · 12: cd13b01a / 57693071 / 3a38668b · 13: 17d464c1 / 1e5b7424 / d95f07d1 (+ بصمة 31a89ab0)
+  14: 6f675548 / ce24887a / 3c0775e8 · 15: 34b76688 / 478f343c / 589c8fea · 16: 85670b58 / 504490f0 / 20034d29
+- **كروت جديدة:**
+  - **المرشد البجاوي** (be5672e7): صديري مطرّز وعصاية
+  - **أم وبنت من جبل مرة:** توب أخضر وبرتقاني، وفستان أصفر
+  - **المزارعة** (1e5b7424): حوالي 45 سنة، توب عنابي على الراس، فستان كحلي، غويشة فضة
+  - **الراعي** (478f343c): حوالي 38 سنة، جلابية زرقا فاتحة، عمة بيج، دقن سودا. **مختلف عن الجد بوضوح**
+  - **مهندس المنجم:** خوذة بيضا وفيست برتقاني
+- **الخيط لحد مشهد 16:** كريمي باهت ← خرزة مرجان (08) ← خيط أخضر (10) ← خرزة زجاج حمرا (11) ← ليف نخل (14)
+- **درس من feedback المستخدم:** الحركة بطيئة والـ morph باين. القاعدة الجديدة اتضافت لـ `cinematic-shot` (Pace & morph rules)
+
+## الستوري بورد: الفصل التالت (17–29) ✅ + نسخة العميل
+- **نسخة العميل:** `Sudan71-Storyboard-Client.pdf`، مولّدة من `storyboard/client.html` بـ `build_client.py` + `topdf_client.js`
+- **كروت جديدة:**
+  - **الحرفي/النجار** (9311007e): حوالي 50 سنة، شعر رمادي قصير، **من غير عمة**، قميص شغل أزرق باهت
+  - **صانعة الفخار** (76aafb89): حوالي 40 سنة، توب أحمر وبرتقاني
+  - **الصاحب** (9be50b1c): راسه محلوقة، قميص أزرق باهت، شورت كاكي
+  - **المعلّمة** (592b4be6): حوالي 35 سنة، توب أبيض بحافة زرقا
+  - **الجندي:** زي صحراوي من غير سلاح ومن غير شارات
+- **الخيط في النهاية:** + خرزة خشب (18) + خيط أزرق من سوار الصاحب (21)، وبعدين بيتربط على عصاية الشتلة (28)
+- **درس من الـ QC:** إيدين الماكرو بتطلع **فاتحة** لو مكتبناش «very dark brown Sudanese skin» صراحة
+
+## تحديث نسخة العميل
+- **الويب (عرض متحرك):** https://claude.ai/artifact/MJo14dDhWZVWeDKfnzzFSQ (لازم Share عشان العميل يفتحه)
+- **صفحة الوشوش (27a)** اتعملت من جديد (a0f3424c) بالشخصيات الحقيقية كـ references. القديمة كان فيها بِندي وملامح جنوب آسيوية ❌
+- **درس:** أي رسم لوشوش لازم ياخد صور الشخصيات نفسها كـ reference، وإلا الموديل بيطلّع ملامح مش سودانية
