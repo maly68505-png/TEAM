@@ -1,0 +1,174 @@
+<title>استقلال السودان 71 · الفصل الأول</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a screening-room storyboard. One dark film strip per scene, three frames side by side, transition chip bridging to the next scene. Deliberately single dark look. */
+:root{
+  --night:#0a1524;       /* campaign navy, deepened */
+  --panel:#101f33;
+  --line:#1f3149;
+  --cream:#ece4d2;       /* paper of the boy's notebook */
+  --muted:#8f9aab;
+  --gold:#d6a446;        /* campaign gold, the thread */
+  --maroon:#9a2a36;      /* campaign maroon, transitions */
+  --teal:#5f8f95;        /* look A shadows */
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+header{padding-block:56px 32px;border-bottom:1px solid var(--line);display:grid;gap:20px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,64px);line-height:1.15;margin:0;text-wrap:balance}
+h1 span{color:var(--gold)}
+.lede{max-width:65ch;color:var(--muted);margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px 28px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.facts b{color:var(--cream);font-weight:500}
+.thread{height:2px;background:linear-gradient(90deg,transparent,var(--gold) 15%,var(--gold) 85%,transparent);opacity:.7}
+
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;padding-block:32px}
+.legend div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+.legend h3{font-family:var(--display);font-weight:500;font-size:18px;margin:0 0 4px}
+.legend p{margin:0;color:var(--muted);font-size:14px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:2px 8px;border-radius:3px;margin-inline-end:6px;vertical-align:middle}
+.tag.a{background:#1b2a35;color:#a9c4c8;border:1px solid #2c4552}
+.tag.b{background:#2e2414;color:#e7c27a;border:1px solid #4b3a1d}
+
+.scene{padding-block:40px 8px;border-top:1px solid var(--line);display:grid;gap:18px}
+.scene-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.num{font-family:var(--mono);font-size:14px;color:var(--gold)}
+.scene h2{font-family:var(--display);font-weight:500;font-size:clamp(22px,3vw,30px);margin:0}
+.tc{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-inline-start:auto}
+.vo{margin:0;font-size:18px;color:var(--cream);border-inline-start:2px solid var(--gold);padding-inline-start:14px;max-width:65ch}
+.vo small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}
+.frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+figure{margin:0;display:grid;gap:8px;min-width:0}
+figure img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px;background:#000}
+figcaption{font-size:13px;color:var(--muted);line-height:1.5}
+figcaption b{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.1em;color:var(--cream);display:block}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 24px;font-size:14px;color:var(--muted)}
+.notes b{color:var(--cream);font-weight:500}
+.cut{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(90deg,rgba(154,42,54,.18),transparent);border-inline-start:3px solid var(--maroon);padding:12px 14px;border-radius:0 4px 4px 0;font-size:14px}
+.cut .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#e59aa3;white-space:nowrap;padding-top:2px}
+.cut.sig{border-inline-start-color:var(--gold);background:linear-gradient(90deg,rgba(214,164,70,.16),transparent)}
+.cut.sig .k{color:var(--gold)}
+
+footer{border-top:1px solid var(--line);margin-top:40px;padding-top:28px;display:grid;gap:10px;color:var(--muted);font-size:14px;max-width:70ch}
+footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-size:20px;margin:0}
+
+@media (max-width:720px){.frames{grid-template-columns:1fr}.tc{margin-inline-start:0}}
+@media (prefers-reduced-motion:no-preference){figure img{transition:transform .4s ease}figure:hover img{transform:scale(1.015)}}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar">
+<header>
+  <div class="eyebrow">Storyboard · Act I · Scenes 01–07</div>
+  <h1>استقلال السودان <span>71</span></h1>
+  <p class="lede">طفل من الدوحة يحمل صورة جدّه ودفترًا وبذرة، ويعود إلى بيت العائلة في شمال السودان. الفصل الأول من الاتصال الأول حتى إصلاح باب البيت.</p>
+  <div class="facts"><span>المدة الكلية <b>7:00</b></span><span>المشاهد <b>29</b></span><span>هذا الفصل <b>00:00–01:30</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 → 2027</b></span></div>
+  <div class="thread" aria-hidden="true"></div>
+</header>
+
+<section class="legend" aria-label="مفتاح اللوك والربط">
+  <div><h3><span class="tag a">LOOK A</span>الداخلي</h3><p>Low-key. مصدر ضوء واحد: شعاع شباك أو لمبة. 60–70% من الكادر ظل، والأسود عميق، والظلال رمادية مائلة للأزرق.</p></div>
+  <div><h3><span class="tag b">LOOK B</span>الخارجي</h3><p>ضوء ذهبي من الخلف، وحافة نحاسية على الشعر والقماش، وتراب مضيء، وظلال زرقاء ناعمة، وحبيبات فيلم.</p></div>
+  <div><h3>الخيط</h3><p>خيط قطن باهت يربطه الجد على دفتر الطفل في المشهد 05. في كل مكان يضيف له أحد ما خيطًا أو خرزة، وفي النهاية يُربط به الشتلة.</p></div>
+  <div><h3>القطع بالمقاس</h3><p>ننتقل من لقطة ماكرو لشيء صغير مع الطفل إلى لقطة درون للأرض بنفس الشكل. الربط يحدث في القطع نفسه، والمشاهد لا يلاحظ أين تغيرت الصورة. لا يوجد dissolve.</p></div>
+</section>
+
+<section class="scene" id="s01">
+  <div class="scene-head"><span class="num">01</span><h2>قطر والاتصال بالجد</h2><span class="tag a">LOOK A</span><span class="tc">00:00 – 00:18 · 18s</span></div>
+  <p class="vo"><small>الطفل</small>جدّي، هل أستطيع أن أرى المكان الذي تحكي عنه؟</p>
+  <div class="frames">
+    <figure><img src="img/01a.jpg" alt="لقطة واسعة: الطفل على مكتب بجوار نافذة الدوحة ليلًا والجد على شاشة التابلت"><figcaption><b>WIDE · 35mm</b>الطفل صغير في الكادر، وأضواء الدوحة خلفه، وجدّه على الشاشة.</figcaption></figure>
+    <figure><img src="img/01b.jpg" alt="لقطة متوسطة جانبية: الطفل يمسك التابلت والجد يتكلم"><figcaption><b>MEDIUM · 50mm</b>الجد في غرفة طين على الشاشة. هذا أول ظهور للسودان.</figcaption></figure>
+    <figure><img src="img/01c.jpg" alt="لقطة قريبة لوجه الطفل مضاء بضوء الشاشة"><figcaption><b>CLOSE · 85mm · push-in</b>ضوء الشاشة على العينين، وانعكاسها في الحدقة.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> متوسطة قرب النافذة، ثم اقتراب بطيء على الوجه</span><span><b>الصوت:</b> صوت الجد في المكالمة، وطنين المكيف، والمدينة البعيدة</span></div>
+  <div class="cut"><span class="k">CUT → 02</span><span><b>مطابقة بالموضع:</b> وجه الجد على الشاشة يأتي مكانه وجهه الشاب في الصورة القديمة، في نفس الموضع من الكادر.</span></div>
+</section>
+
+<section class="scene" id="s02">
+  <div class="scene-head"><span class="num">02</span><h2>صورة الذاكرة</h2><span class="tag a">LOOK A</span><span class="tc">00:18 – 00:30 · 12s</span></div>
+  <p class="vo"><small>الراوي</small>خرج يبحث عن السودان الذي عرفه جدّه.</p>
+  <div class="frames">
+    <figure><img src="img/02a.jpg" alt="الصورة العائلية القديمة بين يدي الطفل"><figcaption><b>INSERT · top-down</b>صورة العائلة في الحوش. هذا الشكل البصري سيتكرر في الفيلم كله.</figcaption></figure>
+    <figure><img src="img/02b.jpg" alt="من فوق كتف الطفل وهو ينظر للصورة تحت المصباح"><figcaption><b>OVER-SHOULDER · 35mm</b>الغرفة غارقة في الظلام، والمصباح يضيء الصورة وحدها.</figcaption></figure>
+    <figure><img src="img/02c.jpg" alt="ماكرو لوجه الجد الشاب في الصورة القديمة"><figcaption><b>MACRO · 100mm</b>الشقوق والحبيبات الفضية، وطرف إصبع الطفل.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> قريبة على الصورة واليدين</span><span><b>الصوت:</b> خشخشة ورق، ونَفَس الطفل</span></div>
+  <div class="cut"><span class="k">CUT → 03</span><span><b>مطابقة بالحركة:</b> أصابعه تضع الصورة، ثم تنفتح على البذرة.</span></div>
+</section>
+
+<section class="scene" id="s03">
+  <div class="scene-head"><span class="num">03</span><h2>البذرة وسؤال البداية</h2><span class="tag a">LOOK A</span><span class="tc">00:30 – 00:40 · 10s</span></div>
+  <p class="vo"><small>الطفل</small>من أين نبدأ؟</p>
+  <div class="frames">
+    <figure><img src="img/03a.jpg" alt="ماكرو لنواة بلح في كف الطفل"><figcaption><b>MACRO · 100mm</b>نواة بلح في شعاع ضوء ضيق.</figcaption></figure>
+    <figure><img src="img/03b.jpg" alt="الطفل يضع كيس البذرة في حقيبته الجلدية"><figcaption><b>MEDIUM · 35mm</b>يحفظ البذرة في الحقيبة، والصورة والدفتر بجانبه.</figcaption></figure>
+    <figure><img src="img/03c.jpg" alt="قلم رصاص فوق الصفحة الأولى الفارغة من الدفتر"><figcaption><b>CLOSE · 50mm</b>الصفحة الأولى فارغة. الخط العربي يُضاف في المونتاج.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> تفصيل البذرة ثم الدفتر</span><span><b>الصوت:</b> النواة في الكف، وسحّاب الحقيبة، والقلم على الورق</span></div>
+  <div class="cut"><span class="k">WIPE → 04</span><span><b>بعنصر عابر:</b> غلاف الدفتر ينغلق على العدسة، فيظهر خلفه زجاج المطار.</span></div>
+</section>
+
+<section class="scene" id="s04">
+  <div class="scene-head"><span class="num">04</span><h2>السفر من قطر</h2><span class="tag b">LOOK B</span><span class="tc">00:40 – 00:50 · 10s</span></div>
+  <p class="vo"><small>الراوي</small>حمل صورة، ودفترًا، وبذرة صغيرة.</p>
+  <div class="frames">
+    <figure><img src="img/04a.jpg" alt="الطفل وأمه يمشيان في صالة المطار مع ضوء الشمس"><figcaption><b>WIDE · tracking</b>الطفل وأمه بالتوب في صالة المطار، والشمس تدخل من الزجاج.</figcaption></figure>
+    <figure><img src="img/04b.jpg" alt="الطفل يمسك يد أمه وينظر للنوافذ"><figcaption><b>MEDIUM · eye level</b>ينظر إلى الطائرات، ويده في يد أمه.</figcaption></figure>
+    <figure><img src="img/04c.jpg" alt="من نافذة الطائرة: النيل من فوق وانعكاس وجه الطفل"><figcaption><b>POV · window</b>النيل من فوق وانعكاس وجهه على الزجاج. تمهيد لقطع المقاس.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> تتبع هادئ مع الطفل وأمه</span><span><b>الصوت:</b> صوت المطار مكتوم، والخطوات، ثم المحرك. ينتقل الصوت إلى هواء حوش البيت.</span></div>
+  <div class="cut sig"><span class="k">SCALE MATCH → 05</span><span><b>توقيع الفيلم:</b> شريط النيل من نافذة الطائرة يتحول إلى الخيط الباهت بين يدي الجد، بنفس الزاوية. يمكن إضافة morph قصير هنا داخل اللقطة.</span></div>
+</section>
+
+<section class="scene" id="s05">
+  <div class="scene-head"><span class="num">05</span><h2>عند باب البيت</h2><span class="tag b">LOOK B</span><span class="tc">00:50 – 01:05 · 15s</span></div>
+  <p class="vo"><small>الطفل</small>هل نجد كلّ شيء كما تركناه؟</p>
+  <div class="frames">
+    <figure><img src="img/05a.jpg" alt="الجد ينتظر عند الباب الأزرق والطفل وأمه يقتربان"><figcaption><b>WIDE · 35mm</b>زقاق طين، والجد عند الباب الأزرق.</figcaption></figure>
+    <figure><img src="img/05b.jpg" alt="الجد يضع يديه على كتفي الطفل عند الباب"><figcaption><b>TWO-SHOT · 50mm</b>لقاء بلا كلام، ونترك للصمت مساحته.</figcaption></figure>
+    <figure><img src="img/05c.jpg" alt="ماكرو: الجد يربط الخيط الباهت على دفتر الطفل"><figcaption><b>MACRO · 100mm</b>بداية الخيط: الجد يعقده على الدفتر.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> ثنائية ثم نظرة إلى الحوش</span><span><b>الصوت:</b> ريح، وكلب بعيد، وصرير الباب، وشدّ العقدة</span></div>
+  <div class="cut"><span class="k">WIPE → 06</span><span><b>من عتبة إلى عتبة:</b> الطفل يعبر باب البيت، ويظهر واقفًا في باب المدرسة.</span></div>
+</section>
+
+<section class="scene" id="s06">
+  <div class="scene-head"><span class="num">06</span><h2>المدرسة الصامتة</h2><span class="tag a">LOOK A</span><span class="tc">01:05 – 01:15 · 10s</span></div>
+  <p class="vo"><small>الراوي</small>انقطع أطفال عن مدارسهم وأصدقائهم.</p>
+  <div class="frames">
+    <figure><img src="img/06a.jpg" alt="فصل فارغ وشعاع ضوء على المقاعد"><figcaption><b>WIDE · static · 24mm</b>فصل فارغ ورسمة شمس بالطباشير. غياب الأطفال وحده يكفي، بلا مشاهد دمار.</figcaption></figure>
+    <figure><img src="img/06b.jpg" alt="الطفل ظلًا في باب الفصل"><figcaption><b>MEDIUM · reverse</b>الطفل ظل في الباب، يطل على المقاعد.</figcaption></figure>
+    <figure><img src="img/06c.jpg" alt="كراسة منسية على مقعد مترب"><figcaption><b>CLOSE · 50mm</b>كراسة منسية مع قلم، وطبقة تراب.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> ثابتة على المقاعد الخالية</span><span><b>الصوت:</b> ضحكات بعيدة تتلاشى، ثم صمت</span></div>
+  <div class="cut"><span class="k">J-CUT → 07</span><span><b>صوت ثم ملمس:</b> صوت المطرقة يسبق الصورة، وتراب الشعاع في الفصل يصبح غبار الصدأ في الشمس.</span></div>
+</section>
+
+<section class="scene" id="s07">
+  <div class="scene-head"><span class="num">07</span><h2>إصلاح باب البيت</h2><span class="tag b">LOOK B</span><span class="tc">01:15 – 01:30 · 15s</span></div>
+  <p class="vo"><small>الجد</small>ستحتاج أشياء كثيرة إلى أيدينا.</p>
+  <div class="frames">
+    <figure><img src="img/07a.jpg" alt="الجد والجار يعيدان الباب الأزرق والطفل يحمل الأدوات"><figcaption><b>WIDE · 35mm</b>الجد والجار يرفعان الباب، والطفل جاهز بالأدوات.</figcaption></figure>
+    <figure><img src="img/07b.jpg" alt="الطفل يناول جده المطرقة"><figcaption><b>MEDIUM · 50mm</b>يناوله المطرقة، وابتسامة صغيرة بينهما.</figcaption></figure>
+    <figure><img src="img/07c.jpg" alt="ماكرو: يد الجد تشد مسمار المفصلة"><figcaption><b>MACRO · 100mm</b>المفصلة الصدئة تُشد من جديد.</figcaption></figure>
+  </div>
+  <div class="notes"><span><b>الكاميرا:</b> أيدي الكبار، والطفل يساعد</span><span><b>الصوت:</b> المفك، والخشب، وأصوات الجيران. الإيقاع يعود إلى الحياة.</span></div>
+  <div class="cut"><span class="k">WIPE → 08</span><span><b>إلى سواكن:</b> الباب يُفتح على الكاميرا ويغطي الكادر، ويظهر خلفه بحر سواكن.</span></div>
+</section>
+
+<footer>
+  <h3>بعد الموافقة</h3>
+  <p>نكمل الفصل الثاني (08–16: سواكن، كسلا، جبل مرة، جبال النوبة، مروي، المزارعة) بنفس الكروت ونفس اللوك ونفس قواعد الربط، ثم نحرّك اللقطات المعتمدة.</p>
+  <p>الصور تصورات مولّدة للتخطيط البصري، وليست توثيقًا للأماكن أو أرشيفًا. الحوار مأخوذ من النص المعتمد.</p>
+</footer>
+</div>
