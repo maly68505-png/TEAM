@@ -141,7 +141,7 @@ footer{{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;color:
 </style>
 <div class="wrap" dir="rtl" lang="ar">
 <section class="cover"><div class="eyebrow">STORYBOARD · STYLE 2 · FLAG STRIP</div><h1>استقلال السودان <span>71</span></h1>
-<p class="lede">نفس الرحلة بلون مختلف. شريط بلون واحد من ألوان العلم يعبر سماء كل مشهد ويلفت نظر الطفل: أحمر، ثم أبيض، ثم أسود، ثم أخضر. في الختام تجتمع الألوان الأربعة فوق ساحة المدرسة ويرتفع العلم.</p>
+<p class="lede">نفس الرحلة بلون مختلف. في كل مشهد شريط رفيع من ألوان العلم يعبر خلف المكان ويلفت نظر الطفل: أحمر، ثم أبيض، ثم أسود، ثم أخضر. في الختام تجتمع الألوان الأربعة من أنحاء القرية وتلتف حول سارية العلم.</p>
 <div class="facts"><span>المدة <b>7:00</b></span><span>المشاهد <b>29</b></span><span>النسبة <b>16:9</b></span><span>الذكرى <b>1956 – 2027</b></span></div>
 <div class="thread"></div></section>
 <section aria-label="عرض متحرك"><div class="player" id="player"></div><div class="controls"><button id="pp" type="button">تشغيل</button><button id="prev" type="button">المشهد السابق</button><button id="next" type="button">المشهد التالي</button><div class="progress"><i id="prog"></i></div></div><p class="hint">عرض متحرك للستوري بورد: كل مشهد بلقطاته الثلاث وتعليقه الصوتي مكتوبًا. التفاصيل الكاملة لكل مشهد أسفل الصفحة.</p></section>
