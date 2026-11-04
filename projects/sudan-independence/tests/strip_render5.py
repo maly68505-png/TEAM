@@ -58,7 +58,8 @@ for i, f in enumerate(files):
     base = np.asarray(Image.open(os.path.join(src, f)).convert('RGB'), np.float32)
     r, g, b = base[..., 0], base[..., 1], base[..., 2]
     lum = base @ np.array([.299, .587, .114])
-    sky = ((b > r + 8) & (lum > 95)).astype(np.float32)          # blue, bright = sky
+    fg_obj = (r > b + 10) | (lum < 60)                           # warm (skin, rock, turban) or dark (hair) = object
+    sky = (~fg_obj).astype(np.float32)                           # everything else (any blue, clouds) = sky
     m8 = Image.fromarray((sky * 255).astype(np.uint8))
     m8 = m8.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.MinFilter(5))   # fill specks inside the sky
     m8 = m8.filter(ImageFilter.MinFilter(5)).filter(ImageFilter.MaxFilter(5))   # drop stray sky specks on subjects
