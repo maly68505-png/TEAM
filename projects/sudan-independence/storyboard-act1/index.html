@@ -62,6 +62,71 @@ figcaption b{font-family:var(--mono);font-weight:500;font-size:11px;letter-spaci
 footer{border-top:1px solid var(--line);margin-top:40px;padding-top:28px;display:grid;gap:10px;color:var(--muted);font-size:14px;max-width:70ch}
 footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-size:20px;margin:0}
 
+/* ---------- Animatic ---------- */
+.anim-intro{padding-block:48px 8px;border-top:1px solid var(--line);display:grid;gap:12px}
+.anim-intro h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);margin:0}
+.anim-intro p{margin:0;color:var(--muted);max-width:65ch}
+.anim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:28px;padding-block:24px}
+.tr{display:grid;gap:10px;min-width:0}
+.tr h3{font-family:var(--display);font-weight:500;font-size:20px;margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tr h3 .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:2px 8px;border-radius:3px;background:#2a1418;color:#e59aa3;border:1px solid #4a2128}
+.tr h3 .k.gold{background:#2e2414;color:var(--gold);border-color:#4b3a1d}
+.tr h3 .k.cg{background:#14262a;color:#9fd0d4;border-color:#244449}
+.tp{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden;border-radius:4px;background:#000}
+.tp .l{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tp .chip{position:absolute;inset-block-start:10px;inset-inline-start:10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;background:rgba(10,21,36,.78);color:var(--cream);padding:3px 8px;border-radius:3px;z-index:5}
+.tp .panel{position:absolute;inset:0;z-index:4;background:linear-gradient(90deg,#3a2a1c,#5b432c 40%,#3a2a1c);transform:translateX(105%)}
+.tp .panel.door{background:linear-gradient(90deg,#071019,#1e3a52 45%,#071019)}
+.tp .wave{position:absolute;inset-inline:18%;inset-block-end:12%;height:34px;display:flex;align-items:center;gap:4px;justify-content:center;z-index:5;opacity:0}
+.tp .wave i{display:block;width:4px;border-radius:2px;background:var(--gold);height:30%}
+.tp .wave span{font-family:var(--mono);font-size:11px;color:var(--gold);margin-inline-start:10px;white-space:nowrap}
+.beats{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px;color:var(--muted)}
+.beats li{display:grid;grid-template-columns:5.5em 1fr;gap:10px}
+.beats b{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--cream);font-variant-numeric:tabular-nums;direction:ltr;text-align:start}
+.vfx{overflow-x:auto;padding-block:8px 24px}
+.vfx table{width:100%;min-width:640px;border-collapse:collapse;font-size:14px}
+.vfx th,.vfx td{text-align:start;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.vfx th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:400}
+.vfx td:first-child{white-space:nowrap;color:var(--cream)}
+.static-pair{display:none}
+
+@media (prefers-reduced-motion:no-preference){
+  .t1 .a{animation:t1a 6s infinite;transform-origin:30% 48%}
+  .t1 .b{animation:cut58 6s infinite}
+  .t2 .a{animation:t2a 5s infinite}
+  .t2 .b{animation:cut55 5s infinite}
+  .t3 .a{animation:hide45 6s infinite}
+  .t3 .panel,.t5 .panel{animation:pass 6s infinite}
+  .t4 .a{animation:t4a 9s infinite;transform-origin:52% 50%}
+  .t4 .n{animation:t4n 9s infinite}
+  .t4 .th{animation:t4t 9s infinite}
+  .t4 .b{animation:t4b 9s infinite}
+  .t5 .a{animation:hide45 6s infinite}
+  .t6 .a{animation:hide60 6s infinite}
+  .t6 .b{animation:cut60 6s infinite}
+  .t6 .wave{animation:wave 6s infinite}
+  .t6 .wave i{animation:bar .5s infinite alternate}
+  .t6 .wave i:nth-child(2n){animation-delay:.15s}.t6 .wave i:nth-child(3n){animation-delay:.3s}
+}
+@keyframes t1a{0%{transform:scale(1);opacity:1}57.9%{transform:scale(2.7);opacity:1}58%,100%{transform:scale(2.7);opacity:0}}
+@keyframes cut58{0%,57.9%{opacity:0}58%,100%{opacity:1}}
+@keyframes t2a{0%{transform:translateY(0);opacity:1}54.9%{transform:translateY(7%);opacity:1}55%,100%{opacity:0}}
+@keyframes cut55{0%,54.9%{opacity:0}55%,100%{opacity:1}}
+@keyframes hide45{0%,44.9%{opacity:1}45%,100%{opacity:0}}
+@keyframes hide60{0%,59.9%{opacity:1}60%,100%{opacity:0}}
+@keyframes cut60{0%,59.9%{opacity:0}60%,100%{opacity:1}}
+@keyframes pass{0%,20%{transform:translateX(105%)}45%{transform:translateX(0)}70%,100%{transform:translateX(-105%)}}
+@keyframes t4a{0%{transform:scale(1);opacity:1}24.9%{transform:scale(2.2);opacity:1}25%,100%{opacity:0;transform:scale(2.2)}}
+@keyframes t4n{0%,24.9%{opacity:0;transform:scale(1)}25%{opacity:1;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}68%{opacity:0;transform:scale(1.45)}100%{opacity:0}}
+@keyframes t4t{0%,48%{opacity:0;transform:scale(.8)}68%{opacity:1;transform:scale(1)}80%{opacity:1;transform:scale(1.05)}80.1%,100%{opacity:0}}
+@keyframes t4b{0%,80%{opacity:0}80.1%,100%{opacity:1}}
+@keyframes wave{0%,32%{opacity:0}36%,60%{opacity:1}64%,100%{opacity:0}}
+@keyframes bar{from{height:20%}to{height:100%}}
+@media (prefers-reduced-motion:reduce){
+  .tp{display:none}.static-pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .static-pair img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px}
+}
+
 @media (max-width:720px){.frames{grid-template-columns:1fr}.tc{margin-inline-start:0}}
 @media (prefers-reduced-motion:no-preference){figure img{transition:transform .4s ease}figure:hover img{transform:scale(1.015)}}
 </style>
@@ -165,6 +230,88 @@ footer h3{font-family:var(--display);font-weight:500;color:var(--cream);font-siz
   <div class="notes"><span><b>الكاميرا:</b> أيدي الكبار، والطفل يساعد</span><span><b>الصوت:</b> المفك، والخشب، وأصوات الجيران. الإيقاع يعود إلى الحياة.</span></div>
   <div class="cut"><span class="k">WIPE → 08</span><span><b>إلى سواكن:</b> الباب يُفتح على الكاميرا ويغطي الكادر، ويظهر خلفه بحر سواكن.</span></div>
 </section>
+
+<section class="anim-intro" id="animatic">
+  <div class="eyebrow">Animatic · Transitions</div>
+  <h2>إزاي المشاهد بتتربط ببعض</h2>
+  <p>كل مربع تحت بيعرض نقلة واحدة متكررة: آخر لقطة في المشهد، ونوع النقلة، وأول لقطة في المشهد اللي بعده. ده تمثيل تقريبي للتوقيت والحركة، والتنفيذ الحقيقي بيتعمل بالفيديو والمونتاج.</p>
+</section>
+
+<div class="anim-grid">
+  <div class="tr">
+    <h3>01 ← 02 <span class="k">MATCH CUT · بالموضع</span></h3>
+    <div class="tp t1" role="img" aria-label="زووم على وجه الجد في التابلت ثم قطع على وجهه الشاب في الصورة">
+      <img class="l a" src="img/01b.jpg" alt=""><img class="l b" src="img/02c.jpg" alt=""><span class="chip">CUT</span>
+    </div>
+    <div class="static-pair"><img src="img/01b.jpg" alt="قبل"><img src="img/02c.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–1.5s</b>الكاميرا تقرّب على وش الجد في التابلت.</li><li><b>1.5s</b>قطع مباشر: نفس الوش في نفس مكان الكادر، بس شاب في صورة قديمة. اتنين وستين سنة بيعدّوا في قطعة واحدة.</li></ul>
+  </div>
+
+  <div class="tr">
+    <h3>02 ← 03 <span class="k">MATCH CUT · بالحركة</span></h3>
+    <div class="tp t2" role="img" aria-label="يد الطفل تنزل بالصورة ثم قطع على نفس اليد مفتوحة على البذرة">
+      <img class="l a" src="img/02a.jpg" alt=""><img class="l b" src="img/03a.jpg" alt=""><span class="chip">CUT</span>
+    </div>
+    <div class="static-pair"><img src="img/02a.jpg" alt="قبل"><img src="img/03a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–1.2s</b>الإيدين بينزلوا الصورة لتحت.</li><li><b>1.2s</b>قطع والحركة لسه مكملة: نفس الكف بيتفتح على نواة البلح.</li></ul>
+  </div>
+
+  <div class="tr">
+    <h3>03 ← 04 <span class="k">WIPE · غلاف الدفتر</span></h3>
+    <div class="tp t3" role="img" aria-label="غلاف الدفتر يقفل على العدسة ويكشف صالة المطار">
+      <img class="l b" src="img/04a.jpg" alt=""><img class="l a" src="img/03c.jpg" alt=""><span class="panel"></span><span class="chip">WIPE</span>
+    </div>
+    <div class="static-pair"><img src="img/03c.jpg" alt="قبل"><img src="img/04a.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–1.0s</b>الطفل بيقفل الدفتر، والغلاف الجلد بيعدّي قدام العدسة ويغطي الكادر كله.</li><li><b>1.0–1.6s</b>الغلاف يكمّل طريقه، ويبان وراه زجاج المطار. القطع مستخبي جوه حركة الغلاف.</li></ul>
+  </div>
+
+  <div class="tr">
+    <h3>04 ← 05 <span class="k gold">SCALE MATCH + MORPH</span></h3>
+    <div class="tp t4" role="img" aria-label="من شباك الطيارة على النيل، النيل يتحول لخيط، ثم إيد الجد تربط الخيط">
+      <img class="l a" src="img/04c.jpg" alt=""><img class="l n" src="img/t-nile.jpg" alt=""><img class="l th" src="img/t-thread.jpg" alt=""><img class="l b" src="img/05c.jpg" alt=""><span class="chip">توقيع الفيلم</span>
+    </div>
+    <div class="static-pair"><img src="img/t-nile.jpg" alt="النيل"><img src="img/t-thread.jpg" alt="الخيط"></div>
+    <ul class="beats"><li><b>0.0–2.0s</b>من شباك الطيارة: الكاميرا بتدخل من الشباك.</li><li><b>2.0s</b>قطع على درون فوق النيل مباشرة، والكاميرا بتنزل.</li><li><b>3.0–5.0s</b><span><b style="color:var(--gold)">الـ MORPH الوحيد هنا:</b> النيل بيبقى خيط، والنخل بيبقى ألياف، والرملة بتبقى ورق. لقطة واحدة متصلة، والخط ثابت في نفس الزاوية.</span></li><li><b>5.0s</b>قطع على إيد الجد بتربط نفس الخيط على الدفتر.</li></ul>
+  </div>
+
+  <div class="tr">
+    <h3>05 ← 06 <span class="k">WIPE · إطار الباب</span></h3>
+    <div class="tp t5" role="img" aria-label="إطار الباب يعبر الكادر ويكشف الطفل في باب الفصل">
+      <img class="l b" src="img/06b.jpg" alt=""><img class="l a" src="img/05b.jpg" alt=""><span class="panel door"></span><span class="chip">WIPE</span>
+    </div>
+    <div class="static-pair"><img src="img/05b.jpg" alt="قبل"><img src="img/06b.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–1.0s</b>الطفل بيعدّي عتبة باب البيت، وخشب إطار الباب بيملى الكادر.</li><li><b>1.0–1.6s</b>من ورا الإطار يبان واقف في عتبة باب المدرسة. من باب لباب.</li></ul>
+  </div>
+
+  <div class="tr">
+    <h3>06 ← 07 <span class="k">J-CUT · الصوت أولًا</span></h3>
+    <div class="tp t6" role="img" aria-label="صوت المطرقة يدخل على صورة الفصل الفارغ ثم قطع على المفصلة">
+      <img class="l b" src="img/07c.jpg" alt=""><img class="l a" src="img/06a.jpg" alt="">
+      <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span>طَق · طَق</span></div><span class="chip">J-CUT</span>
+    </div>
+    <div class="static-pair"><img src="img/06a.jpg" alt="قبل"><img src="img/07c.jpg" alt="بعد"></div>
+    <ul class="beats"><li><b>0.0–2.0s</b>صمت الفصل.</li><li><b>2.0s</b>صوت دقات خفيفة بيدخل والصورة لسه على الفصل الفاضي.</li><li><b>3.6s</b>قطع: التراب في شعاع الفصل بيبقى صدأ وتراب في شمس الحوش. الصوت هو اللي شدّنا.</li></ul>
+  </div>
+</div>
+
+<section class="anim-intro" id="vfx-map">
+  <div class="eyebrow">VFX Map · الفيلم كامل</div>
+  <h2>فين الـ Morph والـ CGI والجرافيك بالظبط</h2>
+  <p>القاعدة: 90% من الفيلم لقطات حقيقية ومعاها قطع ذكي. التأثيرات بتظهر في لحظات قليلة ومحسوبة، وكل واحدة منهم طالعة من حاجة في إيد الطفل.</p>
+</section>
+<div class="vfx">
+  <table>
+    <thead><tr><th>الأداة</th><th>بتعمل إيه</th><th>فين في الفيلم</th><th>التنفيذ</th></tr></thead>
+    <tbody>
+      <tr><td>Morph داخل لقطة</td><td>حاجة بتتحول لحاجة تانية في نفس اللقطة، من غير قطع</td><td>3 مرات بس: 04←05 النيل يبقى الخيط · 27←28 وشوش الدفتر تبقى الناس الحقيقيين · 29 علم 1956 في شباك الصورة يبقى العلم الحالي</td><td>AI بفريم بداية وفريم نهاية متطابقين في التكوين، ونستخدم الجزء النضيف بس</td></tr>
+      <tr><td>Scale Match Cut</td><td>قطع من ماكرو لدرون بنفس الشكل، من غير أي تأثير</td><td>04←05 الخيط والنيل · 08 رغوة الجبنة وموج سواكن · 09 رصاص الرسمة وجرانيت التاكا · 13 بصمة الصباع وحقول الجزيرة · 19 خرزة الطين وهرم مروي</td><td>لقطتين حقيقيتين متطابقتين في الزاوية والضوء، والمونتاج هو اللي بيعمل السحر</td></tr>
+      <tr><td>شباك 1956 (CGI كومبوزيت)</td><td>جوه إطار صورة الجد الماضي بيتحرك بالأبيض والأسود، وبرا الإطار الحاضر بالألوان</td><td>02 لمحة أولى صغيرة · 12 مروي · 29 الذروة، رفع العلم</td><td>الصورة prop حقيقي في الإيد، متعقبة (planar track)، وجواها لقطة أرشيف تخيلية بجرين 16mm</td></tr>
+      <tr><td>الخيط</td><td>prop حقيقي، ومن غير أي CGI</td><td>05 الجد بيربطه · كل محطة بيتضاف له لون أو خرزة · 28 بيتربط بيه الشتلة</td><td>بيتولّد في كل لقطة بكارت ثابت. بدون توهج ولا خطوط نيون</td></tr>
+      <tr><td>جرافيك: خط الطفل</td><td>اسم كل مكان مكتوب بخط إيد الطفل جوه المشهد نفسه</td><td>مع كل محطة: سواكن، كسلا، جبل مرة…</td><td>After Effects بـ 3D tracking، والخط بيتأثر بالضوء والريح</td></tr>
+      <tr><td>جرافيك: الختام</td><td>شارة الذكرى 71 وشعار الحملة</td><td>29</td><td>من ملفات الهوية الأصلية، مش بالـ AI</td></tr>
+    </tbody>
+  </table>
+</div>
 
 <footer>
   <h3>بعد الموافقة</h3>
