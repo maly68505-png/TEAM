@@ -15,7 +15,7 @@
  */
 (function () {
     var FPS = 25, W = 1920, H = 1080, DUR = 7;
-    var DOT = [1109, 367];        // the dot/rings of the logo
+    var DOT = [1120, 395];        // center of the small inner dot of the logo (measured from render)
     var PRESENTER = [960, 520];   // where the spotlight lands
 
     // --- timing (seconds) ---
@@ -108,7 +108,8 @@
         'var d = thisComp.layer("CTRL_DOT").transform.position;\n' +
         'var p = thisComp.layer("CTRL_PRESENTER").transform.position;\n' +
         'ease(time, ' + T_SPOT + ', ' + T_TRAVEL_END + ', d, p);';
-    keys(matte.transform.scale, [[T_SPOT, [20, 20]], [T_SPOT_END, [2200, 2200]]], 75);
+    // scale 0 until the spot starts, otherwise the matte punches a dark hole through Shot 1
+    keys(matte.transform.scale, [[0, [0, 0]], [T_SPOT - 0.12, [0, 0]], [T_SPOT, [18, 18]], [T_SPOT_END, [2200, 2200]]], 75);
 
     try { shot2.setTrackMatte(matte, TrackMatteType.ALPHA); }     // AE 2023+
     catch (e) { shot2.trackMatteType = TrackMatteType.ALPHA; }    // older AE (matte is directly above)
@@ -131,7 +132,7 @@
     var dot = comp.layers.addShape();
     dot.name = "DOT_GLOW";
     var dc = dot.property("ADBE Root Vectors Group");
-    dc.addProperty("ADBE Vector Shape - Ellipse").property("ADBE Vector Ellipse Size").setValue([36, 36]);
+    dc.addProperty("ADBE Vector Shape - Ellipse").property("ADBE Vector Ellipse Size").setValue([34, 34]);
     dc.addProperty("ADBE Vector Graphic - Fill").property("ADBE Vector Fill Color").setValue([1, 0.95, 0.85]);
     dot.transform.position.expression = 'thisComp.layer("CTRL_DOT").transform.position';
     keys(dot.transform.scale, [
