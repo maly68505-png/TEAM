@@ -240,7 +240,7 @@
     // =====================================================================
     (function () {
         var IN = 1.0, ON = IN + 0.8, OFF0 = IN + MEMD, OFF1 = OFF0 + 0.9, D = OFF1 + 1.0;
-        var HOLO = [W / 2, 330], HSCALE = 46;
+        var HOLO = [W / 2, 478], HSCALE = 40;   // below the chandelier, above the guests
         var c = proj.items.addComp("OPT_E_Hologram", W, H, 1, D, FPS); c.parentFolder = folder;
         var w = guestLayer(c, wide, "WIDE_STAGE");
         var dim = c.layers.addSolid([0, 0, 0], "HOUSE_DIM", W, H, 1); keys(dim.transform.opacity, [[IN, 0], [ON, 12], [OFF0, 12], [OFF1, 0]], 50);
