@@ -42,6 +42,7 @@
     function dims(p) { var t = p.propertyValueType; return t === PropertyValueType.ThreeD ? 3 : (t === PropertyValueType.TwoD ? 2 : 1); }
     function keys(p, pairs, infl) {
         var i, j, a, n;
+        if (!p) return;   // property not found on this AE version: skip instead of crashing
         for (i = 0; i < pairs.length; i++) p.setValueAtTime(pairs[i][0], pairs[i][1]);
         if (!infl) return;
         n = dims(p);
@@ -77,6 +78,9 @@
         l.outPoint = comp.duration; return l;
     }
     function marker(comp, t, txt) { comp.markerProperty.setValueAtTime(t, new MarkerValue(txt)); }
+
+    var errors = [];
+    function safe(name, fn) { try { fn(); } catch (e) { errors.push(name + " (line " + e.line + "): " + e.toString()); } }
 
     // ---------- inputs ----------
     var guest = pickOne("1/3  Select the GUEST clip (close-up)");
@@ -115,7 +119,7 @@
     // =====================================================================
     // OPTION A : MEMORY THEATRE
     // =====================================================================
-    (function () {
+    safe("A Memory Theatre", function () {
         var IN = PRE, ON = IN + 0.4, PUSH0 = IN + 1.0, PUSH1 = PUSH0 + 1.3;
         var OUT0 = ON + MEMD - 1.6, OUT1 = OUT0 + 1.3, BACK = OUT1 + 0.8, D = BACK + POST;
         var c = proj.items.addComp("OPT_A_Memory_Theatre", W, H, 1, D, FPS); c.parentFolder = folder;
@@ -140,12 +144,12 @@
         var g0 = guestLayer(c, guest, "GUEST_BEFORE"); g0.outPoint = IN; g0.moveToBeginning();
         marker(c, IN, "CUT to wide - SFX: film projector starts"); marker(c, PUSH0, "camera flies into the memory");
         marker(c, OUT0, "pull back - guest watches his own past"); marker(c, BACK, "CUT back to guest - room tone returns");
-    })();
+    });
 
     // =====================================================================
     // OPTION B : FILM STRIP
     // =====================================================================
-    (function () {
+    safe("B Film Strip", function () {
         var IN = PRE, SLIDE1 = IN + 1.2, PUNCH = SLIDE1 + 0.6, END = PUNCH + MEMD, D = END + 0.4 + POST;
         var FW = 520, FH = 292, GAP = 60, SH = FH + 120;
         var stripW = (FW + GAP) * (nShots + 4);
@@ -185,12 +189,12 @@
         keys(fl.transform.opacity, [[END - 0.3, 0], [END - 0.2, 80], [END - 0.12, 0], [END - 0.04, 90], [END + 0.04, 0], [END + 0.12, 60], [END + 0.4, 0]]);
         hold(fl.transform.opacity);
         marker(c, IN, "SFX: film reel spins up"); marker(c, PUNCH, "punch into the frame"); marker(c, END, "projector gate flicker - back to guest");
-    })();
+    });
 
     // =====================================================================
     // OPTION C : DOT IRIS  (brand)
     // =====================================================================
-    (function () {
+    safe("C Dot Iris", function () {
         var DOT0 = PRE - 0.5, IN = PRE, OPEN = IN + 0.6, CLOSE0 = IN + MEMD - 0.6, CLOSE1 = IN + MEMD, D = CLOSE1 + POST;
         var c = proj.items.addComp("OPT_C_Dot_Iris", W, H, 1, D, FPS); c.parentFolder = folder;
         var g = guestLayer(c, guest, "GUEST");
@@ -207,12 +211,12 @@
         keys(dot.transform.opacity, [[DOT0, 0], [IN - 0.1, 100], [OPEN, 0], [CLOSE0 + 0.3, 0], [CLOSE1, 100], [CLOSE1 + 0.5, 0]], 50);
         keys(dot.transform.scale, [[DOT0, [60, 60]], [IN, [160, 160]], [CLOSE1, [160, 160]], [CLOSE1 + 0.5, [60, 60]]], 50);
         marker(c, DOT0, "sconce light becomes the dot - SFX soft tone"); marker(c, IN, "iris opens"); marker(c, CLOSE0, "iris closes back into the dot");
-    })();
+    });
 
     // =====================================================================
     // OPTION D : INK BLEED
     // =====================================================================
-    (function () {
+    safe("D Ink Bleed", function () {
         var IN = PRE, OPEN = IN + 1.1, CLOSE0 = IN + MEMD - 0.9, CLOSE1 = IN + MEMD, D = CLOSE1 + POST;
         var DROP = [W * 0.55, H * 0.45];
         var c = proj.items.addComp("OPT_D_Ink_Bleed", W, H, 1, D, FPS); c.parentFolder = folder;
@@ -222,7 +226,7 @@
             var mk = s.Masks.addProperty("ADBE Mask Atom");
             var e = ellipse(100); for (var v = 0; v < 4; v++) { e.vertices[v] = [e.vertices[v][0] + DROP[0], e.vertices[v][1] + DROP[1]]; }
             mk.property("ADBE Mask Shape").setValue(e);
-            keys(mk.property("ADBE Mask Expansion"), [[IN, -95], [OPEN, 1500 + extra], [CLOSE0, 1500 + extra], [CLOSE1, -95]], 70);
+            keys(mk.property("ADBE Mask Offset"), [[IN, -95], [OPEN, 1500 + extra], [CLOSE0, 1500 + extra], [CLOSE1, -95]], 70);
             mk.property("ADBE Mask Feather").setValue([8, 8]);
             var re = addFx(s, "ADBE Roughen Edges"); setFx(re, "Border", 140); setFx(re, "Edge Sharpness", 1.4); setFx(re, "Fractal Influence", 1);
             setFx(re, "Scale", 120);
@@ -233,12 +237,12 @@
         var m = seqLayer(c, IN, "MEMORY_SEQ"); m.inPoint = IN; m.outPoint = CLOSE1;
         var mt = inkShape("INK_MATTE", 0); mt.moveBefore(m); matte(m, mt);
         marker(c, IN, "SFX: ink drop / water drip"); marker(c, CLOSE0, "ink pulls back");
-    })();
+    });
 
     // =====================================================================
     // OPTION E : HOLOGRAM  (memory floats far back in the theatre, no frame edges)
     // =====================================================================
-    (function () {
+    safe("E Hologram", function () {
         var IN = 1.0, ON = IN + 0.8, OFF0 = IN + MEMD, OFF1 = OFF0 + 0.9, D = OFF1 + 1.0;
         var HOLO = [W / 2, 478], HSCALE = 40;   // below the chandelier, above the guests
         var c = proj.items.addComp("OPT_E_Hologram", W, H, 1, D, FPS); c.parentFolder = folder;
@@ -270,8 +274,8 @@
         keys(cam.transform.scale, [[0.5, [100, 100]], [D - 0.5, [112, 112]]], 33);
         marker(c, IN, "hologram fades in - SFX: low shimmer"); marker(c, OFF0, "hologram dissolves");
         marker(c, 0, "TIP: if a hologram passes behind the guest/host, Roto Brush them and put them on top");
-    })();
+    });
 
-    alert("Done: 5 options in the project panel > NOQTA_MEMORY_TRANSITIONS.\nReplace shots inside MEMORY_SEQ (Alt/Option-drag) and all 5 options update.");
+    alert((errors.length ? "Some options had problems:\n" + errors.join("\n") + "\n\n" : "") + "Done: 5 options in the project panel > NOQTA_MEMORY_TRANSITIONS.\nReplace shots inside MEMORY_SEQ (Alt/Option-drag) and all 5 options update.");
     app.endUndoGroup();
 })();
