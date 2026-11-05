@@ -1,11 +1,12 @@
 /*
  * Noqtet Tahawul - AI Memory Sequences : 4 transition options
  * ------------------------------------------------------------
- * Builds 4 ready comps from the SAME inputs so you can show them side by side:
+ * Builds 5 ready comps from the SAME inputs so you can show them side by side:
  *   OPT_A_Memory_Theatre  - the memory is projected inside the theatre, camera flies into it and back out
  *   OPT_B_Film_Strip      - a strip of film frames slides in, we punch into one frame; exit = projector gate flicker
  *   OPT_C_Dot_Iris        - a sconce light becomes a dot, the dot opens as an iris on the memory and closes back
  *   OPT_D_Ink_Bleed       - an ink drop spreads over the guest and reveals the memory; exit = ink pulls back
+ *   OPT_E_Hologram        - on the wide shot the memory floats far back as a frameless hologram, slow push-in, they keep talking
  *
  * Run: After Effects > File > Scripts > Run Script File...
  * It asks for:
@@ -234,6 +235,43 @@
         marker(c, IN, "SFX: ink drop / water drip"); marker(c, CLOSE0, "ink pulls back");
     })();
 
-    alert("Done: 4 options in the project panel > NOQTA_MEMORY_TRANSITIONS.\nReplace shots inside MEMORY_SEQ (Alt/Option-drag) and all 4 options update.");
+    // =====================================================================
+    // OPTION E : HOLOGRAM  (memory floats far back in the theatre, no frame edges)
+    // =====================================================================
+    (function () {
+        var IN = 1.0, ON = IN + 0.8, OFF0 = IN + MEMD, OFF1 = OFF0 + 0.9, D = OFF1 + 1.0;
+        var HOLO = [W / 2, 330], HSCALE = 46;
+        var c = proj.items.addComp("OPT_E_Hologram", W, H, 1, D, FPS); c.parentFolder = folder;
+        var w = guestLayer(c, wide, "WIDE_STAGE");
+        var dim = c.layers.addSolid([0, 0, 0], "HOUSE_DIM", W, H, 1); keys(dim.transform.opacity, [[IN, 0], [ON, 12], [OFF0, 12], [OFF1, 0]], 50);
+        var h = seqLayer(c, IN, "HOLOGRAM"); h.inPoint = IN; h.outPoint = OFF1;
+        h.transform.position.setValue(HOLO); h.transform.scale.setValue([HSCALE, HSCALE]);
+        h.blendingMode = BlendingMode.SCREEN;
+        // soft, frameless edge
+        var mk = h.Masks.addProperty("ADBE Mask Atom"), e = ellipse(1);
+        for (var v = 0; v < 4; v++) {
+            e.vertices[v] = [W / 2 + e.vertices[v][0] * W * 0.46, H / 2 + e.vertices[v][1] * H * 0.44];
+            e.inTangents[v] = [e.inTangents[v][0] * W * 0.46, e.inTangents[v][1] * H * 0.44];
+            e.outTangents[v] = [e.outTangents[v][0] * W * 0.46, e.outTangents[v][1] * H * 0.44];
+        }
+        mk.property("ADBE Mask Shape").setValue(e); mk.property("ADBE Mask Feather").setValue([380, 320]);
+        var re = addFx(h, "ADBE Roughen Edges"); setFx(re, "Border", 90); try { re.property("Evolution").expression = "time*60"; } catch (x) {}
+        // scanlines
+        var vb = addFx(h, "ADBE Venetian Blinds"); setFx(vb, "Transition Completion", 18); setFx(vb, "Direction", 0); setFx(vb, "Width", 5); setFx(vb, "Feather", 2);
+        // rgb split + glow
+        var sp = addFx(h, "ADBE Shift Channels");
+        var gl = addFx(h, "ADBE Glo2"); setFx(gl, "Glow Radius", 80); setFx(gl, "Glow Intensity", 0.6);
+        keys(h.transform.opacity, [[IN, 0], [ON, 92], [OFF0, 92], [OFF1, 0]], 50);
+        h.transform.opacity.expression = "value * (1 + 0.06*Math.sin(time*41) + 0.05*(random()-0.5))";
+        h.transform.position.expression = "value + (random() < 0.04 ? [random(-25,25), 0] : [0,0])";   // tiny glitch jumps
+        // slow push-in on everything while they keep talking
+        var cam = c.layers.addNull(); cam.name = "CAMERA_PUSH"; cam.transform.position.setValue([W / 2, H * 0.47]);
+        w.parent = cam; dim.parent = cam; h.parent = cam;
+        keys(cam.transform.scale, [[0.5, [100, 100]], [D - 0.5, [112, 112]]], 33);
+        marker(c, IN, "hologram fades in - SFX: low shimmer"); marker(c, OFF0, "hologram dissolves");
+        marker(c, 0, "TIP: if a hologram passes behind the guest/host, Roto Brush them and put them on top");
+    })();
+
+    alert("Done: 5 options in the project panel > NOQTA_MEMORY_TRANSITIONS.\nReplace shots inside MEMORY_SEQ (Alt/Option-drag) and all 5 options update.");
     app.endUndoGroup();
 })();
