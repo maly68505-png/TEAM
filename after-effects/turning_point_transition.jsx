@@ -11,11 +11,14 @@
  * Cancel either dialog to get a placeholder you can replace later
  * (select placeholder layer, Alt/Option-drag footage onto it).
  *
- * Tweak positions by moving the nulls CTRL_DOT and CTRL_PRESENTER.
+ * The dot is TRACKED: CTRL_DOT is glued to the logo dot inside SHOT1_LOGO
+ * (follows its scale / position / push-in). Fine-tune it with the
+ * 'Dot in footage (px)' point control on CTRL_DOT. Move CTRL_PRESENTER to re-aim the spot.
  */
 (function () {
     var FPS = 25, W = 1920, H = 1080, DUR = 7;
-    var DOT = [1120, 395];        // center of the small inner dot of the logo (measured from render)
+    var DOT_REL = [2218 / 3840, 740 / 2160]; // logo dot centre as a fraction of the IN clip frame (measured on IN_1.mp4)
+    var DOT_D_REL = 49 / 3840;               // logo dot diameter as a fraction of the clip width
     var PRESENTER = [960, 520];   // where the spotlight lands
 
     // --- timing (seconds) ---
@@ -83,6 +86,10 @@
     var shot1 = src1 ? comp.layers.add(src1) : comp.layers.addSolid([0.45, 0.08, 0.08], "SHOT1_PLACEHOLDER", W, H, 1);
     shot1.name = "SHOT1_LOGO";
     var b1 = fillScale(src1);
+    var w1 = src1 ? src1.width : W, h1 = src1 ? src1.height : H;
+    var DOT_SRC = [w1 * DOT_REL[0], h1 * DOT_REL[1]];       // dot in SHOT1 layer (footage) pixels
+    var DOT_D = DOT_D_REL * w1;                               // dot diameter in footage pixels
+    var DOT_R_COMP = 0.5 * DOT_D * b1 / 100;                  // dot radius in comp pixels
     keys(shot1.transform.scale, [[0, [b1, b1]], [T_SPOT + 0.4, [b1 * 1.06, b1 * 1.06]]], 33);
 
     // LIGHTS OUT (black solid, two-stage dim)
@@ -109,7 +116,7 @@
         'var p = thisComp.layer("CTRL_PRESENTER").transform.position;\n' +
         'ease(time, ' + T_SPOT + ', ' + T_TRAVEL_END + ', d, p);';
     // scale 0 until the spot starts, otherwise the matte punches a dark hole through Shot 1
-    keys(matte.transform.scale, [[0, [0, 0]], [T_SPOT - 0.12, [0, 0]], [T_SPOT, [18, 18]], [T_SPOT_END, [2200, 2200]]], 75);
+    keys(matte.transform.scale, [[0, [0, 0]], [T_SPOT - 0.12, [0, 0]], [T_SPOT, [DOT_R_COMP * 1.06, DOT_R_COMP * 1.06]], [T_SPOT_END, [2200, 2200]]], 75);
 
     try { shot2.setTrackMatte(matte, TrackMatteType.ALPHA); }     // AE 2023+
     catch (e) { shot2.trackMatteType = TrackMatteType.ALPHA; }    // older AE (matte is directly above)
@@ -132,12 +139,14 @@
     var dot = comp.layers.addShape();
     dot.name = "DOT_GLOW";
     var dc = dot.property("ADBE Root Vectors Group");
-    dc.addProperty("ADBE Vector Shape - Ellipse").property("ADBE Vector Ellipse Size").setValue([34, 34]);
+    var dotSize = dc.addProperty("ADBE Vector Shape - Ellipse").property("ADBE Vector Ellipse Size");
+    // same size as the real dot, and it grows with the push-in on SHOT1
+    dotSize.expression = 'var s = thisComp.layer("SHOT1_LOGO").transform.scale[0] / 100; var d = ' + DOT_D + ' * s; [d, d];';
     dc.addProperty("ADBE Vector Graphic - Fill").property("ADBE Vector Fill Color").setValue([1, 0.95, 0.85]);
     dot.transform.position.expression = 'thisComp.layer("CTRL_DOT").transform.position';
     keys(dot.transform.scale, [
-        [T_PULSE, [100, 100]], [T_PULSE + 0.2, [160, 160]], [T_PULSE + 0.48, [100, 100]],
-        [T_SPOT - 0.2, [100, 100]], [T_SPOT, [130, 130]]
+        [T_PULSE, [100, 100]], [T_PULSE + 0.2, [140, 140]], [T_PULSE + 0.48, [100, 100]],
+        [T_SPOT - 0.2, [100, 100]], [T_SPOT, [120, 120]]
     ], 60);
     keys(dot.transform.opacity, [[0, 0], [T_PULSE - 0.2, 0], [T_PULSE, 100], [T_SPOT, 100], [T_SPOT + 0.2, 0]], 50);
     addGlow(dot, 40, 2);
@@ -145,7 +154,11 @@
 
     // CONTROL NULLS (move these to re-aim)
     var nP = comp.layers.addNull(); nP.name = "CTRL_PRESENTER"; nP.transform.position.setValue(PRESENTER);
-    var nD = comp.layers.addNull(); nD.name = "CTRL_DOT"; nD.transform.position.setValue(DOT);
+    var nD = comp.layers.addNull(); nD.name = "CTRL_DOT";
+    var pc = nD.Effects.addProperty("ADBE Point Control"); pc.name = "Dot in footage (px)";
+    pc.property(1).setValue(DOT_SRC);
+    // tracking: follow the dot through every transform applied to SHOT1_LOGO
+    nD.transform.position.expression = 'thisComp.layer("SHOT1_LOGO").toComp(effect("Dot in footage (px)")(1));';
     nP.label = nD.label = 9;
 
     // SFX / timing markers
