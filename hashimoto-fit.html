@@ -1,30 +1,35 @@
 <title>Farashti</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* Layout: one phone-width column, bottom tab bar like a native app. Deliberate single matte-dark look. */
+/* Layout: one phone-width column, bottom tab bar like a native app. Deliberate single matte-dark look. Arabic (RTL) and English (LTR). */
 :root{
   --bg:#131417; --surface:#1B1D21; --raised:#23262B; --fg:#EDEEF0; --muted:#949AA3; --line:#2B2F35;
   --accent:#FF5C86; --accent-ink:#1A0C11; --accent-soft:#3A1E27;
   --teal:#45D1B2; --teal-soft:#16302B; --warn:#F5B547; --warn-soft:#352B16;
-  --display:"Archivo","Arial Narrow",Arial,sans-serif;
-  --body:"Figtree","Segoe UI",Roboto,Arial,sans-serif;
+  --display:"Archivo","Readex Pro","Arial Narrow",Arial,sans-serif;
+  --body:"Figtree","IBM Plex Sans Arabic","Segoe UI",Roboto,Arial,sans-serif;
   --r:16px; color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+html[dir="rtl"] body{line-height:1.7}
 .wrap{max-width:560px;margin:0 auto;padding-block:18px 112px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
-h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.1;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.15;letter-spacing:-.01em}
 h1{font-size:34px;font-weight:900;font-stretch:75%;text-transform:uppercase}
 h2{font-size:21px;font-weight:800;font-stretch:80%;text-transform:uppercase}
 h3{font-size:15px;font-weight:700}
+html[dir="rtl"] h1{font-size:30px;letter-spacing:0}
+html[dir="rtl"] h2{font-size:19px;letter-spacing:0}
 p{margin:0}
 .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+html[dir="rtl"] .eyebrow{letter-spacing:0;font-size:12.5px}
 .muted{color:var(--muted);font-size:13px}
 .num{font-variant-numeric:tabular-nums;font-family:var(--display)}
 header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-.brand{display:flex;align-items:center;gap:8px;color:var(--accent)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:11.5px}
 .brand svg{width:22px;height:22px}
 .card{background:var(--surface);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .card.hero{background:var(--raised);box-shadow:inset 0 0 0 1px var(--line)}
@@ -41,6 +46,9 @@ button,.btn{font-family:var(--body);font-size:14px;font-weight:700;border:1px so
 button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .primary{background:var(--accent)!important;border-color:var(--accent)!important;color:var(--accent-ink)!important}
 .small{padding:6px 10px;font-size:12.5px;border-radius:10px}
+.langsw{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.langsw button{border:0;border-radius:0;background:transparent;padding:5px 12px;font-size:12.5px;color:var(--muted)}
+.langsw button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
 .energy{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .energy button{padding:8px 0;flex-direction:column;gap:0;font-size:11.5px;font-weight:600}
 .energy button b{font-family:var(--display);font-size:22px;font-weight:800}
@@ -63,15 +71,17 @@ ul.checks li.done label{text-decoration:line-through;color:var(--muted)}
 .water button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal)}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .day{border:1px solid var(--line);border-radius:10px;padding:7px 2px;text-align:center;font-size:10.5px;font-weight:600;background:var(--raised);cursor:pointer;min-width:0;flex-direction:column;gap:0;color:var(--muted)}
-.day b{display:block;font-family:var(--display);font-size:14px;font-weight:800;color:var(--fg);text-transform:uppercase}
+.day b{display:block;font-family:var(--display);font-size:13px;font-weight:800;color:var(--fg);text-transform:uppercase}
 .day.str{border-color:var(--accent-soft);background:var(--accent-soft)}
 .day.act{border-color:var(--teal-soft);background:var(--teal-soft)}
 .day.sel{outline:2px solid var(--accent)}
 .day.today b{text-decoration:underline;text-underline-offset:3px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
-th,td{text-align:left;padding:9px 6px;border-top:1px solid var(--line);vertical-align:top}
+th,td{text-align:start;padding:9px 6px;border-top:1px solid var(--line);vertical-align:top}
 th{font-weight:700;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-top:0}
 td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td.n,ul.checks .sets{direction:ltr;unicode-bidi:isolate}
+html[dir="rtl"] td.n{text-align:right}
 .tbl{overflow-x:auto}
 .field{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 120px}
 .card>.field{flex:none}
@@ -119,58 +129,63 @@ if(!S){const o=loadOld();S={profile:Object.assign({},DEF),days:{},weights:[{d:to
   if(o){['age','weight','height','dose','medTime'].forEach(k=>{if(o.profile&&o.profile[k])S.profile[k]=o.profile[k]});
     if(o.weights&&o.weights.length)S.weights=o.weights; if(o.labs)S.labs=o.labs;}}
 S.profile=Object.assign({},DEF,S.profile);
+if(!S.lang)S.lang='ar';
 function dayLog(k){k=k||todayKey();if(!S.days[k])S.days[k]={energy:0,ex:{},med:{},water:0};return S.days[k]}
 
-/* ---------- workouts ---------- */
-const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+/* ---------- language ---------- */
+const AR=()=>S.lang==='ar';
+const t=(en,ar)=>AR()?ar:en;              // inline strings
+const tx=x=>Array.isArray(x)?(AR()&&x[1]!=null?x[1]:x[0]):(x||''); // data strings [en, ar]
+function applyLang(){const h=document.documentElement;h.lang=S.lang;h.dir=AR()?'rtl':'ltr'}
+
+/* ---------- workouts: {n:[en,ar], s:[en,ar]|str, tip:[en,ar]} ---------- */
+const E=(n,s,tip,fin)=>({n,s,tip,fin});
+const WD=[['Sunday','الأحد'],['Monday','الاتنين'],['Tuesday','التلات'],['Wednesday','الأربع'],['Thursday','الخميس'],['Friday','الجمعة'],['Saturday','السبت']];
 const WORK={
- L1:{name:'Lower — Glutes & Quads',kind:'str',ex:[
-  ['Goblet or back squat','4 × 8–10','Thighs parallel to the floor, chest up'],
-  ['Hip thrust (barbell)','4 × 10–12','Squeeze 2 seconds at the top'],
-  ['Romanian deadlift (dumbbells)','3 × 10','Hinge from the hips, soft knees'],
-  ['Walking lunges','3 × 12 / leg',''],
-  ['Leg curl machine','3 × 12',''],
-  ['Plank','3 × 40 s','']]},
- L2:{name:'Lower — Posterior Chain',kind:'str',ex:[
-  ['Deadlift (trap bar or dumbbells)','4 × 6–8','Heaviest day of the week. Form before load'],
-  ['Bulgarian split squat','3 × 10 / leg',''],
-  ['Leg press (feet high & wide)','3 × 12',''],
-  ['Hip abduction machine','3 × 15',''],
-  ['Standing calf raise','3 × 15',''],
-  ['Dead bug','3 × 10 / side','Lower back pressed to the floor']]},
- U1:{name:'Upper — Push Focus',kind:'str',ex:[
-  ['Dumbbell bench press','4 × 8–10',''],
-  ['Lat pulldown','3 × 10','Pull to upper chest'],
-  ['Seated dumbbell shoulder press','3 × 10',''],
-  ['Incline push-ups','3 × max clean reps',''],
-  ['Lateral raise','3 × 15','Light weight, slow'],
-  ['Triceps rope pushdown','3 × 12','']]},
- U2:{name:'Upper — Pull Focus',kind:'str',ex:[
-  ['Lat pulldown or assisted pull-up','4 × 8–10',''],
-  ['Seated cable row','3 × 12','Shoulders back and down'],
-  ['One-arm dumbbell row','3 × 12 / arm',''],
-  ['Incline dumbbell press','3 × 10',''],
-  ['Face pull','3 × 15','Great for neck and posture'],
-  ['Dumbbell biceps curl','3 × 12','']]},
- F:{name:'Full Body Strength',kind:'str',ex:[
-  ['Goblet squat','3 × 10',''],
-  ['Push-ups (incline if needed)','3 × max clean reps',''],
-  ['One-arm dumbbell row','3 × 12 / arm',''],
-  ['Step-ups with dumbbells','3 × 10 / leg',''],
-  ['Kettlebell swing','3 × 15',''],
-  ['Farmer carry','3 × 40 m','Heavy, tall posture'],
-  ['Bike intervals: 30 s hard / 90 s easy','6 rounds','Only if energy is 4 or 5','finisher']]},
- W:{name:'Walk + Mobility',kind:'act',ex:[
-  ['Brisk walk, zone 2 (you can talk, not sing)','40–50 min','Aim for 8,000–10,000 steps today'],
-  ['Hip & spine mobility: cat-cow, 90/90, hip flexor stretch','10 min',''],
-  ['Light core: bird dog + side plank','2 × 10 / 2 × 25 s','']]},
- R:{name:'Rest Day',kind:'rest',ex:[
-  ['Sleep 7–8 hours. Easy stroll if you feel like it','—','With Hashimoto’s, recovery is where the muscle gets built']]}
+ L1:{name:['Lower — Glutes & Quads','سفلي — أرداف وفخذ أمامي'],kind:'str',ex:[
+  E(['Goblet or back squat','سكوات جوبلت أو بالبار'],'4 × 8–10',['Thighs parallel to the floor, chest up','الفخذ موازي للأرض والصدر لفوق']),
+  E(['Hip thrust (barbell)','هيب ثرست بالبار'],'4 × 10–12',['Squeeze 2 seconds at the top','اضغطي الأرداف فوق ثانيتين']),
+  E(['Romanian deadlift (dumbbells)','رومانيان ديدلفت بالدمبل'],'3 × 10',['Hinge from the hips, soft knees','الحركة من الوسط والركبة مثنية سنة']),
+  E(['Walking lunges','لانجز مشي'],['3 × 12 / leg','3 × 12 لكل رجل']),
+  E(['Leg curl machine','ليج كيرل على الجهاز'],'3 × 12'),
+  E(['Plank','بلانك'],['3 × 40 s','3 × 40 ث'])]},
+ L2:{name:['Lower — Posterior Chain','سفلي — خلفي وأرداف'],kind:'str',ex:[
+  E(['Deadlift (trap bar or dumbbells)','ديدلفت (تراب بار أو دمبل)'],'4 × 6–8',['Heaviest day of the week. Form before load','أتقل يوم في الأسبوع. الفورم قبل الوزن']),
+  E(['Bulgarian split squat','بلغاري سبليت سكوات'],['3 × 10 / leg','3 × 10 لكل رجل']),
+  E(['Leg press (feet high & wide)','ليج بريس (رجل فوق وعريضة)'],'3 × 12'),
+  E(['Hip abduction machine','هيب أبدكشن على الجهاز'],'3 × 15'),
+  E(['Standing calf raise','سمانة واقف'],'3 × 15'),
+  E(['Dead bug','ديد بَج'],['3 × 10 / side','3 × 10 لكل جنب'],['Lower back pressed to the floor','ضهرك لازق في الأرض'])]},
+ U1:{name:['Upper — Push Focus','علوي — تركيز دفع'],kind:'str',ex:[
+  E(['Dumbbell bench press','ضغط صدر بالدمبل'],'4 × 8–10'),
+  E(['Lat pulldown','لات بول داون'],'3 × 10',['Pull to upper chest','اسحبي لحد أعلى الصدر']),
+  E(['Seated dumbbell shoulder press','ضغط كتف بالدمبل جالسة'],'3 × 10'),
+  E(['Incline push-ups','ضغط على بنش'],['3 × max clean reps','3 × أقصى عدد بفورم سليم']),
+  E(['Lateral raise','رفرفة جانبي'],'3 × 15',['Light weight, slow','وزن خفيف وببطء']),
+  E(['Triceps rope pushdown','تراي حبل على الكابل'],'3 × 12')]},
+ U2:{name:['Upper — Pull Focus','علوي — تركيز سحب'],kind:'str',ex:[
+  E(['Lat pulldown or assisted pull-up','لات بول داون أو عقلة بمساعدة'],'4 × 8–10'),
+  E(['Seated cable row','سحب كابل جالس'],'3 × 12',['Shoulders back and down','الكتف لورا وتحت']),
+  E(['One-arm dumbbell row','تجديف دمبل بإيد واحدة'],['3 × 12 / arm','3 × 12 لكل إيد']),
+  E(['Incline dumbbell press','ضغط دمبل مائل'],'3 × 10'),
+  E(['Face pull','فيس بول'],'3 × 15',['Great for neck and posture','مهم للرقبة ووضع الكتف']),
+  E(['Dumbbell biceps curl','باي دمبل'],'3 × 12')]},
+ F:{name:['Full Body Strength','جسم كامل — قوة'],kind:'str',ex:[
+  E(['Goblet squat','سكوات جوبلت'],'3 × 10'),
+  E(['Push-ups (incline if needed)','ضغط (على بنش لو محتاجة)'],['3 × max clean reps','3 × أقصى عدد بفورم سليم']),
+  E(['One-arm dumbbell row','تجديف دمبل بإيد واحدة'],['3 × 12 / arm','3 × 12 لكل إيد']),
+  E(['Step-ups with dumbbells','ستيب أب بالدمبل'],['3 × 10 / leg','3 × 10 لكل رجل']),
+  E(['Kettlebell swing','كتل بل سوينج'],'3 × 15'),
+  E(['Farmer carry','فارمر كاري'],['3 × 40 m','3 × 40 متر'],['Heavy, tall posture','وزن تقيل وضهر مفرود']),
+  E(['Bike intervals: 30 s hard / 90 s easy','إنترفال عجلة: 30 ث سريع / 90 ث هادي'],['6 rounds','6 جولات'],['Only if energy is 4 or 5','بس لو طاقتك 4 أو 5'],1)]},
+ W:{name:['Walk + Mobility','مشي + موبيليتي'],kind:'act',ex:[
+  E(['Brisk walk, zone 2 (you can talk, not sing)','مشي سريع Zone 2 (تقدري تتكلمي بس مش تغني)'],['40–50 min','40–50 دقيقة'],['Aim for 8,000–10,000 steps today','هدفك 8000–10000 خطوة النهارده']),
+  E(['Hip & spine mobility: cat-cow, 90/90, hip flexor stretch','موبيليتي للحوض والضهر: Cat-Cow و 90/90 واستطالة الحوض'],['10 min','10 دقايق']),
+  E(['Light core: bird dog + side plank','كور خفيف: بيرد دوج + سايد بلانك'],['2 × 10 / 2 × 25 s','2 × 10 / 2 × 25 ث'])]},
+ R:{name:['Rest Day','يوم راحة'],kind:'rest',ex:[
+  E(['Sleep 7–8 hours. Easy stroll if you feel like it','نوم 7–8 ساعات، وتمشية خفيفة لو حابة'],'—',['With Hashimoto’s, recovery is where the muscle gets built','مع الهاشيموتو، العضلة بتتبني وانتي مرتاحة'])]}
 };
-function planFor(dow){ // 0 Sun … 6 Sat
-  return {6:'W',0:S.profile.sunday==='F'?'F':'U2',1:'L1',2:'U1',3:'L2',4:'W',5:'R'}[dow];
-}
-const workoutFor=dow=>WORK[planFor(dow)];
+function planKey(dow){return {6:'W',0:S.profile.sunday==='F'?'F':'U2',1:'L1',2:'U1',3:'L2',4:'W',5:'R'}[dow]}
 
 /* ---------- nutrition ---------- */
 function calc(){
@@ -186,13 +201,13 @@ function timeline(){
   const med=toMin(S.profile.medTime), wk=toMin(S.profile.workTime);
   const coffee=Math.max(med+45,wk-30), bf=wk+75;
   return {med,coffee,wk,bf,items:[
-   {id:'med',t:med,n:'Thyroid medication',d:'Empty stomach, plain water only. No food or coffee yet.',med:1},
-   {id:'coffee',t:coffee,n:'Coffee',d:'Black or with a splash of milk. This is your pre-workout. At least 45 min after the pill.'},
-   {id:'workout',t:wk,n:'Train (fasted)',d:'Sip water during the session. Keep a date nearby if you feel dizzy.'},
-   {id:'breakfast',t:bf,n:'Breakfast — post-workout',d:'2 whole eggs + 3 egg whites, 2 slices wholegrain toast, cucumber & tomato, 1 piece of fruit',k:450,pr:32},
-   {id:'lunch',t:bf+240,n:'Lunch',d:'150 g grilled chicken breast (or tilapia / lean beef) + 150 g cooked rice (or potato) + big salad + 1 tbsp olive oil',k:575,pr:50},
-   {id:'snack',t:bf+420,n:'Snack',d:'170 g Greek yogurt + 1 cup berries + 2 Brazil nuts (selenium)',k:215,pr:19,ca:1},
-   {id:'dinner',t:bf+600,n:'Dinner',d:'200 g cottage cheese + vegetables + ½ baladi bread (or 3 tbsp ful with olive oil)',k:340,pr:31}
+   {id:'med',t:med,med:1,n:['Thyroid medication','دوا الغدة'],d:['Empty stomach, plain water only. No food or coffee yet.','على معدة فاضية بكوباية مية بس. لا أكل ولا قهوة.']},
+   {id:'coffee',t:coffee,n:['Coffee','القهوة'],d:['Black or with a splash of milk. This is your pre-workout. At least 45 min after the pill.','سادة أو بنقطة لبن. دي البري وركاوت بتاعتك. بعد الدوا بـ 45 دقيقة على الأقل.']},
+   {id:'workout',t:wk,n:['Train (fasted)','التمرين (صايمة)'],d:['Sip water during the session. Keep a date nearby if you feel dizzy.','اشربي مية أثناء التمرين. خلي معاكي تمرة لو حسيتي بدوخة.']},
+   {id:'breakfast',t:bf,k:450,pr:32,n:['Breakfast — post-workout','الفطار — بعد التمرين'],d:['2 whole eggs + 3 egg whites, 2 slices wholegrain toast, cucumber & tomato, 1 piece of fruit','2 بيضة كاملة + 3 بياض، شريحتين توست أسمر، خيار وطماطم، وحباية فاكهة']},
+   {id:'lunch',t:bf+240,k:575,pr:50,n:['Lunch','الغدا'],d:['150 g grilled chicken breast (or tilapia / lean beef) + 150 g cooked rice (or potato) + big salad + 1 tbsp olive oil','150 جم صدور فراخ مشوية (أو بلطي / لحمة قليلة الدهن) + 150 جم رز مطبوخ (أو بطاطا) + سلطة كبيرة + معلقة زيت زيتون']},
+   {id:'snack',t:bf+420,k:215,pr:19,ca:1,n:['Snack','سناك'],d:['170 g Greek yogurt + 1 cup berries + 2 Brazil nuts (selenium)','170 جم زبادي يوناني + كوب فراولة أو توت + 2 بندق برازيلي (سيلينيوم)']},
+   {id:'dinner',t:bf+600,k:340,pr:31,n:['Dinner','العشا'],d:['200 g cottage cheese + vegetables + ½ baladi bread (or 3 tbsp ful with olive oil)','200 جم جبنة قريش + خضار + نص رغيف بلدي (أو 3 معالق فول بزيت زيتون)']}
   ]};
 }
 
@@ -200,24 +215,24 @@ function timeline(){
 const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
 const ICSD=['SU','MO','TU','WE','TH','FR','SA'];
 function reminders(){
-  const tl=timeline(),liftDays=[0,1,2,3].map(d=>ICSD[d]).join(','),walkDays='SA,TH';
-  const r=tl.items.filter(i=>i.id!=='workout').map(i=>({id:i.id,t:i.t,title:(i.id==='med'?'💊 ':i.id==='coffee'?'☕ ':'🍽 ')+i.n,desc:i.d,days:''}));
-  r.splice(2,0,{id:'lift',t:tl.wk,title:'🏋️ Strength session',desc:'Open Farashti and log your energy first.',days:liftDays},
-                {id:'walk',t:tl.wk,title:'🚶 Walk + mobility',desc:'40–50 min zone 2 walk.',days:walkDays});
-  r.push({id:'water',t:tl.wk+240,title:'💧 Water check',desc:'Are you at 5 glasses yet?',days:''});
-  r.push({id:'weigh',t:tl.med-5,title:'⚖️ Weekly weigh-in',desc:'Before the pill, after the bathroom. Log it in Farashti.',days:'FR'});
+  const tl=timeline(),ico={med:'💊',coffee:'☕'};
+  const r=tl.items.filter(i=>i.id!=='workout').map(i=>({id:i.id,t:i.t,title:(ico[i.id]||'🍽')+' '+tx(i.n),desc:tx(i.d),days:''}));
+  r.push({id:'lift',t:tl.wk,title:'🏋️ '+t('Strength session','تمرين حديد'),desc:t('Open Farashti and log your energy first.','افتحي فراشتي وسجلي طاقتك الأول.'),days:'SU,MO,TU,WE'});
+  r.push({id:'walk',t:tl.wk,title:'🚶 '+t('Walk + mobility','مشي + موبيليتي'),desc:t('40–50 min zone 2 walk.','مشي 40–50 دقيقة.'),days:'SA,TH'});
+  r.push({id:'water',t:tl.wk+240,title:'💧 '+t('Water check','المية'),desc:t('Are you at 5 glasses yet?','وصلتي 5 كوبايات؟'),days:''});
+  r.push({id:'weigh',t:tl.med-5,title:'⚖️ '+t('Weekly weigh-in','وزن الأسبوع'),desc:t('Before the pill, after the bathroom. Log it in Farashti.','قبل الدوا وبعد الحمام. سجليه في فراشتي.'),days:'FR'});
   return r.sort((a,b)=>a.t-b.t);
 }
-function firstDate(days){ // next date matching days (or today)
+function firstDate(days){
   const d=new Date(); if(!days) return d;
   for(let i=0;i<7;i++){const x=new Date();x.setDate(d.getDate()+i);if(days.split(',').includes(ICSD[x.getDay()]))return x}
   return d;
 }
 const stamp=(d,m)=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+fmt(m).replace(':','')+'00';
-function rrule(days){return days?'RRULE:FREQ=WEEKLY;BYDAY='+days:'RRULE:FREQ=DAILY'}
+const rrule=days=>days?'RRULE:FREQ=WEEKLY;BYDAY='+days:'RRULE:FREQ=DAILY';
 function gcal(r){
-  const d=firstDate(r.days),s=stamp(d,r.t),e=stamp(d,r.t+10);
-  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(r.title)+'&details='+encodeURIComponent(r.desc)+'&dates='+s+'/'+e+'&recur='+encodeURIComponent(rrule(r.days));
+  const d=firstDate(r.days);
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(r.title)+'&details='+encodeURIComponent(r.desc)+'&dates='+stamp(d,r.t)+'/'+stamp(d,r.t+10)+'&recur='+encodeURIComponent(rrule(r.days));
 }
 function ics(){
   const now=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
@@ -231,96 +246,96 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 let selDay=new Date().getDay();
 function adjust(energy,w){
   if(w.kind!=='str') return {};
-  if(energy>=4) return {label:'Full',note:'Good energy. If you hit the top of the rep range on every set, add 2.5–5% next time.'};
-  if(energy===3) return {label:'Steady',cls:'warn',note:'Same weights, leave 3 reps in the tank (RPE 7). Skip any finisher.'};
-  if(energy===2) return {label:'Light',cls:'warn',minus:1,note:'One set less per exercise and about 20% lighter. Move without draining yourself.'};
-  if(energy===1) return {label:'Recovery',cls:'',swap:true,note:'No weights today. 20–30 min walk and stretching. If this fatigue lasts over two weeks, get your TSH checked.'};
-  return {note:'Rate your energy above and I’ll adjust today’s session.'};
+  if(energy>=4) return {label:t('Full','كامل'),note:t('Good energy. If you hit the top of the rep range on every set, add 2.5–5% next time.','طاقتك حلوة. لو كملتي أعلى عدد عدات في كل الجولات، زودي الوزن 2.5–5٪ المرة الجاية.')};
+  if(energy===3) return {label:t('Steady','متوسط'),cls:'warn',note:t('Same weights, leave 3 reps in the tank (RPE 7). Skip any finisher.','نفس الأوزان وسيبي 3 عدات في الخزان (RPE 7). شيلي الإنترفال.')};
+  if(energy===2) return {label:t('Light','خفيف'),cls:'warn',minus:1,note:t('One set less per exercise and about 20% lighter. Move without draining yourself.','جولة أقل في كل تمرين ووزن أخف بحوالي 20٪. اتحركي من غير ما تستنزفي.')};
+  if(energy===1) return {label:t('Recovery','استشفاء'),swap:true,note:t('No weights today. 20–30 min walk and stretching. If this fatigue lasts over two weeks, get your TSH checked.','النهارده بلاش حديد. مشي 20–30 دقيقة واستطالات. لو التعب ده استمر أكتر من أسبوعين اعملي تحليل TSH.')};
+  return {note:t('Rate your energy above and I’ll adjust today’s session.','سجلي طاقتك فوق وأنا أظبطلك تمرين النهارده.')};
 }
 const minus=(s,n)=>n?s.replace(/^(\d+)/,m=>Math.max(1,+m-n)):s;
 const BF='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.4 10C9.6 5 4 4.2 4.4 8c.3 2.8 3.3 3.6 7 2.8zM12.6 10c1.8-5 7.4-5.8 7-2 -.3 2.8-3.3 3.6-7 2.8zM11.3 11.6c-3.2.5-6 2.4-4.4 4.4 1.4 1.6 3.6-.8 4.4-3.6zM12.7 11.6c3.2.5 6 2.4 4.4 4.4-1.4 1.6-3.6-.8-4.4-3.6z"/><rect x="11.4" y="7.5" width="1.2" height="9" rx=".6"/></svg>';
+const topbar=()=>`<div class="topbar"><div class="brand">${BF}<span>${t('Farashti','فراشتي')}</span></div>
+  <div class="langsw" role="group" aria-label="Language"><button data-lang="ar" aria-pressed="${AR()}">عربي</button><button data-lang="en" aria-pressed="${!AR()}">EN</button></div></div>`;
 
 /* ---------- views ---------- */
 function viewToday(){
   const L=dayLog(),c=calc(),dow=new Date().getDay(),tl=timeline();
-  let w=workoutFor(dow); const adj=adjust(L.energy,w); if(adj.swap) w=WORK.W;
-  const exs=w.ex.filter(e=>!(e[3]==='finisher'&&L.energy&&L.energy<4));
-  const done=exs.filter((e,i)=>L.ex[w.name+i]).length;
-  const hour=new Date().getHours(),greet=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
-  return `
-  <header class="top"><div><div class="brand">${BF}<span class="eyebrow" style="color:inherit">Farashti</span></div><h1>${greet}</h1>
-   <p class="muted">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p></div>
-   <span class="pill teal num">Train ${esc(S.profile.workTime)}</span></header>
+  let key=planKey(dow),w=WORK[key]; const adj=adjust(L.energy,w); if(adj.swap){key='W';w=WORK.W}
+  const exs=w.ex.filter(e=>!(e.fin&&L.energy&&L.energy<4));
+  const done=exs.filter((e,i)=>L.ex[key+i]).length;
+  const hour=new Date().getHours(),greet=hour<12?t('Good morning','صباح الفل'):hour<18?t('Good afternoon','نهارك سعيد'):t('Good evening','مساء الخير');
+  return `${topbar()}
+  <header class="top"><div><h1>${greet}</h1>
+   <p class="muted">${new Date().toLocaleDateString(AR()?'ar-EG':'en-GB',{weekday:'long',day:'numeric',month:'long'})}</p></div>
+   <span class="pill teal num">${t('Train','تمرين')} ${esc(S.profile.workTime)}</span></header>
 
   <section class="card hero">
-   <div class="row between"><div><p class="eyebrow">Today’s session</p><h2>${w.name}</h2></div>${adj.label?`<span class="pill ${adj.cls||''}">${adj.label}</span>`:''}</div>
-   ${w.kind==='str'?`<div><p class="eyebrow" style="margin-bottom:6px">How’s your energy?</p>
-   <div class="energy" role="group" aria-label="Energy level">
-    ${[[1,'Drained'],[2,'Tired'],[3,'OK'],[4,'Good'],[5,'Strong']].map(([v,t])=>`<button data-energy="${v}" aria-pressed="${L.energy===v}"><b class="num">${v}</b>${t}</button>`).join('')}
+   <div class="row between"><div><p class="eyebrow">${t('Today’s session','تمرين النهارده')}</p><h2>${tx(w.name)}</h2></div>${adj.label?`<span class="pill ${adj.cls||''}">${adj.label}</span>`:''}</div>
+   ${WORK[planKey(dow)].kind==='str'?`<div><p class="eyebrow" style="margin-bottom:6px">${t('How’s your energy?','طاقتك عاملة إيه؟')}</p>
+   <div class="energy" role="group" aria-label="Energy">
+    ${[[1,'Drained','منهارة'],[2,'Tired','تعبانة'],[3,'OK','عادي'],[4,'Good','كويسة'],[5,'Strong','نار']].map(([v,e,a])=>`<button data-energy="${v}" aria-pressed="${L.energy===v}"><b class="num">${v}</b>${t(e,a)}</button>`).join('')}
    </div></div>`:''}
    ${adj.note?`<p class="note ${adj.cls||''}">${adj.note}</p>`:''}
    <div class="progress" aria-hidden="true"><i style="width:${exs.length?done/exs.length*100:0}%"></i></div>
    <ul class="checks">
-    ${exs.map((e,i)=>{const id=w.name+i,on=!!L.ex[id];return `<li class="${on?'done':''}"><input type="checkbox" id="ex-${i}" data-ex="${esc(id)}" ${on?'checked':''}><label for="ex-${i}">${e[0]}${e[2]?`<span class="tip">${e[2]}</span>`:''}</label><span class="sets">${minus(e[1],adj.minus)}</span></li>`}).join('')}
+    ${exs.map((e,i)=>{const id=key+i,on=!!L.ex[id];return `<li class="${on?'done':''}"><input type="checkbox" id="ex-${i}" data-ex="${id}" ${on?'checked':''}><label for="ex-${i}">${tx(e.n)}${e.tip?`<span class="tip">${tx(e.tip)}</span>`:''}</label><span class="sets">${minus(tx(e.s),adj.minus)}</span></li>`}).join('')}
    </ul>
-   ${w.kind==='str'?'<p class="muted">8-min warm-up first. Rest 90 s between sets, 2–3 min on the big lifts.</p>':''}
+   ${w.kind==='str'?`<p class="muted">${t('8-min warm-up first. Rest 90 s between sets, 2–3 min on the big lifts.','إحماء 8 دقايق الأول. راحة 90 ثانية بين الجولات و2–3 دقايق في الحركات الكبيرة.')}</p>`:''}
   </section>
 
   <section class="card">
-   <div class="row between"><h2>Medication</h2><span class="pill num">${esc(S.profile.medTime)}</span></div>
+   <div class="row between"><h2>${t('Medication','الدوا')}</h2><span class="pill num">${esc(S.profile.medTime)}</span></div>
    <ul class="checks">
-    ${[['take','Took '+esc(S.profile.medName)+(S.profile.dose?' '+esc(S.profile.dose)+' mcg':''),'Empty stomach, plain water'],
-       ['wait','Waited before coffee ('+fmt(tl.coffee)+')','At least 45 minutes after the pill'],
-       ['space','Calcium / iron / multivitamin 4 h later','Dairy goes in the afternoon snack']]
-      .map(([k,t,tip])=>`<li class="${L.med[k]?'done':''}"><input type="checkbox" id="med-${k}" data-med="${k}" ${L.med[k]?'checked':''}><label for="med-${k}">${t}<span class="tip">${tip}</span></label></li>`).join('')}
+    ${[['take',t('Took ','أخدت ')+esc(S.profile.medName)+(S.profile.dose?' '+esc(S.profile.dose)+t(' mcg',' مكجم'):''),t('Empty stomach, plain water','معدة فاضية + كوباية مية')],
+       ['wait',t('Waited before coffee (','استنيت قبل القهوة (')+fmt(tl.coffee)+')',t('At least 45 minutes after the pill','بعد الدوا بـ 45 دقيقة على الأقل')],
+       ['space',t('Calcium / iron / multivitamin 4 h later','الكالسيوم / الحديد / الملتي فيتامين بعد 4 ساعات'),t('Dairy goes in the afternoon snack','الألبان في سناك العصر')]]
+      .map(([k,x,tip])=>`<li class="${L.med[k]?'done':''}"><input type="checkbox" id="med-${k}" data-med="${k}" ${L.med[k]?'checked':''}><label for="med-${k}">${x}<span class="tip">${tip}</span></label></li>`).join('')}
    </ul>
   </section>
 
   <section class="card">
-   <div class="row between"><h2>Fuel</h2><span class="muted num">${c.cal} kcal</span></div>
+   <div class="row between"><h2>${t('Fuel','الأكل')}</h2><span class="muted num">${c.cal} ${t('kcal','سعر')}</span></div>
    <div class="stats">
-    <div class="stat"><b>${c.prot}</b><span>Protein g</span></div>
-    <div class="stat"><b>${c.carb}</b><span>Carbs g</span></div>
-    <div class="stat"><b>${c.fat}</b><span>Fat g</span></div>
-    <div class="stat"><b>${(L.water*0.25).toFixed(1)}</b><span>Water L</span></div>
+    <div class="stat"><b>${c.prot}</b><span>${t('Protein g','بروتين جم')}</span></div>
+    <div class="stat"><b>${c.carb}</b><span>${t('Carbs g','كارب جم')}</span></div>
+    <div class="stat"><b>${c.fat}</b><span>${t('Fat g','دهون جم')}</span></div>
+    <div class="stat"><b>${(L.water*0.25).toFixed(1)}</b><span>${t('Water L','مية لتر')}</span></div>
    </div>
-   <div class="water" role="group" aria-label="Glasses of water">
-    ${Array.from({length:10},(_,i)=>`<button data-water="${i+1}" aria-pressed="${L.water>i}" aria-label="Glass ${i+1}"></button>`).join('')}
+   <div class="water" role="group" aria-label="Water">
+    ${Array.from({length:10},(_,i)=>`<button data-water="${i+1}" aria-pressed="${L.water>i}" aria-label="${i+1}"></button>`).join('')}
    </div>
-   <p class="muted">Tap a glass for every 250 ml. Goal: 10.</p>
-   <button class="primary" data-go="food">See today’s meal timeline</button>
+   <p class="muted">${t('Tap a glass for every 250 ml. Goal: 10.','دوسي على كوباية لكل 250 مل. الهدف 10.')}</p>
+   <button class="primary" data-go="food">${t('See today’s meal timeline','شوفي مواعيد أكل النهارده')}</button>
   </section>
   ${disc()}`;
 }
 
 function viewTrain(){
-  const today=new Date().getDay(),order=[6,0,1,2,3,4,5],w=workoutFor(selDay),p=S.profile;
-  const short=k=>({W:'Walk',R:'Rest',L1:'Lower',L2:'Lower',U1:'Upper',U2:'Upper',F:'Full'})[k];
-  return `
-  <header class="top"><div><p class="eyebrow">Week starts Saturday</p><h1>Training</h1></div></header>
+  const today=new Date().getDay(),order=[6,0,1,2,3,4,5],w=WORK[planKey(selDay)],p=S.profile;
+  const short=k=>tx({W:['Walk','مشي'],R:['Rest','راحة'],L1:['Lower','سفلي'],L2:['Lower','سفلي'],U1:['Upper','علوي'],U2:['Upper','علوي'],F:['Full','كامل']}[k]);
+  return `${topbar()}
+  <header class="top"><div><p class="eyebrow">${t('Week starts Saturday','الأسبوع بيبدأ السبت')}</p><h1>${t('Training','التمارين')}</h1></div></header>
   <section class="card">
    <div class="week">
-    ${order.map(d=>{const k=planFor(d),W=WORK[k];return `<button class="day ${W.kind} ${d===selDay?'sel':''} ${d===today?'today':''}" data-day="${d}"><b>${WD[d].slice(0,3)}</b>${short(k)}</button>`}).join('')}
+    ${order.map(d=>{const k=planKey(d),W=WORK[k];return `<button class="day ${W.kind} ${d===selDay?'sel':''} ${d===today?'today':''}" data-day="${d}"><b>${AR()?WD[d][1].replace(/^ال/,''):WD[d][0].slice(0,3)}</b>${short(k)}</button>`}).join('')}
    </div>
-   <div class="row between"><h3>Sunday is</h3>
-    <div class="seg" role="group" aria-label="Sunday session"><button data-sun="U" aria-pressed="${p.sunday!=='F'}">Upper</button><button data-sun="F" aria-pressed="${p.sunday==='F'}">Full body</button></div></div>
-   <div class="row">
-    <div class="field"><label for="f-wt">Training time</label><input id="f-wt" type="time" data-p="workTime" value="${esc(p.workTime)}"></div>
-   </div>
+   <div class="row between"><h3>${t('Sunday is','الأحد')}</h3>
+    <div class="seg" role="group" aria-label="Sunday"><button data-sun="U" aria-pressed="${p.sunday!=='F'}">${t('Upper','علوي')}</button><button data-sun="F" aria-pressed="${p.sunday==='F'}">${t('Full body','جسم كامل')}</button></div></div>
+   <div class="field"><label for="f-wt">${t('Training time','ميعاد التمرين')}</label><input id="f-wt" type="time" data-p="workTime" value="${esc(p.workTime)}"></div>
   </section>
   <section class="card">
-   <p class="eyebrow">${WD[selDay]}</p><h2>${w.name}</h2>
-   <div class="tbl"><table><thead><tr><th>Exercise</th><th>Sets × reps</th></tr></thead><tbody>
-    ${w.ex.map(e=>`<tr><td>${e[0]}${e[2]?`<span class="tip">${e[2]}</span>`:''}</td><td class="n">${e[1]}</td></tr>`).join('')}
+   <p class="eyebrow">${tx(WD[selDay])}</p><h2>${tx(w.name)}</h2>
+   <div class="tbl"><table><thead><tr><th>${t('Exercise','التمرين')}</th><th>${t('Sets × reps','جولات × عدات')}</th></tr></thead><tbody>
+    ${w.ex.map(e=>`<tr><td>${tx(e.n)}${e.tip?`<span class="tip">${tx(e.tip)}</span>`:''}</td><td class="n">${tx(e.s)}</td></tr>`).join('')}
    </tbody></table></div>
   </section>
   <section class="card">
-   <h2>Progression rules</h2>
+   <h2>${t('Progression rules','قواعد التقدم')}</h2>
    <ul class="checks">
-    <li><label>Add weight when you hit the <b>top of the rep range on every set</b> with ~2 reps left.</label></li>
-    <li><label>Every 6th week: deload. Half the sets, same weights.</label></li>
-    <li><label>Four years in, your body is used to training. Change now comes from <b>heavier lifts and high protein</b>, not more cardio.</label></li>
-    <li><label>Fasted training is fine for you. If you feel shaky or dizzy, have a date or half a banana with the coffee.</label></li>
+    <li><label>${t('Add weight when you hit the <b>top of the rep range on every set</b> with ~2 reps left.','زودي الوزن لما تكملي <b>أعلى عدد عدات في كل الجولات</b> وفاضل معاكي عدتين.')}</label></li>
+    <li><label>${t('Every 6th week: deload. Half the sets, same weights.','كل 6 أسابيع: أسبوع خفيف. نص الجولات بنفس الأوزان.')}</label></li>
+    <li><label>${t('Four years in, your body is used to training. Change now comes from <b>heavier lifts and high protein</b>, not more cardio.','بعد 4 سنين تمرين جسمك متعود. التغيير دلوقتي هيجي من <b>أوزان أتقل وبروتين عالي</b>، مش كارديو زيادة.')}</label></li>
+    <li><label>${t('Fasted training is fine for you. If you feel shaky or dizzy, have a date or half a banana with the coffee.','التمرين وانتي صايمة مناسب ليكي. لو حسيتي برعشة أو دوخة كلي تمرة أو نص موزة مع القهوة.')}</label></li>
    </ul>
   </section>
   ${disc()}`;
@@ -328,53 +343,53 @@ function viewTrain(){
 
 function viewFood(){
   const c=calc(),tl=timeline(),tot=tl.items.reduce((a,m)=>a+(m.k||0),0),tp=tl.items.reduce((a,m)=>a+(m.pr||0),0);
-  const calWarn=tl.bf-tl.med<240;
-  return `
-  <header class="top"><div><p class="eyebrow">Lose fat · build muscle</p><h1>Food</h1></div></header>
+  const sw=[[['150 g chicken','150 جم فراخ'],['180 g tilapia · 130 g lean beef · 1 can tuna in water + 1 egg','180 جم بلطي · 130 جم لحمة قليلة الدهن · علبة تونة مية + بيضة']],
+    [['150 g cooked rice','150 جم رز مطبوخ'],['200 g sweet or boiled potato · 1 baladi bread · 120 g cooked pasta','200 جم بطاطا أو بطاطس مسلوقة · رغيف بلدي · 120 جم مكرونة مطبوخة']],
+    [['Greek yogurt','زبادي يوناني'],['1 scoop whey · 150 g cottage cheese','سكوب واي بروتين · 150 جم جبنة قريش']],
+    [['Cottage cheese dinner','عشا الجبنة القريش'],['Medium plate of ful with olive oil + 2 boiled eggs','طبق فول متوسط بزيت زيتون + بيضتين مسلوق']]];
+  return `${topbar()}
+  <header class="top"><div><p class="eyebrow">${t('Lose fat · build muscle','نزول دهون · بناء عضل')}</p><h1>${t('Food','الأكل')}</h1></div></header>
   <section class="card">
    <div class="stats">
-    <div class="stat"><b>${c.cal}</b><span>kcal/day</span></div>
-    <div class="stat"><b>${c.prot}</b><span>Protein</span></div>
-    <div class="stat"><b>${c.carb}</b><span>Carbs</span></div>
-    <div class="stat"><b>${c.fat}</b><span>Fat</span></div>
+    <div class="stat"><b>${c.cal}</b><span>${t('kcal/day','سعر/يوم')}</span></div>
+    <div class="stat"><b>${c.prot}</b><span>${t('Protein','بروتين')}</span></div>
+    <div class="stat"><b>${c.carb}</b><span>${t('Carbs','كارب')}</span></div>
+    <div class="stat"><b>${c.fat}</b><span>${t('Fat','دهون')}</span></div>
    </div>
-   <details><summary>Where these numbers come from</summary>
+   <details><summary>${t('Where these numbers come from','الأرقام دي جت منين؟')}</summary>
     <div class="tbl"><table><tbody>
-     <tr><td>Resting burn (Mifflin-St Jeor)</td><td class="n">${c.bmr} kcal</td></tr>
-     <tr><td>× activity ${c.f}</td><td class="n">${c.tdee} kcal</td></tr>
-     <tr><td>18% deficit (fat loss, keep muscle)</td><td class="n">${c.cal} kcal</td></tr>
-     <tr><td>Protein 1.8 g per kg</td><td class="n">${c.prot} g</td></tr>
-     <tr><td>Fat 0.8 g per kg</td><td class="n">${c.fat} g</td></tr>
+     <tr><td>${t('Resting burn (Mifflin-St Jeor)','الحرق الأساسي (ميفلين)')}</td><td class="n">${c.bmr}</td></tr>
+     <tr><td>× ${t('activity','النشاط')} ${c.f}</td><td class="n">${c.tdee}</td></tr>
+     <tr><td>${t('18% deficit (fat loss, keep muscle)','عجز 18٪ (نزول دهون مع الحفاظ على العضل)')}</td><td class="n">${c.cal}</td></tr>
+     <tr><td>${t('Protein 1.8 g per kg','بروتين 1.8 جم لكل كيلو')}</td><td class="n">${c.prot} ${t('g','جم')}</td></tr>
+     <tr><td>${t('Fat 0.8 g per kg','دهون 0.8 جم لكل كيلو')}</td><td class="n">${c.fat} ${t('g','جم')}</td></tr>
      <tr><td>BMI</td><td class="n">${c.bmi}</td></tr>
     </tbody></table></div>
-    <p class="muted">No change on the scale or tape after 3 weeks? Drop 100 kcal of carbs. Much more tired? Add 100.</p>
+    <p class="muted">${t('No change on the scale or tape after 3 weeks? Drop 100 kcal of carbs. Much more tired? Add 100.','مفيش تغيير في الوزن أو المقاس بعد 3 أسابيع؟ نقصي 100 سعر من الكارب. تعبتي جامد؟ زودي 100.')}</p>
    </details>
   </section>
   <section class="card">
-   <div class="row between"><h2>Your day</h2><span class="muted num">≈ ${tot} kcal · ${tp} g protein</span></div>
+   <div class="row between"><h2>${t('Your day','يومك')}</h2><span class="muted num">≈ ${tot} ${t('kcal','سعر')} · ${tp} ${t('g protein','جم بروتين')}</span></div>
    <div class="tl">
-   ${tl.items.map(m=>`<div class="it ${m.med?'med':''}"><span class="t num">${fmt(m.t)}</span><div><h3>${m.n}</h3><p>${m.d}</p>${m.k?`<p class="m num">${m.k} kcal · ${m.pr} g protein${m.ca?' · contains calcium, kept away from the pill':''}</p>`:''}</div></div>`).join('')}
+   ${tl.items.map(m=>`<div class="it ${m.med?'med':''}"><span class="t num">${fmt(m.t)}</span><div><h3>${tx(m.n)}</h3><p>${tx(m.d)}</p>${m.k?`<p class="m num">${m.k} ${t('kcal','سعر')} · ${m.pr} ${t('g protein','جم بروتين')}${m.ca?t(' · contains calcium, kept away from the pill',' · فيه كالسيوم، بعيد عن الدوا'):''}</p>`:''}</div></div>`).join('')}
    </div>
-   ${calWarn?'<p class="note warn">Breakfast is less than 4 hours after your pill, so keep dairy out of breakfast.</p>':''}
-   <p class="muted">Times follow your pill and training times. Change them in Meds and Training.</p>
+   ${tl.bf-tl.med<240?`<p class="note warn">${t('Breakfast is less than 4 hours after your pill, so keep dairy out of breakfast.','الفطار قبل 4 ساعات من الدوا، فبلاش ألبان في الفطار.')}</p>`:''}
+   <p class="muted">${t('Times follow your pill and training times. Change them in Meds and Training.','المواعيد ماشية على ميعاد الدوا والتمرين. غيريهم من العلاج والتمارين.')}</p>
   </section>
   <section class="card">
-   <h2>Swaps</h2>
-   <div class="tbl"><table><thead><tr><th>Instead of</th><th>You can have</th></tr></thead><tbody>
-    <tr><td>150 g chicken</td><td>180 g tilapia · 130 g lean beef · 1 can tuna in water + 1 egg</td></tr>
-    <tr><td>150 g cooked rice</td><td>200 g sweet or boiled potato · 1 baladi bread · 120 g cooked pasta</td></tr>
-    <tr><td>Greek yogurt</td><td>1 scoop whey · 150 g cottage cheese</td></tr>
-    <tr><td>Cottage cheese dinner</td><td>Medium plate of ful with olive oil + 2 boiled eggs</td></tr>
+   <h2>${t('Swaps','بدايل')}</h2>
+   <div class="tbl"><table><thead><tr><th>${t('Instead of','بدل')}</th><th>${t('You can have','ممكن')}</th></tr></thead><tbody>
+    ${sw.map(([a,b])=>`<tr><td>${tx(a)}</td><td>${tx(b)}</td></tr>`).join('')}
    </tbody></table></div>
   </section>
   <section class="card">
-   <h2>Hashimoto’s notes</h2>
+   <h2>${t('Hashimoto’s notes','مع الهاشيموتو')}</h2>
    <ul class="checks">
-    <li><label><b>Brazil nuts:</b> 1–2 a day covers selenium. More can be harmful.</label></li>
-    <li><label><b>Cabbage, broccoli, cauliflower:</b> fine cooked. Only very large raw amounts daily are a concern.</label></li>
-    <li><label><b>Soy and high fibre:</b> not banned. Keep them away from the pill and consistent day to day.</label></li>
-    <li><label><b>Gluten:</b> no need to cut it unless coeliac or sensitivity is confirmed. Ask your doctor about testing.</label></li>
-    <li><label><b>Coffee:</b> always 45–60 min after the pill. Coffee too close cuts how much you absorb.</label></li>
+    <li><label>${t('<b>Brazil nuts:</b> 1–2 a day covers selenium. More can be harmful.','<b>البندق البرازيلي:</b> حباية أو اتنين في اليوم كفاية للسيلينيوم. أكتر من كده ممكن يضر.')}</label></li>
+    <li><label>${t('<b>Cabbage, broccoli, cauliflower:</b> fine cooked. Only very large raw amounts daily are a concern.','<b>الكرنب والبروكلي والقرنبيط:</b> مطبوخين عادي. المشكلة بس في كميات نية كبيرة كل يوم.')}</label></li>
+    <li><label>${t('<b>Soy and high fibre:</b> not banned. Keep them away from the pill and consistent day to day.','<b>الصويا والألياف العالية:</b> مش ممنوعين. خليهم بعيد عن الدوا وكميتهم ثابتة.')}</label></li>
+    <li><label>${t('<b>Gluten:</b> no need to cut it unless coeliac or sensitivity is confirmed. Ask your doctor about testing.','<b>الجلوتين:</b> مش لازم تشيليه إلا لو عندك سيلياك أو حساسية مثبتة. اسألي دكتورك عن التحليل.')}</label></li>
+    <li><label>${t('<b>Coffee:</b> always 45–60 min after the pill. Too close cuts how much you absorb.','<b>القهوة:</b> دايمًا بعد الدوا بـ 45–60 دقيقة. لو قربت منه بتقلل امتصاصه.')}</label></li>
    </ul>
   </section>
   ${disc()}`;
@@ -382,57 +397,58 @@ function viewFood(){
 
 function viewMed(){
   const p=S.profile,rs=reminders(),tl=timeline();
-  return `
-  <header class="top"><div><p class="eyebrow">Same time every day</p><h1>Meds</h1></div></header>
+  const dayName=d=>AR()?({SU:'أحد',MO:'اتنين',TU:'تلات',WE:'أربع',TH:'خميس',FR:'جمعة',SA:'سبت'})[d]:d[0]+d[1].toLowerCase();
+  return `${topbar()}
+  <header class="top"><div><p class="eyebrow">${t('Same time every day','نفس الميعاد كل يوم')}</p><h1>${t('Meds','العلاج')}</h1></div></header>
   <section class="card">
-   <div class="field"><label for="f-med">Medication</label><input id="f-med" data-p="medName" value="${esc(p.medName)}"></div>
+   <div class="field"><label for="f-med">${t('Medication','اسم الدوا')}</label><input id="f-med" data-p="medName" value="${esc(p.medName)}"></div>
    <div class="row">
-    <div class="field"><label for="f-dose">Dose (mcg)</label><input id="f-dose" data-p="dose" inputmode="numeric" placeholder="e.g. 75" value="${esc(p.dose)}"></div>
-    <div class="field"><label for="f-time">Pill time</label><input id="f-time" type="time" data-p="medTime" value="${esc(p.medTime)}"></div>
+    <div class="field"><label for="f-dose">${t('Dose (mcg)','الجرعة (مكجم)')}</label><input id="f-dose" data-p="dose" inputmode="numeric" placeholder="${t('e.g. 75','مثلًا 75')}" value="${esc(p.dose)}"></div>
+    <div class="field"><label for="f-time">${t('Pill time','ميعاد الدوا')}</label><input id="f-time" type="time" data-p="medTime" value="${esc(p.medTime)}"></div>
    </div>
-   ${tl.wk-30<tl.med+45?`<p class="note warn">Your pill is close to training. Coffee moved to ${fmt(tl.coffee)} so it stays 45 min after the pill.</p>`:''}
-   <p class="note pink">Only your endocrinologist sets the dose. Farashti keeps your day organised. It doesn’t change treatment.</p>
+   ${tl.wk-30<tl.med+45?`<p class="note warn">${t('Your pill is close to training. Coffee moved to ','الدوا قريب من التمرين. القهوة اتنقلت لـ ')}${fmt(tl.coffee)}${t(' so it stays 45 min after the pill.',' عشان تفضل بعد الدوا بـ 45 دقيقة.')}</p>`:''}
+   <p class="note pink">${t('Only your endocrinologist sets the dose. Farashti keeps your day organised. It doesn’t change treatment.','الجرعة بيحددها دكتور الغدد بس. فراشتي بتنظم يومك ومش بتغير العلاج.')}</p>
   </section>
 
   <section class="card" id="reminders">
-   <div class="row between"><h2>Reminders</h2><span class="pill teal">${rs.length}</span></div>
+   <div class="row between"><h2>${t('Reminders','التنبيهات')}</h2><span class="pill teal">${rs.length}</span></div>
    ${inFrame
-    ?'<p class="note">Tap <b>Add</b> on each reminder to put it in Google Calendar. Your phone then alerts you every day at that time.</p>'
-    :`<p class="note">One tap adds all reminders to your phone’s calendar with an alert on time, every day.</p>
-      <button class="primary" id="icsBtn">Add all reminders to my calendar</button>
-      <p class="muted">iPhone: tap <b>Add All</b> when Calendar opens. Android: open the file with Google Calendar, or use the Add buttons below.</p>`}
+    ?`<p class="note">${t('Tap <b>Add</b> on each reminder to put it in Google Calendar. Your phone then alerts you every day at that time.','دوسي <b>إضافة</b> جنب كل تنبيه عشان يتحط في Google Calendar، وتليفونك ينبهك كل يوم في الميعاد.')}</p>`
+    :`<p class="note">${t('One tap adds all reminders to your phone’s calendar with an alert on time, every day.','دوسة واحدة تضيف كل التنبيهات لتقويم تليفونك وينبهك في الميعاد كل يوم.')}</p>
+      <button class="primary" id="icsBtn">${t('Add all reminders to my calendar','ضيفي كل التنبيهات للتقويم')}</button>
+      <p class="muted">${t('iPhone: tap <b>Add All</b> when Calendar opens. Android: open the file with Google Calendar, or use the Add buttons below.','أيفون: دوسي <b>Add All</b> لما التقويم يفتح. أندرويد: افتحي الملف بـ Google Calendar أو استخدمي زراير الإضافة تحت.')}</p>`}
    <div>
-    ${rs.map(r=>`<div class="rem"><span class="t num">${fmt(r.t)}</span><div><h3>${r.title}</h3><span class="muted">${r.days?r.days.split(',').map(d=>d[0]+d[1].toLowerCase()).join(' · '):'Every day'}</span></div><a class="btn small" href="${gcal(r)}" target="_blank" rel="noopener">Add</a></div>`).join('')}
+    ${rs.map(r=>`<div class="rem"><span class="t num">${fmt(r.t)}</span><div><h3>${r.title}</h3><span class="muted">${r.days?r.days.split(',').map(dayName).join(' · '):t('Every day','كل يوم')}</span></div><a class="btn small" href="${gcal(r)}" target="_blank" rel="noopener">${t('Add','إضافة')}</a></div>`).join('')}
    </div>
-   <p class="muted">Changed your pill or training time? Delete the old reminders in your calendar and add them again.</p>
+   <p class="muted">${t('Changed your pill or training time? Delete the old reminders in your calendar and add them again.','غيرتي ميعاد الدوا أو التمرين؟ امسحي التنبيهات القديمة من التقويم وضيفيها تاني.')}</p>
   </section>
 
   <section class="card">
-   <h2>Pill rules</h2>
+   <h2>${t('Pill rules','قواعد الدوا')}</h2>
    <ul class="checks">
-    <li><label>Empty stomach, glass of water, <b>45–60 min</b> before food or coffee.</label></li>
-    <li><label>Calcium, iron, multivitamins, antacids: <b>4 hours later</b>.</label></li>
-    <li><label>Missed it? Take it when you remember that day. Never double up without asking your doctor.</label></li>
-    <li><label>Blood test day: test in the morning before the pill. Stop biotin (hair supplements) 2 days before, it skews results.</label></li>
+    <li><label>${t('Empty stomach, glass of water, <b>45–60 min</b> before food or coffee.','معدة فاضية وكوباية مية، و<b>45–60 دقيقة</b> قبل الأكل أو القهوة.')}</label></li>
+    <li><label>${t('Calcium, iron, multivitamins, antacids: <b>4 hours later</b>.','الكالسيوم والحديد والملتي فيتامين ومضادات الحموضة: <b>بعده بـ 4 ساعات</b>.')}</label></li>
+    <li><label>${t('Missed it? Take it when you remember that day. Never double up without asking your doctor.','نسيتيه؟ خديه أول ما تفتكري في نفس اليوم. ما تاخديش جرعتين مع بعض من غير ما تسألي دكتورك.')}</label></li>
+    <li><label>${t('Blood test day: test in the morning before the pill. Stop biotin (hair supplements) 2 days before, it skews results.','يوم التحليل: اعمليه الصبح قبل الدوا. وقفي البيوتين (مكملات الشعر) قبلها بيومين لأنه بيلخبط النتيجة.')}</label></li>
    </ul>
   </section>
 
   <section class="card">
-   <h2>Lab results</h2>
+   <h2>${t('Lab results','التحاليل')}</h2>
    <div class="row">
-    <div class="field"><label for="l-d">Date</label><input id="l-d" type="date" value="${todayKey()}"></div>
+    <div class="field"><label for="l-d">${t('Date','التاريخ')}</label><input id="l-d" type="date" value="${todayKey()}"></div>
     <div class="field"><label for="l-tsh">TSH (mIU/L)</label><input id="l-tsh" inputmode="decimal" placeholder="2.1"></div>
-    <div class="field"><label for="l-t4">Free T4</label><input id="l-t4" inputmode="decimal" placeholder="optional"></div>
+    <div class="field"><label for="l-t4">Free T4</label><input id="l-t4" inputmode="decimal" placeholder="${t('optional','اختياري')}"></div>
    </div>
-   <button class="primary" id="addLab">Save result</button>
-   ${S.labs.length?`<div class="tbl"><table><thead><tr><th>Date</th><th>TSH</th><th>Free T4</th><th></th></tr></thead><tbody>
-    ${S.labs.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(l=>`<tr><td class="n">${l.d}</td><td class="n">${esc(l.tsh)}</td><td class="n">${esc(l.t4||'—')}</td><td><button class="small" data-dellab="${l.id}" aria-label="Delete">✕</button></td></tr>`).join('')}
-   </tbody></table></div>`:'<p class="muted">No results yet. Add your latest TSH to start tracking.</p>'}
-   <p class="muted">TSH is usually rechecked 6–8 weeks after a dose change, then every 6–12 months once stable. Your doctor sets the target.</p>
+   <button class="primary" id="addLab">${t('Save result','احفظي التحليل')}</button>
+   ${S.labs.length?`<div class="tbl"><table><thead><tr><th>${t('Date','التاريخ')}</th><th>TSH</th><th>Free T4</th><th></th></tr></thead><tbody>
+    ${S.labs.slice().sort((a,b)=>b.d.localeCompare(a.d)).map(l=>`<tr><td class="n">${l.d}</td><td class="n">${esc(l.tsh)}</td><td class="n">${esc(l.t4||'—')}</td><td><button class="small" data-dellab="${l.id}" aria-label="${t('Delete','امسحي')}">✕</button></td></tr>`).join('')}
+   </tbody></table></div>`:`<p class="muted">${t('No results yet. Add your latest TSH to start tracking.','لسه مفيش تحاليل. سجلي آخر TSH عشان تتابعي.')}</p>`}
+   <p class="muted">${t('TSH is usually rechecked 6–8 weeks after a dose change, then every 6–12 months once stable. Your doctor sets the target.','الـ TSH بيتعاد عادة بعد 6–8 أسابيع من أي تغيير في الجرعة، وبعدين كل 6–12 شهر. الرقم المستهدف بيحدده دكتورك.')}</p>
   </section>
   <section class="card">
-   <h2>Ask your doctor about</h2>
-   <p>Vitamin D · Ferritin · B12 · Anti-TPO · Fasting glucose. Low levels of any of these cause fatigue and stall fat loss even when TSH looks fine.</p>
+   <h2>${t('Ask your doctor about','اسألي دكتورك عن')}</h2>
+   <p>${t('Vitamin D · Ferritin · B12 · Anti-TPO · Fasting glucose. Low levels of any of these cause fatigue and stall fat loss even when TSH looks fine.','فيتامين د · فيريتين · B12 · Anti-TPO · سكر صايم. نقص أي واحد فيهم بيعمل تعب ويوقف نزول الدهون حتى لو الـ TSH مظبوط.')}</p>
   </section>
   ${disc()}`;
 }
@@ -442,45 +458,45 @@ function viewProgress(){
   const diff=last&&first?(last.w-first.w).toFixed(1):0;
   let sessions=0;for(let i=0;i<28;i++){const d=new Date();d.setDate(d.getDate()-i);const L=S.days[todayKey(d)];if(L&&Object.values(L.ex).some(Boolean))sessions++}
   const p=S.profile;
-  return `
-  <header class="top"><div><p class="eyebrow">Tape and strength beat the scale</p><h1>Progress</h1></div></header>
+  return `${topbar()}
+  <header class="top"><div><p class="eyebrow">${t('Tape and strength beat the scale','المقاس والقوة أهم من الميزان')}</p><h1>${t('Progress','التقدم')}</h1></div></header>
   <section class="card">
    <div class="stats">
-    <div class="stat"><b>${last?last.w:'—'}</b><span>kg now</span></div>
-    <div class="stat"><b>${diff>0?'+':''}${diff}</b><span>since start</span></div>
-    <div class="stat"><b>${last&&last.waist?last.waist:'—'}</b><span>waist cm</span></div>
-    <div class="stat"><b>${sessions}</b><span>active / 28d</span></div>
+    <div class="stat"><b>${last?last.w:'—'}</b><span>${t('kg now','كجم دلوقتي')}</span></div>
+    <div class="stat"><b dir="ltr">${diff>0?'+':''}${diff}</b><span>${t('since start','من البداية')}</span></div>
+    <div class="stat"><b>${last&&last.waist?last.waist:'—'}</b><span>${t('waist cm','الوسط سم')}</span></div>
+    <div class="stat"><b>${sessions}</b><span>${t('active / 28d','يوم / 28')}</span></div>
    </div>
    ${chart(ws)}
   </section>
   <section class="card">
-   <h2>Log weight</h2>
+   <h2>${t('Log weight','سجلي وزنك')}</h2>
    <div class="row">
-    <div class="field"><label for="w-d">Date</label><input id="w-d" type="date" value="${todayKey()}"></div>
-    <div class="field"><label for="w-w">Weight kg</label><input id="w-w" inputmode="decimal" placeholder="70"></div>
-    <div class="field"><label for="w-s">Waist cm</label><input id="w-s" inputmode="decimal" placeholder="optional"></div>
+    <div class="field"><label for="w-d">${t('Date','التاريخ')}</label><input id="w-d" type="date" value="${todayKey()}"></div>
+    <div class="field"><label for="w-w">${t('Weight kg','الوزن كجم')}</label><input id="w-w" inputmode="decimal" placeholder="70"></div>
+    <div class="field"><label for="w-s">${t('Waist cm','الوسط سم')}</label><input id="w-s" inputmode="decimal" placeholder="${t('optional','اختياري')}"></div>
    </div>
-   <button class="primary" id="addW">Save</button>
-   <p class="muted">Weigh once a week, same day, in the morning before the pill. Weight jumps around your period.</p>
+   <button class="primary" id="addW">${t('Save','احفظي')}</button>
+   <p class="muted">${t('Weigh once a week, same day, in the morning before the pill. Weight jumps around your period.','اوزني نفسك مرة في الأسبوع، نفس اليوم، الصبح قبل الدوا. الوزن بيتلخبط أيام الدورة.')}</p>
   </section>
   <section class="card">
-   <h2>Your details</h2>
+   <h2>${t('Your details','بياناتك')}</h2>
    <div class="row">
-    <div class="field"><label for="p-a">Age</label><input id="p-a" data-p="age" inputmode="numeric" value="${p.age}"></div>
-    <div class="field"><label for="p-w">Weight kg</label><input id="p-w" data-p="weight" inputmode="decimal" value="${p.weight}"></div>
-    <div class="field"><label for="p-h">Height cm</label><input id="p-h" data-p="height" inputmode="numeric" value="${p.height}"></div>
+    <div class="field"><label for="p-a">${t('Age','السن')}</label><input id="p-a" data-p="age" inputmode="numeric" value="${p.age}"></div>
+    <div class="field"><label for="p-w">${t('Weight kg','الوزن كجم')}</label><input id="p-w" data-p="weight" inputmode="decimal" value="${p.weight}"></div>
+    <div class="field"><label for="p-h">${t('Height cm','الطول سم')}</label><input id="p-h" data-p="height" inputmode="numeric" value="${p.height}"></div>
    </div>
-   <p class="muted">Calories and protein update when you change these.</p>
+   <p class="muted">${t('Calories and protein update when you change these.','السعرات والبروتين بيتحسبوا من جديد لما تغيري دول.')}</p>
   </section>
   ${disc()}`;
 }
 
 function chart(ws){
-  if(ws.length<2) return '<p class="muted">Log at least two weigh-ins to see your trend.</p>';
+  if(ws.length<2) return `<p class="muted">${t('Log at least two weigh-ins to see your trend.','سجلي وزنين على الأقل عشان يظهر الرسم.')}</p>`;
   const W=320,H=120,pad=26,vals=ws.map(x=>+x.w),mn=Math.min(...vals)-0.5,mx=Math.max(...vals)+0.5;
   const X=i=>pad+(W-pad*2)*i/(ws.length-1),Y=v=>12+(H-34)*(1-(v-mn)/(mx-mn));
   const pts=ws.map((x,i)=>X(i)+','+Y(+x.w)).join(' '),lx=X(ws.length-1),ly=Y(vals[vals.length-1]);
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weight trend">
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Weight" dir="ltr">
    <line x1="${pad}" x2="${W-pad}" y1="${Y(mx-0.5)}" y2="${Y(mx-0.5)}" stroke="var(--line)"/>
    <line x1="${pad}" x2="${W-pad}" y1="${Y(mn+0.5)}" y2="${Y(mn+0.5)}" stroke="var(--line)"/>
    <text x="2" y="${Y(mx-0.5)+3}">${(mx-0.5).toFixed(1)}</text><text x="2" y="${Y(mn+0.5)+3}">${(mn+0.5).toFixed(1)}</text>
@@ -489,20 +505,21 @@ function chart(ws){
    <text x="${X(0)}" y="${H-4}" text-anchor="middle">${ws[0].d.slice(5)}</text><text x="${lx}" y="${H-4}" text-anchor="middle">${ws[ws.length-1].d.slice(5)}</text>
   </svg>`;
 }
-function disc(){return '<p class="disc">Farashti is for planning and motivation, not medical advice. Dose or supplement changes go through your doctor.</p>'}
+function disc(){return `<p class="disc">${t('Farashti is for planning and motivation, not medical advice. Dose or supplement changes go through your doctor.','فراشتي للتنظيم والتحفيز ومش بديل عن الدكتور. أي تغيير في الجرعة أو المكملات لازم يكون بإشرافه.')}</p>`}
 
 /* ---------- tabs ---------- */
 const TABS=[
- ['today','Today','<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',viewToday],
- ['train','Train','<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',viewTrain],
- ['food','Food','<path d="M4 11h16a8 8 0 0 1-16 0zM8 7c0-2 2-2 2-4M12 7c0-2 2-2 2-4"/>',viewFood],
- ['med','Meds','<path d="M12 8v4l2.5 2.5"/><circle cx="12" cy="12" r="8.5"/>',viewMed],
- ['progress','Progress','<path d="M4 19h16M6 15l4-4 3 3 5-6"/>',viewProgress]
+ ['today',['Today','النهارده'],'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',viewToday],
+ ['train',['Train','التمارين'],'<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',viewTrain],
+ ['food',['Food','الأكل'],'<path d="M4 11h16a8 8 0 0 1-16 0zM8 7c0-2 2-2 2-4M12 7c0-2 2-2 2-4"/>',viewFood],
+ ['med',['Meds','العلاج'],'<path d="M12 8v4l2.5 2.5"/><circle cx="12" cy="12" r="8.5"/>',viewMed],
+ ['progress',['Progress','التقدم'],'<path d="M4 19h16M6 15l4-4 3 3 5-6"/>',viewProgress]
 ];
 function render(){
-  const t=TABS.find(x=>x[0]===S.tab)||TABS[0];
-  $('#app').innerHTML=t[3]();
-  $('#tabs').innerHTML=TABS.map(x=>`<button data-tab="${x[0]}" ${x[0]===t[0]?'aria-current="page"':''}><svg viewBox="0 0 24 24" aria-hidden="true">${x[2]}</svg>${x[1]}</button>`).join('');
+  applyLang();
+  const tb=TABS.find(x=>x[0]===S.tab)||TABS[0];
+  $('#app').innerHTML=tb[3]();
+  $('#tabs').innerHTML=TABS.map(x=>`<button data-tab="${x[0]}" ${x[0]===tb[0]?'aria-current="page"':''}><svg viewBox="0 0 24 24" aria-hidden="true">${x[2]}</svg>${tx(x[1])}</button>`).join('');
 }
 function go(tab){S.tab=tab;save();render();window.scrollTo(0,0)}
 
@@ -512,6 +529,7 @@ document.addEventListener('click',e=>{
   const d=b.dataset,L=dayLog();
   if(d.tab) return go(d.tab);
   if(d.go) return go(d.go);
+  if(d.lang){S.lang=d.lang;save();return render()}
   if(d.energy){L.energy=+d.energy;save();return render()}
   if(d.water){const n=+d.water;L.water=L.water===n?n-1:n;save();return render()}
   if(d.sun){S.profile.sunday=d.sun;save();return render()}
